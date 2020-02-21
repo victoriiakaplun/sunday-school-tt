@@ -13,10 +13,6 @@ class Dog extends Animal {
         super.say(`Woof ${message}`);
     }
 
-    getEnergy() {
-        console.log(this.energy);
-    }
-
     eat(energy) {
         super.eat(energy);
         if(this.energy < 100){

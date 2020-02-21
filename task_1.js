@@ -2,7 +2,7 @@
 
 const border = parseInt(process.argv[2]);
 console.log(`BORDER: ${border}`);
-for(let i = 1; i < border+1; i++) {
+for(let i = 1; i <= border; i++) {
     if (i % 15 === 0) {
         console.log('fizzbuzz');
     }

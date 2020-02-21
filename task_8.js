@@ -16,7 +16,7 @@ class Animal {
         const newEnergy = this.energy + energy;
         this.energy = (newEnergy > 100)
             ? 100
-            : (newEnergy + energy);
+            : newEnergy;
     }
 
     say(message) {
