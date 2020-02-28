@@ -1,8 +1,9 @@
 'use strict';
 
 const User = require('./model/User');
+const Event = require('./model/Event');
 const MESSAGE = require('./utils/messageMap');
-const utils = require('../utils/utils');
+const utils = require('./utils/utils');
 
 const rl = readline.createInterface( {
     input: process.stdin,
@@ -11,18 +12,16 @@ const rl = readline.createInterface( {
 
 
 let freeTime = [];
+let events =[];
 
 function fillTime(startDate, endDate, startTime, endTime) {
     let currentDate = startDate, currentTime = startTime;
-    console.log(startDate);
-    console.log(endDate);
     while(currentDate <= endDate) {
         freeTime.push({date: currentDate, time: currentTime});
         if( currentTime !== endTime) {
             currentTime++;
         } else {
             currentTime = 8;
-            //TODO: if next day is a new month or year
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() +1);
         }
     }
@@ -50,24 +49,39 @@ async function registerUser() {
 }
 
 function generateEvents(eventsAmount) {
-    let events = [];
     for(let i = 0; i < eventsAmount; i++) {
-        const title = random.randomStr(4) + " " + random.randomStr(6);
-        const startDateFindIndex = random.randomInt(0, freeTime.length);
+        const title = `${utils.randomStr(4)} ${utils.randomStr(6)}`;
+        const startDateFindIndex = utils.randomInt(0, freeTime.length);
         const startDate = freeTime[startDateFindIndex];
-        const endDateFindIndex = random.randomInt(startDate, freeTime.length);
+        const endDateFindIndex = utils.randomInt(startDateFindIndex, freeTime.length);
         const endDate = freeTime[endDateFindIndex];
-        freeTime.splice(startDateFindIndex, endDateFindIndex - startDateFindIndex);
+        const deleteCount = (endDateFindIndex - startDateFindIndex) === 0
+            ? 1
+            : endDateFindIndex - startDateFindIndex;
+        freeTime.splice(startDateFindIndex, deleteCount);
         events.push(new Event(title, startDate, endDate));
     }
-    return events;
 }
 
 //TODO: list of time for every day
-function printFreeTime() {
-    freeTime.forEach(time => {
-        console.log(`${utils.dayOfWeekAsString(time.date.getDay())} ${time.date.getFullYear()}.${time.date.getMonth()}.${time.date.getDate()}
-        TIME:${time.time}:00`);
+function printTimeInfo(info) {
+    info.forEach(info => {
+        console.log(`${utils.dayOfWeekAsString(info.date.getDay())} ${info.date.getFullYear()}.${info.date.getMonth()}.${info.date.getDate()}
+        TIME:${info.time}:00`);
     });
 }
 
+function inputEventDateAndTimeInfo() {
+    return new Promise(((resolve, reject) => {
+        rl.setPrompt(MESSAGE.get('INPUT_EVENT_DATE'));
+        rl.prompt();
+        let output = '';
+        rl.on('line', function (line) {
+            const date = new Date(line);
+            let isValid = true;
+            //TODO:
+        });
+        )
+        })
+    );
+}

@@ -6,6 +6,9 @@ module.exports = new Map([
     ['USER_ID', 'You id: '],
     ['USER_EMAIL', 'You email: '],
     ['USER_NAME', 'You name: '],
+    ['INPUT_EVENT_TITLE', 'input event title> '],
+    ['INPUT_EVENT_DATE', 'input date> '],
+    ['INVALID_EVENT_DATE', 'invalid event date!'],
     ['ERROR_FILE', 'ERROR: reading file failed'],
     ['ERROR_DIRECTORY', 'ERROR: error with file directory!'],
 ]);
