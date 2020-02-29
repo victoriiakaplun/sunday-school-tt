@@ -9,7 +9,5 @@ module.exports = class Event {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
-
 }
 

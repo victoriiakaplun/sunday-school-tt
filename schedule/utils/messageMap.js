@@ -8,7 +8,10 @@ module.exports = new Map([
     ['USER_NAME', 'You name: '],
     ['INPUT_EVENT_TITLE', 'input event title> '],
     ['INPUT_EVENT_DATE', 'input date> '],
+    ['INPUT_EVENT_START_END_TIME', 'input event start and end time> '],
     ['INVALID_EVENT_DATE', 'invalid event date!'],
+    ['NO_TIME', 'no time in this day'],
+    ['NO_DATE', 'this date is busy'],
     ['ERROR_FILE', 'ERROR: reading file failed'],
     ['ERROR_DIRECTORY', 'ERROR: error with file directory!'],
 ]);

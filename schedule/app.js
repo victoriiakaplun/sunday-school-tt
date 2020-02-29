@@ -2,8 +2,10 @@
 
 const User = require('./model/User');
 const Event = require('./model/Event');
+const Schedule = require('./model/Schedule');
 const MESSAGE = require('./utils/messageMap');
 const utils = require('./utils/utils');
+const fs = require('fs');
 
 const rl = readline.createInterface( {
     input: process.stdin,
@@ -71,17 +73,61 @@ function printTimeInfo(info) {
     });
 }
 
-function inputEventDateAndTimeInfo() {
-    return new Promise(((resolve, reject) => {
-        rl.setPrompt(MESSAGE.get('INPUT_EVENT_DATE'));
-        rl.prompt();
-        let output = '';
-        rl.on('line', function (line) {
-            const date = new Date(line);
-            let isValid = true;
-            //TODO:
-        });
-        )
-        })
-    );
+function inputEventDateInfo() {
+    return new Promise(resolve => {
+        if (freeTime.length === 0) {
+            console.log('Busy all the time');
+            resolve();
+        }
+        let isValid = false;
+        while (!isValid) {
+            rl.setPrompt(MESSAGE.get('INPUT_EVENT_DATE'));
+            rl.prompt();
+            let date;
+            rl.on('line', function (line) {
+                date = new Date(line);
+                if (!events.find(event => event.date === date)) {
+                    rl.setPrompt(MESSAGE.get('NO_DATE'));
+                    rl.prompt(true);
+                    isValid = false;
+                } else {
+                    isValid = true;
+                    rl.close();
+                }
+            }).on('close', function () {
+                resolve(date);
+            });
+        }
+    });
 }
+
+function inputEventTimeInfo(date) {
+    return new Promise((resolve, reject) => {
+        let isValid = false;
+        while(!isValid) {
+            rl.setPrompt(MESSAGE.get('INPUT_EVENT_START_END_TIME'));
+            rl.prompt();
+            rl.on('line', function(line) {
+                let times = line.split(' ');
+                let startEventInfo = freeTime.find(e => e.date === date && e.time === times[0]);
+                if(!startEventInfo) {
+                    isValid = false;
+                } else {
+                    //TODO
+                }
+            })
+        }
+    });
+}
+
+function printSchedule(schedule, path) {
+    if(!fs.existsSync(path)) {
+        fs.mkdir(path, {recursive: true}, (err) => {
+            if(err) throw err;
+        });
+    }
+    fs.writeFile(path + `schedule-${schedule.scheduleId}.txt`, JSON.stringify(schedule), function (error) {
+        if(error) throw error;
+    });
+}
+
