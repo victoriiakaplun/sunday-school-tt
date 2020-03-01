@@ -10,7 +10,6 @@ module.exports = {
     },
 
     dayOfWeekAsString: function (dayIndex) {
-        return ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"][dayIndex];
-    }
-
+        return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayIndex];
+    },
 };

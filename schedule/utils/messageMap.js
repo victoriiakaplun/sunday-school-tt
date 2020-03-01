@@ -11,7 +11,7 @@ module.exports = new Map([
     ['INPUT_EVENT_START_END_TIME', 'input event start and end time> '],
     ['INVALID_EVENT_DATE', 'invalid event date!'],
     ['NO_TIME', 'no time in this day'],
-    ['NO_DATE', 'this date is busy'],
+    ['NO_DATE', 'busy all the time'],
     ['ERROR_FILE', 'ERROR: reading file failed'],
     ['ERROR_DIRECTORY', 'ERROR: error with file directory!'],
 ]);

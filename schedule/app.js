@@ -6,6 +6,7 @@ const Schedule = require('./model/Schedule');
 const MESSAGE = require('./utils/messageMap');
 const utils = require('./utils/utils');
 const fs = require('fs');
+const readline = require('readline');
 
 const rl = readline.createInterface( {
     input: process.stdin,
@@ -14,25 +15,26 @@ const rl = readline.createInterface( {
 
 
 let freeTime = [];
-let events =[];
+let events = new Map();
+let startEventTime, endEventTime;
+let startEventDate, endEventDate;
 
-function fillTime(startDate, endDate, startTime, endTime) {
-    let currentDate = startDate, currentTime = startTime;
-    while(currentDate <= endDate) {
-        freeTime.push({date: currentDate, time: currentTime});
-        if( currentTime !== endTime) {
-            currentTime++;
-        } else {
-            currentTime = 8;
-            currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() +1);
+function fillTime() {
+    let currentDate = startEventDate;
+    while(currentDate <= endEventDate) {
+        let times = [];
+        for(let i = startEventTime; i < endEventTime; i++) {
+            times.push(i);
         }
+        freeTime.push({date: currentDate, startTimes: times});
+        currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() +1);
     }
 }
 
 function askQuestion(question, rl) {
     return new Promise((resolve, reject) => {
         rl.question(question, (str) => {
-            if(str === "") {
+            if(!str) {
                 reject();
             }
             resolve(str);
@@ -50,44 +52,64 @@ async function registerUser() {
     return user;
 }
 
+//FIXME: check nested events
 function generateEvents(eventsAmount) {
     for(let i = 0; i < eventsAmount; i++) {
-        const title = `${utils.randomStr(4)} ${utils.randomStr(6)}`;
-        const startDateFindIndex = utils.randomInt(0, freeTime.length);
-        const startDate = freeTime[startDateFindIndex];
-        const endDateFindIndex = utils.randomInt(startDateFindIndex, freeTime.length);
-        const endDate = freeTime[endDateFindIndex];
-        const deleteCount = (endDateFindIndex - startDateFindIndex) === 0
-            ? 1
-            : endDateFindIndex - startDateFindIndex;
-        freeTime.splice(startDateFindIndex, deleteCount);
-        events.push(new Event(title, startDate, endDate));
+        const randomDateInfoIndex = utils.randomInt(0, freeTime.length - 1);
+        const randomDateInfo = freeTime[randomDateInfoIndex];
+        const freeTimesAmount = randomDateInfo.startTimes.length;
+        const randomStartTimeIndex = utils.randomInt(0, freeTimesAmount - 1);
+        const randomStartTime = randomDateInfo.startTimes[randomStartTimeIndex];
+        const randomEndTimeIndex = utils.randomInt(randomStartTimeIndex, freeTimesAmount - 1);
+        const randomEndTime = randomDateInfo.startTimes[randomEndTimeIndex];
+        const randomEventTitle = utils.randomStr(4) + ' ' + utils.randomStr(6);
+        const randomEvent = new Event(randomEventTitle, randomDateInfo.date, randomStartTime, randomEndTime + 1);
+        if(events.has(randomDateInfo.date)) {
+            events.get(randomDateInfo.date).push(randomEvent);
+        } else {
+            events.set(randomDateInfo.date, [randomEvent]);
+        }
+        randomDateInfo.startTimes.splice(randomStartTimeIndex, randomEndTimeIndex - randomStartTimeIndex + 1);
+        if(randomDateInfo.startTimes.length === 0) {
+            freeTime.splice(randomDateInfoIndex, 1);
+        }
     }
 }
 
-//TODO: list of time for every day
-function printTimeInfo(info) {
-    info.forEach(info => {
-        console.log(`${utils.dayOfWeekAsString(info.date.getDay())} ${info.date.getFullYear()}.${info.date.getMonth()}.${info.date.getDate()}
-        TIME:${info.time}:00`);
+function printFreeTimeInfo() {
+    freeTime.forEach(dayInfo => {
+        console.log(`${utils.dayOfWeekAsString(dayInfo.date.getDay())} ${dayInfo.date.toLocaleString()}
+        TIMES:
+        ${dayInfo.startTimes}`);
     });
 }
 
+function printEvents(currentDate) {
+    events.forEach((value, key, map) => {
+        if(currentDate > key){
+            console.log('The event already ended:');
+        }
+        console.log(`${utils.dayOfWeekAsString(key.getDay())} ${key.toLocaleString()}`);
+        value.forEach(e => console.log(`${e.title} ${e.startTime} ${e.endTime}`));
+    });
+}
+
+//TODO: check if date out of week
 function inputEventDateInfo() {
     return new Promise(resolve => {
+        let date;
         if (freeTime.length === 0) {
-            console.log('Busy all the time');
-            resolve();
+            console.log(MESSAGE.get('NO_DATE'));
+            rl.close();
         }
         let isValid = false;
         while (!isValid) {
             rl.setPrompt(MESSAGE.get('INPUT_EVENT_DATE'));
             rl.prompt();
-            let date;
             rl.on('line', function (line) {
                 date = new Date(line);
-                if (!events.find(event => event.date === date)) {
-                    rl.setPrompt(MESSAGE.get('NO_DATE'));
+                if (!freeTime.find(dayObj => dayObj.date === date)) {
+                    rl.setPrompt(MESSAGE.get('NO_TIME'));
                     rl.prompt(true);
                     isValid = false;
                 } else {
@@ -102,24 +124,31 @@ function inputEventDateInfo() {
 }
 
 function inputEventTimeInfo(date) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         let isValid = false;
         while(!isValid) {
             rl.setPrompt(MESSAGE.get('INPUT_EVENT_START_END_TIME'));
             rl.prompt();
+            let times =[];
             rl.on('line', function(line) {
-                let times = line.split(' ');
-                let startEventInfo = freeTime.find(e => e.date === date && e.time === times[0]);
-                if(!startEventInfo) {
+                times = line.split(' ');
+                let dateStartTimes = freeTime.find(d=> d.date === date);
+                if(!dateStartTimes.startTimes.find(times[0]) && !dateStartTimes.startTimes.find(times[1] - 1)) {
                     isValid = false;
                 } else {
-                    //TODO
+                    isValid = true;
+                    rl.close();
                 }
+            }).on('close', function () {
+                resolve(times);
             })
         }
     });
 }
 
+function createSchedule(user) {
+    return new Schedule(user.id, Date.now(), events);
+}
 function printSchedule(schedule, path) {
     if(!fs.existsSync(path)) {
         fs.mkdir(path, {recursive: true}, (err) => {
@@ -131,3 +160,17 @@ function printSchedule(schedule, path) {
     });
 }
 
+async function main() {
+    let user = await registerUser();
+    startEventTime = 8;
+    endEventTime = 19;
+    startEventDate = new Date(2020, 2, 2);
+    endEventDate = new Date(2020, 2, 8);
+    fillTime();
+     printFreeTimeInfo();
+    generateEvents(10);
+    printEvents(Date.now());
+    printFreeTimeInfo();
+}
+
+main();
