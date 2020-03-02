@@ -82,7 +82,8 @@ function generateEvents(eventsAmount) {
 }
 
 function isEndTimeAvailable(startTime, endTime, times) {
-    for(let i = startTime +1; i <= endTime; i++) {
+    console.log(times);
+    for(let i = startTime; i < endTime; i++) {
         if(!times.includes(i)) {
             return false;
         }
@@ -137,17 +138,25 @@ async function inputEventDateInfo() {
 async function inputEventTimeInfo(date) {
     return new Promise(resolve => {
         let times =[];
+        let start, end;
         rl.setPrompt(MESSAGE.get('INPUT_EVENT_START_END_TIME'));
         rl.prompt();
         rl.on('line', function(line) {
-            console.log('vce bydet ok');
             let isValid = true;
             times = line.split(' ');
             console.log(times);
+           start = parseInt(times[0]);
+           console.log(start);
+           end = parseInt(times[1]) - 1;
+           console.log(end);
             let dateStartTimes = freeTime.find(d => d.date.getTime() === date.getTime());
-            if(!dateStartTimes.startTimes.find(parseInt(times[0]))
-                && !dateStartTimes.startTimes.find(parseInt(times[1]) - 1)
-                && !isEndTimeAvailable(parseInt(times[0]), parseInt(times[1]) - 1, dateStartTimes)
+            console.log(dateStartTimes);
+            console.log(dateStartTimes.startTimes.includes(start));
+            console.log(dateStartTimes.startTimes.includes(end));
+            console.log(isEndTimeAvailable(start, end, dateStartTimes.startTimes));
+            if(!dateStartTimes.startTimes.includes(start)
+                && !dateStartTimes.startTimes.includes(end)
+                && !isEndTimeAvailable(start, end, dateStartTimes)
             ) {
                 rl.setPrompt(MESSAGE.get('INVALID_EVENT_TIME'));
                 rl.prompt(true);
@@ -183,7 +192,12 @@ async function main() {
     startEventDate = new Date(2020, 2, 2);
     endEventDate = new Date(2020, 2, 8);
     fillTime();
-    generateEvents(1);
+    generateEvents(10);
+    printFreeTimeInfo();
+    //const date = await inputEventDateInfo();
+    const date = new Date(2020,2,8);
+    const times = await inputEventTimeInfo(date);
+    console.log(times);
     const schedule = createSchedule(user);
     printSchedule(schedule, user, '../');
 
