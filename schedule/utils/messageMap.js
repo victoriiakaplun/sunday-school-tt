@@ -10,6 +10,7 @@ module.exports = new Map([
     ['INPUT_EVENT_DATE', 'input date> '],
     ['INPUT_EVENT_START_END_TIME', 'input event start and end time> '],
     ['INVALID_EVENT_DATE', 'invalid event date!'],
+    ['INVALID_EVENT_TIME', 'invalid event time'],
     ['NO_TIME', 'no time in this day'],
     ['NO_DATE', 'busy all the time'],
     ['ERROR_FILE', 'ERROR: reading file failed'],

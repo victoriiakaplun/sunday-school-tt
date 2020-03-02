@@ -52,7 +52,6 @@ async function registerUser() {
     return user;
 }
 
-//FIXME: check nested events
 function generateEvents(eventsAmount) {
     for(let i = 0; i < eventsAmount; i++) {
         const randomDateInfoIndex = utils.randomInt(0, freeTime.length - 1);
@@ -60,8 +59,14 @@ function generateEvents(eventsAmount) {
         const freeTimesAmount = randomDateInfo.startTimes.length;
         const randomStartTimeIndex = utils.randomInt(0, freeTimesAmount - 1);
         const randomStartTime = randomDateInfo.startTimes[randomStartTimeIndex];
-        const randomEndTimeIndex = utils.randomInt(randomStartTimeIndex, freeTimesAmount - 1);
-        const randomEndTime = randomDateInfo.startTimes[randomEndTimeIndex];
+        let rightEndTime = false;
+        let randomEndTimeIndex;
+        let randomEndTime;
+        while (!rightEndTime) {
+            randomEndTimeIndex = utils.randomInt(randomStartTimeIndex, freeTimesAmount - 1);
+            randomEndTime = randomDateInfo.startTimes[randomEndTimeIndex];
+            rightEndTime = isEndTimeAvailable(randomStartTime, randomEndTime, randomDateInfo.startTimes);
+        }
         const randomEventTitle = utils.randomStr(4) + ' ' + utils.randomStr(6);
         const randomEvent = new Event(randomEventTitle, randomDateInfo.date, randomStartTime, randomEndTime + 1);
         if(events.has(randomDateInfo.date)) {
@@ -69,13 +74,21 @@ function generateEvents(eventsAmount) {
         } else {
             events.set(randomDateInfo.date, [randomEvent]);
         }
-        randomDateInfo.startTimes.splice(randomStartTimeIndex, randomEndTimeIndex - randomStartTimeIndex + 1);
+        randomDateInfo.startTimes.splice(randomStartTimeIndex,  randomEndTimeIndex - randomStartTimeIndex + 1);
         if(randomDateInfo.startTimes.length === 0) {
             freeTime.splice(randomDateInfoIndex, 1);
         }
     }
 }
 
+function isEndTimeAvailable(startTime, endTime, times) {
+    for(let i = startTime +1; i <= endTime; i++) {
+        if(!times.includes(i)) {
+            return false;
+        }
+    }
+    return true;
+}
 function printFreeTimeInfo() {
     freeTime.forEach(dayInfo => {
         console.log(`${utils.dayOfWeekAsString(dayInfo.date.getDay())} ${dayInfo.date.toLocaleString()}
@@ -85,7 +98,7 @@ function printFreeTimeInfo() {
 }
 
 function printEvents(currentDate) {
-    events.forEach((value, key, map) => {
+    events.forEach((value, key) => {
         if(currentDate > key){
             console.log('The event already ended:');
         }
@@ -94,68 +107,71 @@ function printEvents(currentDate) {
     });
 }
 
-//TODO: check if date out of week
-function inputEventDateInfo() {
+async function inputEventDateInfo() {
     return new Promise(resolve => {
-        let date;
         if (freeTime.length === 0) {
             console.log(MESSAGE.get('NO_DATE'));
             rl.close();
         }
-        let isValid = false;
-        while (!isValid) {
-            rl.setPrompt(MESSAGE.get('INPUT_EVENT_DATE'));
-            rl.prompt();
-            rl.on('line', function (line) {
-                date = new Date(line);
-                if (!freeTime.find(dayObj => dayObj.date === date)) {
-                    rl.setPrompt(MESSAGE.get('NO_TIME'));
-                    rl.prompt(true);
-                    isValid = false;
-                } else {
-                    isValid = true;
-                    rl.close();
-                }
-            }).on('close', function () {
-                resolve(date);
-            });
-        }
+        let date;
+        rl.setPrompt(MESSAGE.get('INPUT_EVENT_DATE'));
+        rl.prompt();
+        rl.on('line', function (line) {
+            let isValid = true;
+            const dateParts = line.split('-');
+            date = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
+            if (!freeTime.find(dayObj => dayObj.date.getTime() === date.getTime())) {
+                rl.setPrompt(MESSAGE.get('NO_TIME'));
+                rl.prompt(true);
+                isValid = false;
+            }
+            if(isValid) {
+                rl.close();
+            }
+        }).on('close', function () {
+            resolve(date);
+        });
     });
 }
 
-function inputEventTimeInfo(date) {
+async function inputEventTimeInfo(date) {
     return new Promise(resolve => {
-        let isValid = false;
-        while(!isValid) {
-            rl.setPrompt(MESSAGE.get('INPUT_EVENT_START_END_TIME'));
-            rl.prompt();
-            let times =[];
-            rl.on('line', function(line) {
-                times = line.split(' ');
-                let dateStartTimes = freeTime.find(d=> d.date === date);
-                if(!dateStartTimes.startTimes.find(times[0]) && !dateStartTimes.startTimes.find(times[1] - 1)) {
-                    isValid = false;
-                } else {
-                    isValid = true;
-                    rl.close();
-                }
-            }).on('close', function () {
-                resolve(times);
-            })
-        }
+        let times =[];
+        rl.setPrompt(MESSAGE.get('INPUT_EVENT_START_END_TIME'));
+        rl.prompt();
+        rl.on('line', function(line) {
+            console.log('vce bydet ok');
+            let isValid = true;
+            times = line.split(' ');
+            console.log(times);
+            let dateStartTimes = freeTime.find(d => d.date.getTime() === date.getTime());
+            if(!dateStartTimes.startTimes.find(parseInt(times[0]))
+                && !dateStartTimes.startTimes.find(parseInt(times[1]) - 1)
+                && !isEndTimeAvailable(parseInt(times[0]), parseInt(times[1]) - 1, dateStartTimes)
+            ) {
+                rl.setPrompt(MESSAGE.get('INVALID_EVENT_TIME'));
+                rl.prompt(true);
+                isValid = false;
+            }
+            if(isValid) {
+                rl.close();
+            }
+        }).on('close', function () {
+            resolve(times);
+        });
     });
 }
 
 function createSchedule(user) {
     return new Schedule(user.id, Date.now(), events);
 }
-function printSchedule(schedule, path) {
+function printSchedule(schedule, user, path) {
     if(!fs.existsSync(path)) {
         fs.mkdir(path, {recursive: true}, (err) => {
             if(err) throw err;
         });
     }
-    fs.writeFile(path + `schedule-${schedule.scheduleId}.txt`, JSON.stringify(schedule), function (error) {
+    fs.writeFile(path + `schedule-${user.name}.txt`, JSON.stringify(schedule), function (error) {
         if(error) throw error;
     });
 }
@@ -167,10 +183,10 @@ async function main() {
     startEventDate = new Date(2020, 2, 2);
     endEventDate = new Date(2020, 2, 8);
     fillTime();
-     printFreeTimeInfo();
-    generateEvents(10);
-    printEvents(Date.now());
-    printFreeTimeInfo();
+    generateEvents(1);
+    const schedule = createSchedule(user);
+    printSchedule(schedule, user, '../');
+
 }
 
 main();
