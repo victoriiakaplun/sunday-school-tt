@@ -128,6 +128,7 @@ async function inputEventDateInfo() {
             }
             if(isValid) {
                 rl.close();
+
             }
         }).on('close', function () {
             resolve(date);
@@ -143,7 +144,7 @@ async function inputEventTimeInfo(date) {
         rl.prompt();
         rl.on('line', function(line) {
             let isValid = true;
-            times = line.split(' ');
+            times = line.split(',');
             console.log(times);
            start = parseInt(times[0]);
            console.log(start);
@@ -165,7 +166,8 @@ async function inputEventTimeInfo(date) {
             if(isValid) {
                 rl.close();
             }
-        }).on('close', function () {
+        });
+        rl.on('close', function () {
             resolve(times);
         });
     });
@@ -194,10 +196,13 @@ async function main() {
     fillTime();
     generateEvents(10);
     printFreeTimeInfo();
-    //const date = await inputEventDateInfo();
-    const date = new Date(2020,2,8);
+    let title = await askQuestion(MESSAGE.get('INPUT_EVENT_TITLE'), rl);
+    const date = await inputEventDateInfo();
+    console.log(date);
     const times = await inputEventTimeInfo(date);
     console.log(times);
+    const event = new Event(title, date, times[0], times[1]);
+    events.push(event);
     const schedule = createSchedule(user);
     printSchedule(schedule, user, '../');
 

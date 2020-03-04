@@ -8,7 +8,7 @@ module.exports = new Map([
     ['USER_NAME', 'You name: '],
     ['INPUT_EVENT_TITLE', 'input event title> '],
     ['INPUT_EVENT_DATE', 'input date> '],
-    ['INPUT_EVENT_START_END_TIME', 'input event start and end time> '],
+    ['INPUT_EVENT_START_END_TIME', 'input event start and end time comma separated> '],
     ['INVALID_EVENT_DATE', 'invalid event date!'],
     ['INVALID_EVENT_TIME', 'invalid event time'],
     ['NO_TIME', 'no time in this day'],
