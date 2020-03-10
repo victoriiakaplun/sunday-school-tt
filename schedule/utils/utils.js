@@ -12,4 +12,15 @@ module.exports = {
     dayOfWeekAsString: function (dayIndex) {
         return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayIndex];
     },
+
+    askQuestion: async function (question, rl) {
+        return new Promise((resolve, reject) => {
+            rl.question(question, (str) => {
+                if (!str) {
+                    reject();
+                }
+                resolve(str);
+            });
+        });
+    }
 };

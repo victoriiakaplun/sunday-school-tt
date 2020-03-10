@@ -27,13 +27,9 @@ module.exports = class User {
         }
     }
 
-    get email() {
-        return this._email;
-    }
-
     set email(emailStr) {
         if (emailStr !== "") {
             this._email = emailStr;
         }
     }
-}
+};
