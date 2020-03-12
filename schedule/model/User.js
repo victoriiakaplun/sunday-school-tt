@@ -9,27 +9,4 @@ module.exports = class User {
         this.email = email;
     }
 
-    get id() {
-        return this._id;
-    }
-
-    set id(id) {
-        this._id = id;
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    set name(nameStr) {
-        if (nameStr !== "") {
-            this._name = nameStr;
-        }
-    }
-
-    set email(emailStr) {
-        if (emailStr !== "") {
-            this._email = emailStr;
-        }
-    }
 };

@@ -53,8 +53,11 @@ async function main() {
     timeService.printFreeTime(freeTime);
     eventService.printEvents(Date.now(), events);
     await addEventFromConsole(freeTime, events);
+    console.log("AFTER::::::::::::::::::");
+    timeService.printFreeTime(freeTime);
+    eventService.printEvents(Date.now(), events);
     const schedule = new Schedule(user.id, user.name, Date.now(), events);
-    schedule.printSchedule('../');
+        schedule.printSchedule('../');
     rl.close();
 }
 

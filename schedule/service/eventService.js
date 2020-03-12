@@ -42,7 +42,6 @@ module.exports = {
                 const dateParts = line.split('-');
                 date = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
                 if (!freeTime.find(dayObj => dayObj.date.getTime() === date.getTime())) {
-                    console.log(":::::::::::");
                     rl.setPrompt(MESSAGE.get('NO_TIME'));
                     rl.prompt(true);
                     isValid = false;
@@ -66,9 +65,7 @@ module.exports = {
                 start = parseInt(times[0]);
                 end = parseInt(times[1]) - 1;
                 let dateStartTimes = freeTime.find(d => d.date.getTime() === date.getTime());
-                console.log(isTimeAvailable(start, end, dateStartTimes.startTimes));
                 if (!isTimeAvailable(start, end, dateStartTimes.startTimes)) {
-                    console.log("ANOTHER TIME:: ");
                     rl.setPrompt(MESSAGE.get('INVALID_EVENT_TIME'));
                     rl.prompt(true);
                     isValid = false;
@@ -111,11 +108,9 @@ function excludeDateHours(freeTime, dateTimes, dateTimesIndex, startTimeIndex, e
 
 function isTimeAvailable(startTime, endTime, times) {
     for (let i = startTime; i <= endTime; i++) {
-        console.log("INCLUDES: ", i);
         if (!times.includes(i)) {
             return false;
         }
     }
     return true;
 }
-
