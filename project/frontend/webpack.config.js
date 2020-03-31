@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 
 const BUILD_DIR = path.resolve(__dirname, 'public/dist');
@@ -5,7 +6,7 @@ const FRONTEND_DIR = path.resolve(__dirname, 'src');
 
 const config = {
   mode: 'development',
-  entry: FRONTEND_DIR + '/index.js',
+  entry: `${FRONTEND_DIR}/index.js`,
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js',

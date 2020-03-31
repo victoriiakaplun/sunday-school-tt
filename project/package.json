@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "homepage": "",
-  "dependencies": {},
+  "dependencies": {
+    "module-alias": "^2.2.2"
+  },
   "devDependencies": {
     "husky": "^3.0.9",
     "lint-staged": "^9.4.2"

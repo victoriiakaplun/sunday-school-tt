@@ -1,0 +1,14 @@
+{
+  "development": {
+    "url": "postgres://postgres:lineate4@Sun@localhost:5432/lntsunday",
+    "dialect": "postgres"
+  },
+  "test": {
+    "url": "postgres://postgres:lineate4@Sun@localhost:5432/lntsunday-test",
+    "dialect": "postgres"
+  },
+  "production": {
+    "url": "postgres://postgres:lineate4@Sun@localhost:5432/lntsunday-prod",
+    "dialect": "postgres"
+  }
+}
