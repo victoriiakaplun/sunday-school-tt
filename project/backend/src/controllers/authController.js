@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { User } = require('../db/models');
 const LocalStrategy = require('passport-local').Strategy;
 const HttpStatus = require('http-status-codes');
+const sequelize = require('../db/models').sequelize;
 
 const PASSWORD_LENGTH = 8;
 const SALT_ROUNDS = 10;
