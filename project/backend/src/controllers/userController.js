@@ -74,8 +74,8 @@ async function updateUser(ctx) {
 async function deleteUser(ctx) {
   const id = getIdFromUrl(ctx.request.url);
   const deletedRowsAmount = await User.destroy({ where: { id } });
+  console.log(deletedRowsAmount);
   if (deletedRowsAmount > 0) {
-    ctx.response.body = `User with id ${id} successfully deleted`;
     ctx.response.status = HttpStatus.NO_CONTENT;
     return ctx.response;
   }

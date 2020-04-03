@@ -10,4 +10,3 @@ module.exports = new Router({
     .get('/:id', authenticateCheck, orderController.getOrder)
     .put('/:id', authenticateCheck, orderController.updateOrder)
     .delete('/:id', authenticateCheck, orderController.deleteOrder);
-

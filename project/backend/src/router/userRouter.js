@@ -13,4 +13,3 @@ module.exports = new Router({
     .delete('/:id', authenticateCheck, adminRootCheck, userController.deleteUser)
     .get('/:id/orders', authenticateCheck, userController.getUserOrders)
     .get('/:id/notifications', authenticateCheck, userController.getUserNotifications);
-

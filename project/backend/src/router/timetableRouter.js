@@ -11,4 +11,3 @@ module.exports = new Router({
     .get('/:id', authenticateCheck, timetableController.getTimetable)
     .put('/:id', authenticateCheck, adminRootCheck, timetableController.updateTimetable)
     .delete('/:id', authenticateCheck, adminRootCheck, timetableController.deleteTimetable);
-

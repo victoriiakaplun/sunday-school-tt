@@ -16,7 +16,6 @@ const { insertAdmin } = require('./controllers/adminController');
 
 const COOKIE_MAX_AGE = 24 * 60 * 60 * 1000;
 
-const COOKIE_MAX_AGE = 24 * 60 * 60 * 1000;
 
 app.use(koaBody());
 app.use(serve(staticDir));
@@ -38,6 +37,7 @@ app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 /* admin: {
+<<<<<<< HEAD
 name: 'admin',
 role: 'admin',
 email: 'admin@gmail.com',
