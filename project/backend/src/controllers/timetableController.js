@@ -1,4 +1,6 @@
 const HttpStatus = require('http-status-codes');
+const { Timetable, Attribute } = require('../db/models');
+const { getIdFromUrl } = require('../utils/utils');
 
 async function addTimetable(ctx) {
   ctx.response.body = 'timetableController.add called';
@@ -7,15 +9,28 @@ async function addTimetable(ctx) {
 }
 
 async function getAll(ctx) {
-  ctx.response.body = 'timetableController.getAll called';
+  const timetables = await Timetable.findAll();
+  console.log(timetables);
+  if (!timetables) {
+    ctx.response.body = 'bad request';
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    return ctx.response;
+  }
+  ctx.response.body = timetables.dataValues;
   ctx.response.status = HttpStatus.OK;
   return ctx.response;
 }
 
 async function getTimetable(ctx) {
-  ctx.response.body = 'timetableController.get called';
-  ctx.response.status = HttpStatus.OK;
-  return ctx.response;
+  const id = getIdFromUrl(ctx.request.url);
+  const timetable = await Timetable.findOne({ where: { id }, include: Attribute });
+  if (timetable) {
+    ctx.response.body = timetable;
+    ctx.response.status = HttpStatus.OK;
+    return ctx.response;
+  }
+  ctx.response.body = 'bad request';
+  ctx.response.status = HttpStatus.BAD_REQUEST;
 }
 
 async function updateTimetable(ctx) {
@@ -37,4 +52,3 @@ module.exports = {
   deleteTimetable,
   addTimetable,
 };
-

@@ -11,11 +11,18 @@ const session = require('koa-generic-session');
 const SequelizeSessionStore = require('koa-generic-session-sequelize');
 const db = require('./db');
 const app = new Koa();
-const staticDir = path.resolve(__dirname, '..', '../frontend', 'public');
+const staticDir = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '..',
+  'frontside/project/frontend',
+  'public',
+);
 const { insertAdmin } = require('./controllers/adminController');
 
 const COOKIE_MAX_AGE = 24 * 60 * 60 * 1000;
-
 
 app.use(koaBody());
 app.use(serve(staticDir));
@@ -36,6 +43,7 @@ app.use(session(sessionOptions));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 /* admin: {
 <<<<<<< HEAD
 name: 'admin',
