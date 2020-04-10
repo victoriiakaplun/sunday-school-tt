@@ -9,4 +9,3 @@ async function update(ctx) {
 module.exports = {
   update,
 };
-

@@ -13,4 +13,3 @@ const db = new Sequelize(config[process.env.NODE_ENV].url, {
 });
 
 module.exports = db;
-

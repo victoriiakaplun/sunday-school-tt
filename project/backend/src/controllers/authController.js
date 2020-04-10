@@ -130,4 +130,3 @@ module.exports = {
   logout,
   register,
 };
-

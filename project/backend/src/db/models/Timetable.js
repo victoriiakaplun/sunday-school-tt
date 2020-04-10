@@ -35,7 +35,7 @@ const Timetable = db.define(
 );
 
 Timetable.associate = models => {
-  Timetable.hasMany(models.Attribute, { foreignKey: 'timetable_id' });
+  Timetable.hasMany(models.Attribute, { foreignKey: 'timetable_id', as: 'Attribute' });
 };
 
 module.exports = Timetable;

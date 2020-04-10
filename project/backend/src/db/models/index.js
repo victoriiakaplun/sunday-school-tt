@@ -1,4 +1,14 @@
 'use strict';
+const models = {
+  User: require('./User'),
+  Timetable: require('./Timetable'),
+  Attribute: require('./Attribute'),
+};
 
-exports.User = require('./User');
-exports.Timetable = require('./Timetable');
+Object.keys(models).forEach(key => {
+  if (models[key] && models[key].associate) {
+    models[key].associate(models);
+  }
+});
+
+module.exports = models;

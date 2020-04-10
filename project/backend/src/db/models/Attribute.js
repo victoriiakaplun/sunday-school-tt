@@ -29,9 +29,7 @@ const Attribute = db.define(
     freezeTableName: true,
   },
 );
-
 Attribute.associate = models => {
-  Attribute.belongsTo(models.Timetable, { foreignKey: 'timetable_id' });
+  Attribute.belongsTo(models.Timetable, { foreignKey: 'timetable_id', as: 'Attribute' });
 };
-
 module.exports = Attribute;

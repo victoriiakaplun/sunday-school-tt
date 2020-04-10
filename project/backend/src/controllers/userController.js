@@ -46,12 +46,12 @@ async function updateUser(ctx) {
     if (user) {
       const { name, email } = ctx.request.body;
       await User.update(
-          {
-            name: name || user.name,
-            email: email || user.email,
-          },
-          { where: { id } },
-          { validate: true },
+        {
+          name: name || user.name,
+          email: email || user.email,
+        },
+        { where: { id } },
+        { validate: true },
       );
       const updatedUser = await User.findOne({
         where: { id },
@@ -72,14 +72,20 @@ async function updateUser(ctx) {
 }
 
 async function deleteUser(ctx) {
-  const id = getIdFromUrl(ctx.request.url);
-  const deletedRowsAmount = await User.destroy({ where: { id } });
-  console.log(deletedRowsAmount);
-  if (deletedRowsAmount > 0) {
-    ctx.response.status = HttpStatus.NO_CONTENT;
+  const userId = getIdFromUrl(ctx.request.url);
+  if (userId <= 0) {
+    ctx.response.body = 'Wrong user id';
+    ctx.response.status = HttpStatus.BAD_REQUEST;
     return ctx.response;
   }
-  ctx.response.body = 'Bad request';
+  const user = await User.findOne({ where: { id: userId } });
+  if (user) {
+    await User.destroy({ where: { id: userId } });
+    ctx.response.body = 'Successfully deleted';
+    ctx.response.status = HttpStatus.OK;
+    return ctx.response;
+  }
+  ctx.response.body = 'User Not Found';
   ctx.response.status = HttpStatus.BAD_REQUEST;
   return ctx.response;
 }
@@ -105,4 +111,3 @@ module.exports = {
   getUserNotifications,
   getUserOrders,
 };
-

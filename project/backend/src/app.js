@@ -39,6 +39,8 @@ const sessionOptions = {
   }),
 };
 
+db.sync({ force: false });
+
 app.use(session(sessionOptions));
 
 app.use(passport.initialize());

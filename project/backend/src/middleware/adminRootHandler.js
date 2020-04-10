@@ -2,7 +2,6 @@
 const HttpStatus = require('http-status-codes');
 
 async function adminRootCheck(ctx, next) {
-
   if (ctx.state.user.role === 'admin') {
     await next();
   } else {
