@@ -1,17 +1,8 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import Button from '../../components/Button';
+import Header from '../../components/header/Header';
 
 function Main() {
-  return (
-    <div>
-      <Button onClick={() => alert('Hello!')}>
-        Say Hi!
-        <FontAwesomeIcon icon="star" />
-      </Button>
-    </div>
-  );
+  return <Header>Welcome to timetable app!</Header>;
 }
 
 export default Main;

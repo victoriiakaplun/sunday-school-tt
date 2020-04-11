@@ -1,15 +1,18 @@
 import React from 'react';
 import Header from '../../components/header/Header';
-import FlexBox from '../../components/FlexBox';
 import Button from '../../components/Button';
+import TimetablesList from './TimetablesList';
 
 function Timetables() {
   return (
-    <div>
-      <FlexBox>
-        <Button>+ Create timetable</Button>
+    <div className="columns is-centered">
+      <div className="column is-half is-center">
+        <div className="box has-text-centered">
+          <Button>+ Create timetable</Button>
+        </div>
         <Header>Available timetables</Header>
-      </FlexBox>
+        <TimetablesList />
+      </div>
     </div>
   );
 }

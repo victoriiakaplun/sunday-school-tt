@@ -8,6 +8,7 @@ import Register from '../scenes/Register';
 import Login from '../scenes/Login';
 import Timeline from '../scenes/Timeline';
 import Profile from '../scenes/Profile';
+import TimetableInfo from '../scenes/TimetableInfo';
 
 function App() {
   return (
@@ -24,8 +25,11 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/timetables">
+          <Route exact path="/timetables">
             <Timetables />
+          </Route>
+          <Route path="/timetables/:id">
+            <TimetableInfo />
           </Route>
           <Route path="/timeline">
             <Timeline />
@@ -33,6 +37,7 @@ function App() {
           <Route path="/profile">
             <Profile />
           </Route>
+          <Route render={() => <h2>Page not found</h2>} />
         </Switch>
       </div>
     </Router>
