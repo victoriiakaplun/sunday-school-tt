@@ -35,9 +35,9 @@ async function getAll(ctx) {
     result.push({
       id: t.dataValues.id,
       title: t.dataValues.title,
-      start_date: moment(t.dataValues).format('LL'),
-      end_date: moment(t.dataValues).format('LL'),
-      slot_size: t.dataValues.slot_size,
+      startDate: moment(t.dataValues.start_date).format('LL'),
+      endDate: moment(t.dataValues.end_date).format('LL'),
+      slotSize: t.dataValues.slot_size,
       attributes,
     });
   }
@@ -68,9 +68,9 @@ async function getTimetable(ctx) {
   ctx.response.body = {
     id: timetable.dataValues.id,
     title: timetable.dataValues.title,
-    start_date: moment(timetable.dataValues).format('LL'),
-    end_date: moment(timetable.dataValues).format('LL'),
-    slot_size: timetable.dataValues.slot_size,
+    startDate: moment(timetable.dataValues.start_date).format('LL'),
+    endDate: moment(timetable.dataValues.start_date).format('LL'),
+    slotSize: timetable.dataValues.slot_size,
     attributes,
   };
   ctx.response.status = HttpStatus.OK;

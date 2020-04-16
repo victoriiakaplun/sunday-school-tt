@@ -39,7 +39,7 @@ const sessionOptions = {
   }),
 };
 
-db.sync({ force: false });
+// db.sync({ force: false });
 
 app.use(session(sessionOptions));
 
@@ -47,13 +47,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /* admin: {
-<<<<<<< HEAD
 name: 'admin',
 role: 'admin',
 email: 'admin@gmail.com',
 password: 'admin'
 } */
-insertAdmin();
+insertAdmin().then(() => console.log('Admin created'));
 app.use(appRouter);
 
 app.use(async (ctx, next) => {
