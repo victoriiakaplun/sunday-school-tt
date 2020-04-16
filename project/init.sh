@@ -1,4 +1,4 @@
-#!/bin/bash
+un watch#!/bin/bash
 echo "Initial script will setup npm packages for backend and frontend."
 
 echo "Install root dependencies..."

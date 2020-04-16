@@ -5,10 +5,10 @@ import Main from '../scenes/Main';
 import NavBar from './NavBar';
 import Timetables from '../scenes/Timetables';
 import Register from '../scenes/Register';
-import Login from '../scenes/Login';
 import Timeline from '../scenes/Timeline';
 import Profile from '../scenes/Profile';
 import TimetableInfo from '../scenes/TimetableInfo';
+import SignIn from '../scenes/SignIn';
 
 function App() {
   return (
@@ -22,8 +22,8 @@ function App() {
           <Route path="/register">
             <Register />
           </Route>
-          <Route path="/login">
-            <Login />
+          <Route path="/signin">
+            <SignIn />
           </Route>
           <Route exact path="/timetables">
             <Timetables />

@@ -7,7 +7,7 @@ function Timetables() {
   return (
     <div className="columns is-centered">
       <div className="column is-half is-center">
-        <div className="box has-text-centered">
+        <div className="field is-grouped is-grouped-centered">
           <Button>+ Create timetable</Button>
         </div>
         <Header>Available timetables</Header>

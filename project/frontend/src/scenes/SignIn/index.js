@@ -1,15 +1,15 @@
 import React from 'react';
 import Header from '../../components/header/Header';
-import ProfileForm from './ProfileForm';
+import SignInForm from './SignInForm';
 
-function Profile() {
+function SignIn() {
   return (
     <div className="columns is-centered">
       <div className="column is-half is-center">
-        <Header>Profile Info</Header>
-        <ProfileForm />
+        <Header>Sign In</Header>
+        <SignInForm />
       </div>
     </div>
   );
 }
-export default Profile;
+export default SignIn;
