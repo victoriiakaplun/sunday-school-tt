@@ -7,7 +7,7 @@ function NavBarBrand() {
   return (
     <div className="navbar-brand">
       <NavBarItem to="/">
-        <FontAwesomeIcon icon={faStopwatch} size="lg" css={{ color: 'green' }} />
+        <FontAwesomeIcon icon={faStopwatch} size="lg" css={{ margin: '10px', color: 'green' }} />
       </NavBarItem>
     </div>
   );
