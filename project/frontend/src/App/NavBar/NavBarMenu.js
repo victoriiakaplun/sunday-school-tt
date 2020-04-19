@@ -1,38 +1,39 @@
 import React, { useContext } from 'react';
 import { faAddressCard, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useHistory } from 'react-router-dom';
 import NavBarItem from './NavBarItem';
-import Button from '../../components/Button';
+import AuthButtons from './AuthButtons';
 import { logout } from '../../service/TimetableAPI';
 import { UserContext } from '../context/userContext';
 
 function NavBarMenu() {
-  const userContext = useContext(UserContext);
-  const user = null;
+  const { user, setUser } = useContext(UserContext);
+  console.log(user);
 
-  let navBarEnd;
-  let navBarStart;
+  const history = useHistory();
 
   if (!user) {
-    navBarStart = null;
-    navBarEnd = (
-      <div className="navbar-end">
-        <NavBarItem to="/signin">
-          <Button>Sign In</Button>
-        </NavBarItem>
-        <NavBarItem to="/register">
-          <Button>Register</Button>
-        </NavBarItem>
+    return (
+      <div className="navbar-menu">
+        <AuthButtons />
       </div>
     );
-  } else {
-    navBarStart = (
+  }
+
+  async function onHandleLogout() {
+    await logout();
+    setUser(null);
+    history.push('/signin');
+  }
+
+  return (
+    <div className="navbar-menu">
       <div className="navbar-start">
         <NavBarItem to="/timetables">Timetables</NavBarItem>
         <NavBarItem to="/timeline">Timeline</NavBarItem>
+        <NavBarItem to="/orders">Orders</NavBarItem>
       </div>
-    );
-    navBarEnd = (
       <div className="navbar-end">
         <NavBarItem to="/notifications">
           <FontAwesomeIcon icon={faBell} size="lg" css={{ color: 'green' }} />
@@ -46,17 +47,10 @@ function NavBarMenu() {
             icon={faSignOutAlt}
             size="lg"
             css={{ color: 'green' }}
-            onClick={logout}
+            onClick={onHandleLogout}
           />
         </NavBarItem>
       </div>
-    );
-  }
-
-  return (
-    <div className="navbar-menu">
-      {navBarStart}
-      {navBarEnd}
     </div>
   );
 }

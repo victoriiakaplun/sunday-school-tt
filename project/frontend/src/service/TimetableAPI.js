@@ -30,3 +30,8 @@ export async function register(req) {
   });
   return data;
 }
+
+export async function update(req, id) {
+  const { data } = await axios.put(`api/v1/users/${id}`, { name: req.name, email: req.email });
+  return data;
+}

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Field from '../../components/Field';
 import Button from '../../components/Button';
+import CenteredButtonBox from '../../components/CenteredButtonBox';
 import { login } from '../../service/TimetableAPI';
+import { UserContext } from '../../App/context/userContext';
 
 function SignInForm() {
   const [inputData, setInputData] = useState({
@@ -11,6 +13,7 @@ function SignInForm() {
   });
 
   const history = useHistory();
+  const { setUser } = useContext(UserContext);
 
   const onHandleInput = event => {
     setInputData({
@@ -22,6 +25,7 @@ function SignInForm() {
   const onHandleSubmit = async event => {
     const data = await login(inputData);
     if (data) {
+      setUser({ id: data.id, name: data.name, email: data.email, isAdmin: data.role === 'admin' });
       history.push('/');
     }
     event.preventDefault();
@@ -47,9 +51,9 @@ function SignInForm() {
       >
         Password
       </Field>
-      <div className="field is-grouped is-grouped-centered" onChange={onHandleInput}>
+      <CenteredButtonBox>
         <Button onClick={onHandleSubmit}>Sign in</Button>
-      </div>
+      </CenteredButtonBox>
     </form>
   );
 }

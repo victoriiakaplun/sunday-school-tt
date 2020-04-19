@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Field from '../../components/Field';
 import Button from '../../components/Button';
 import { register } from '../../service/TimetableAPI';
+import CenteredButtonBox from '../../components/CenteredButtonBox';
 
 function RegisterForm() {
   const [inputData, setInputData] = useState({
@@ -57,9 +58,9 @@ function RegisterForm() {
       >
         Password
       </Field>
-      <div className="field is-grouped is-grouped-centered">
+      <CenteredButtonBox>
         <Button onClick={onHandleSubmit}>Confirm</Button>
-      </div>
+      </CenteredButtonBox>
     </form>
   );
 }

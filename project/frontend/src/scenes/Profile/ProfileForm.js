@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Field from '../../components/Field';
 import Button from '../../components/Button';
+import CenteredButtonBox from '../../components/CenteredButtonBox';
+import { UserContext } from '../../App/context/userContext';
+import { update } from '../../service/TimetableAPI';
 
 function ProfileForm() {
+  const { user, setUser } = useContext(UserContext);
+
   const [inputData, setInputData] = useState({
-    name: '',
-    email: '',
+    name: user.name,
+    email: user.email,
   });
 
   const onHandleInput = event => {
@@ -14,17 +19,37 @@ function ProfileForm() {
     });
   };
 
+  const onSave = async event => {
+    const data = await update(inputData, user.id);
+    if (data) {
+      setUser({ id: data.id, name: data.name, email: data.email, isAdmin: data.role === 'admin' });
+      setInputData({ name: data.name, email: data.email });
+    }
+  };
+
   return (
     <form>
-      <Field type="text" placeholder="Name" onChange={onHandleInput}>
+      <Field
+        type="text"
+        name="name"
+        placeholder="Name"
+        value={inputData.name}
+        onChange={onHandleInput}
+      >
         Name
       </Field>
-      <Field type="email" placeholder="Email">
+      <Field
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={inputData.email}
+        onChange={onHandleInput}
+      >
         Email
       </Field>
-      <div className="field is-grouped is-grouped-centered" onChange={onHandleInput}>
-        <Button>Save</Button>
-      </div>
+      <CenteredButtonBox>
+        <Button onClick={onSave}>Save</Button>
+      </CenteredButtonBox>
     </form>
   );
 }

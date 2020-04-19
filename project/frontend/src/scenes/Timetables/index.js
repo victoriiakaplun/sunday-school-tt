@@ -3,25 +3,28 @@ import Header from '../../components/header/Header';
 import Button from '../../components/Button';
 import TimetablesList from './TimetablesList';
 import { UserContext } from '../../App/context/userContext';
+import CenteredButtonBox from '../../components/CenteredButtonBox';
+import Columns from '../../components/Columns';
+import Column from '../../components/Column';
 
 function Timetables() {
+  const { user } = useContext(UserContext);
   const isAdmin = true;
-  const userContext = useContext(UserContext);
 
   const button = (
-    <div className="field is-grouped is-grouped-centered">
+    <CenteredButtonBox>
       <Button>+ Create timetable</Button>
-    </div>
+    </CenteredButtonBox>
   );
 
   return (
-    <div className="columns is-centered">
-      <div className="column is-half is-center">
+    <Columns>
+      <Column>
         {isAdmin && button}
         <Header>Available timetables</Header>
         <TimetablesList />
-      </div>
-    </div>
+      </Column>
+    </Columns>
   );
 }
 

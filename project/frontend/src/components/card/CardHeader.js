@@ -2,9 +2,9 @@ import React from 'react';
 
 function CardHeader({ title }) {
   return (
-    <header className="card-header" style={{ fontWeight: 'bold' }}>
+    <h5 className="card-header" style={{ fontWeight: 'bold' }}>
       <p className="card-header-title">{title}</p>
-    </header>
+    </h5>
   );
 }
 
