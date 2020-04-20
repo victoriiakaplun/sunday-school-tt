@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
-
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import { initFontAwesomeLibrary } from './utils';
 
 initFontAwesomeLibrary();
 
 render(
-  <div>
+  <Router>
     <App />
-  </div>,
+  </Router>,
   document.getElementById('app'),
 );

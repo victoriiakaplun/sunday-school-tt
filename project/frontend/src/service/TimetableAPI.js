@@ -9,10 +9,6 @@ export async function login(req) {
 }
 
 export async function getAllTimetables() {
-  await login({
-    email: 'admin@gmail.com',
-    password: 'admin',
-  });
   const { data } = await axios.get('/api/v1/timetables/');
   return data;
 }
@@ -34,4 +30,13 @@ export async function register(req) {
 export async function update(req, id) {
   const { data } = await axios.put(`api/v1/users/${id}`, { name: req.name, email: req.email });
   return data;
+}
+
+export async function getProfile() {
+  try {
+    const { data } = await axios.get('api/v1/users/profile');
+    return data;
+  } catch (e) {
+    return null;
+  }
 }

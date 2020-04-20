@@ -9,7 +9,6 @@ import Column from '../../components/Column';
 
 function Timetables() {
   const { user } = useContext(UserContext);
-  const isAdmin = true;
 
   const button = (
     <CenteredButtonBox>
@@ -20,7 +19,7 @@ function Timetables() {
   return (
     <Columns>
       <Column>
-        {isAdmin && button}
+        {user && user.isAdmin && button}
         <Header>Available timetables</Header>
         <TimetablesList />
       </Column>

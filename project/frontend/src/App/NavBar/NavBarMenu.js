@@ -9,7 +9,6 @@ import { UserContext } from '../context/userContext';
 
 function NavBarMenu() {
   const { user, setUser } = useContext(UserContext);
-  console.log(user);
 
   const history = useHistory();
 
