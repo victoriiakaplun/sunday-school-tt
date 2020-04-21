@@ -1,5 +1,3 @@
-'use strict';
-
 const db = require('@src/db');
 const { DataTypes } = require('sequelize');
 
@@ -26,7 +24,6 @@ const User = db.define(
         },
         /* checkLength: {
                   checkLength() {
-                    console.log(this.name.length());
                     if (this.name.length() < 1) {
                       throw new Error('Wring name length');
                     }
@@ -54,5 +51,9 @@ const User = db.define(
     freezeTableName: true,
   },
 );
+
+User.associate = models => {
+  User.hasMany(models.Order, { foreignKey: 'user_id' });
+};
 
 module.exports = User;

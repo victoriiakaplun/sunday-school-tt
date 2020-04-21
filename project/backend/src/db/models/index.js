@@ -3,6 +3,10 @@ const models = {
   User: require('./User'),
   Timetable: require('./Timetable'),
   Attribute: require('./Attribute'),
+  Slot: require('./Slot'),
+  AttributeValue: require('./AttributeValue'),
+  Order: require('./Order'),
+  Notification: require('./Notification'),
 };
 
 Object.keys(models).forEach(key => {

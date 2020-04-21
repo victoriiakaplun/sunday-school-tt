@@ -30,6 +30,7 @@ module.exports = {
 
       timetable_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'Timetable',
           key: 'id',

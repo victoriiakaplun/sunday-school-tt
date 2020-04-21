@@ -14,7 +14,6 @@ async function getAll(ctx) {
     attributes: ['id', 'title', 'start_date', 'end_date', 'slot_size'],
     /* include: [{ model: Attribute, as: 'Attribute' }], */
   });
-  console.log();
   if (!timetables) {
     ctx.response.body = 'bad request';
     ctx.response.status = HttpStatus.BAD_REQUEST;

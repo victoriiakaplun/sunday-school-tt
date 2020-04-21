@@ -28,6 +28,11 @@ async function getProfile(ctx) {
 
 async function getUser(ctx) {
   const id = getIdFromUrl(ctx.request.url);
+  if (id <= 0) {
+    ctx.response.body = 'Wrong user id';
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    return ctx.response;
+  }
   const user = await User.findOne({ where: { id }, attributes: ['id', 'role', 'name', 'email'] });
   if (user) {
     ctx.response.body = user;
@@ -42,6 +47,11 @@ async function getUser(ctx) {
 async function updateUser(ctx) {
   try {
     const id = getIdFromUrl(ctx.request.url);
+    if (id <= 0) {
+      ctx.response.body = 'Wrong user id';
+      ctx.response.status = HttpStatus.BAD_REQUEST;
+      return ctx.response;
+    }
     const user = await User.findOne({ where: { id }, attributes: ['id', 'role', 'name', 'email'] });
     if (user) {
       const { name, email } = ctx.request.body;
