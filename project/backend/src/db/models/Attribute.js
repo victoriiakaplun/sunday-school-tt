@@ -30,7 +30,7 @@ const Attribute = db.define(
   },
 );
 Attribute.associate = models => {
-  Attribute.belongsTo(models.Timetable, { foreignKey: 'timetable_id', as: 'Attribute' });
+  Attribute.belongsTo(models.Timetable, { foreignKey: 'timetable_id' });
   Attribute.hasMany(models.AttributeValue, { foreignKey: 'attribute_id' });
 };
 module.exports = Attribute;

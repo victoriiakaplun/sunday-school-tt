@@ -14,10 +14,12 @@
   "homepage": "",
   "dependencies": {
     "bcrypt": "^4.0.1",
+    "bunyan": "^1.8.12",
     "dotenv": "^8.2.0",
     "http-status-codes": "^1.4.0",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
+    "koa-bunyan": "^1.0.2",
     "koa-generic-session": "^2.0.4",
     "koa-generic-session-sequelize": "^2.2.0",
     "koa-passport": "^4.1.3",

@@ -1,12 +1,47 @@
 const HttpStatus = require('http-status-codes');
-const { Timetable } = require('../db/models');
 const { getIdFromUrl } = require('../utils/utils');
+const db = require('@src/db');
 const moment = require('moment');
+const { Timetable, Attribute } = db.models;
 
+// FIXME: insert with attributes error
 async function addTimetable(ctx) {
-  ctx.response.body = 'timetableController.add called';
-  ctx.response.status = HttpStatus.OK;
-  return ctx.response;
+  let transaction;
+  try {
+    transaction = await db.transaction({ autocommit: false });
+    const { title, start_date, end_date, slot_size, attributes } = ctx.request.body;
+    const createdTimetable = await Timetable.create(
+      {
+        title: title,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
+        slot_size: slot_size,
+        Attribute: attributes,
+      },
+      {
+        include: [
+          {
+            association: Attribute,
+            as: 'Attribute',
+          },
+        ],
+      },
+      { transaction },
+    );
+    if (!createdTimetable) {
+      throw new Error('Timetable is not created!');
+    }
+    transaction.commit();
+    ctx.response.status = HttpStatus.CREATED;
+    ctx.response.body = createdTimetable;
+    return ctx.response;
+  } catch (e) {
+    console.log(e);
+    transaction.rollback();
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    ctx.response.body = e.message;
+    return ctx.response;
+  }
 }
 
 async function getAll(ctx) {

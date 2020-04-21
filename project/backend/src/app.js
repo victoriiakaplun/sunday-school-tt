@@ -3,6 +3,8 @@ require('dotenv').config({ path: '../.env' });
 const path = require('path');
 const Koa = require('koa');
 const koaBody = require('koa-body');
+const bunyan = require('bunyan');
+const loggerMiddleware = require('koa-bunyan');
 const send = require('koa-send');
 const serve = require('koa-static');
 const appRouter = require('./router');
@@ -23,7 +25,10 @@ const staticDir = path.resolve(
 const { insertAdmin } = require('./controllers/adminController');
 
 const COOKIE_MAX_AGE = 24 * 60 * 60 * 1000;
+const logger = bunyan.createLogger({ name: 'app' });
+app.context.logger = logger;
 
+app.use(loggerMiddleware(logger));
 app.use(koaBody());
 app.use(serve(staticDir));
 

@@ -25,3 +25,5 @@ Order.associate = models => {
   Order.hasMany(models.AttributeValue, { foreignKey: 'order_id' });
   Order.hasMany(models.Notification, { foreignKey: 'order_id' });
 };
+
+module.exports = Order;

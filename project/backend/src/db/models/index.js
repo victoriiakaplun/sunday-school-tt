@@ -1,4 +1,3 @@
-'use strict';
 const models = {
   User: require('./User'),
   Timetable: require('./Timetable'),
