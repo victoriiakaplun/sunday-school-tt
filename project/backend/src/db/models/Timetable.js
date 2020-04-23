@@ -15,14 +15,29 @@ const Timetable = db.define(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'Incorrrect title!',
+        },
+      },
     },
     start_date: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        isDate: {
+          msg: 'It is not a date!',
+        },
+      },
     },
     end_date: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        isDate: {
+          msg: 'It is not a date!',
+        },
+      },
     },
     slot_size: {
       type: DataTypes.ENUM('HOUR', 'DAY', 'WEEK'),
@@ -36,7 +51,7 @@ const Timetable = db.define(
 
 Timetable.associate = models => {
   Timetable.hasMany(models.Attribute, { foreignKey: 'timetable_id', as: 'Attribute' });
-  Timetable.hasMany(models.Slot, { foreignKey: 'timetable_id' });
+  Timetable.hasMany(models.Slot, { foreignKey: 'timetable_id', as: 'Slot' });
 };
 
 module.exports = Timetable;

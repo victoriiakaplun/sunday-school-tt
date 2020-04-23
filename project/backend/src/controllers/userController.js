@@ -1,5 +1,5 @@
 const HttpStatus = require('http-status-codes');
-const { User } = require('../db/models');
+const { User } = require('@models');
 const { getIdFromUrl } = require('../utils/utils');
 
 async function getAll(ctx) {
@@ -48,31 +48,29 @@ async function updateUser(ctx) {
   try {
     const id = getIdFromUrl(ctx.request.url);
     if (id <= 0) {
-      ctx.response.body = 'Wrong user id';
-      ctx.response.status = HttpStatus.BAD_REQUEST;
-      return ctx.response;
+      throw new Error();
     }
     const user = await User.findOne({ where: { id }, attributes: ['id', 'role', 'name', 'email'] });
-    if (user) {
-      const { name, email } = ctx.request.body;
-      await User.update(
-        {
-          name: name || user.name,
-          email: email || user.email,
-        },
-        { where: { id } },
-        { validate: true },
-      );
-      const updatedUser = await User.findOne({
-        where: { id },
-        attributes: ['id', 'role', 'name', 'email'],
-      });
-      if (updatedUser) {
-        ctx.response.body = updatedUser;
-        ctx.response.status = HttpStatus.OK;
-        return ctx.response;
-      }
+    if (!user) {
+      throw new Error();
     }
+    const { name, email } = ctx.request.body;
+    await User.update(
+      {
+        name: name || user.name,
+        email: email || user.email,
+      },
+      { where: { id } },
+      { validate: true },
+    );
+    ctx.response.body = {
+      id: user.id,
+      role: user.role,
+      name: name || user.name,
+      email: email || user.email,
+    };
+    ctx.response.status = HttpStatus.OK;
+    return ctx.response;
   } catch (e) {
     console.log(e.message);
     ctx.response.body = 'Bad request';

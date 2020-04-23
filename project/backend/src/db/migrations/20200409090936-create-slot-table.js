@@ -9,20 +9,12 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      startDate: {
+      start: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      startTime: {
-        type: Sequelize.TIME,
-        allowNull: false,
-      },
-      endDate: {
+      end: {
         type: Sequelize.DATE,
-        allowNull: false,
-      },
-      endTime: {
-        type: Sequelize.TIME,
         allowNull: false,
       },
       createdAt: {

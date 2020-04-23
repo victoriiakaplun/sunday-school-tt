@@ -10,21 +10,23 @@ const Slot = db.define(
       primaryKey: true,
       allowNull: false,
     },
-    startDate: {
+    start: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        isDate: {
+          msg: 'It is not a date!',
+        },
+      },
     },
-    startTime: {
-      type: DataTypes.TIME,
-      allowNull: false,
-    },
-    endDate: {
+    end: {
       type: DataTypes.DATE,
       allowNull: false,
-    },
-    endTime: {
-      type: DataTypes.TIME,
-      allowNull: false,
+      validate: {
+        isDate: {
+          msg: 'It is not a date!',
+        },
+      },
     },
   },
   {

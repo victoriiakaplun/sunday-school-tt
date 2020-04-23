@@ -25,7 +25,7 @@ const User = db.define(
         /* checkLength: {
                   checkLength() {
                     if (this.name.length() < 1) {
-                      throw new Error('Wring name length');
+                      throw new Error('Wrong name length');
                     }
                   },
                 }, */

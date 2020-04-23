@@ -1,7 +1,7 @@
 'use strict';
 const passport = require('koa-passport');
 const bcrypt = require('bcrypt');
-const { User } = require('../db/models');
+const { User } = require('@models');
 const LocalStrategy = require('passport-local').Strategy;
 const HttpStatus = require('http-status-codes');
 

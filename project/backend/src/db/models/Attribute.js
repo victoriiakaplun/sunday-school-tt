@@ -15,6 +15,11 @@ const Attribute = db.define(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'Incorrrect title!',
+        },
+      },
     },
     type: {
       type: DataTypes.ENUM('STRING', 'DATE', 'NUMBER'),

@@ -13,6 +13,11 @@ const AttributeValue = db.define(
     value: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'Incorrrect title!',
+        },
+      },
     },
   },
   {

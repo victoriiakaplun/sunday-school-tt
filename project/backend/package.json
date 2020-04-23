@@ -55,6 +55,8 @@
   "_moduleAliases": {
     "@root": ".",
     "@src": "src",
-    "@controllers": "src/controllers"
+    "@controllers": "src/controllers",
+    "@db": "src/db",
+    "@models": "src/db/models"
   }
 }
