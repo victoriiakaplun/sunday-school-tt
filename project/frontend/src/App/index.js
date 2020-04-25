@@ -14,6 +14,7 @@ import NavBar from './NavBar';
 
 import { UserContext } from './context/userContext';
 import { getProfile } from '../service/TimetableAPI';
+import NotificationContainer from './Notification/NotificationContainer';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -41,6 +42,7 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <div>
         <NavBar />
+        <NotificationContainer />
         <Switch>
           <Route exact path="/">
             <Main />

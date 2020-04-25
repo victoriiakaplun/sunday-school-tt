@@ -13,8 +13,8 @@ function TimetablesList() {
     fetchData();
   }, []);
 
-  return timetables.map(({ id, title, slotSize, startDate, endDate }) => {
-    return <Card key={id} title={title} body={{ slotSize, startDate, endDate }} />;
+  return timetables.map(({ id, title, slotSize, start, end }) => {
+    return <Card key={id} title={title} body={{ slotSize, start, end }} />;
   });
 }
 
