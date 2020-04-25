@@ -61,7 +61,7 @@ async function addTimetable(ctx) {
       title: createdTimetable.title,
       start: moment(createdTimetable.start_date).format('LL'),
       end: moment(createdTimetable.end_date).format('LL'),
-      'slot size': createdTimetable.slot_size,
+      slotSize: createdTimetable.slot_size,
       Attribute: createdAttributes,
     };
     transaction.commit();
@@ -102,7 +102,7 @@ async function getAll(ctx) {
       title: t.dataValues.title,
       start: moment(t.dataValues.start_date).format('LL'),
       end: moment(t.dataValues.end_date).format('LL'),
-      'slot size': t.dataValues.slot_size,
+      slotSize: t.dataValues.slot_size,
       attributes,
     });
   }
@@ -135,7 +135,7 @@ async function getTimetable(ctx) {
     title: timetable.dataValues.title,
     start: moment(timetable.dataValues.start_date).format('LL'),
     end: moment(timetable.dataValues.end_date).format('LL'),
-    'slot size': timetable.dataValues.slot_size,
+    slotSize: timetable.dataValues.slot_size,
     attributes,
   };
   ctx.response.status = HttpStatus.OK;
@@ -165,7 +165,7 @@ async function updateTimetable(ctx) {
       title: timetable.title,
       start: moment(timetable.start_date).format('LL'),
       end: moment(timetable.end_date).format('LL'),
-      'slot size': timetable.slot_size,
+      slotSize: timetable.slot_size,
     };
   } catch (e) {
     console.log(e.message);
