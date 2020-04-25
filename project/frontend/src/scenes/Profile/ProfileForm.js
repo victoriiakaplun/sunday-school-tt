@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Field from '../../components/Field';
-import Button from '../../components/Button';
-import CenteredButtonBox from '../../components/CenteredButtonBox';
+import Button from '../../components/button/Button';
+import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import { UserContext } from '../../App/context/userContext';
 import { update } from '../../service/TimetableAPI';
 import { addNotification } from '../../store/actions/notificationActions';

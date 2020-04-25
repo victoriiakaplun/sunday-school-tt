@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Field renders correctly: 
+      <div 
+      class="field">
+      entry
+      </div>
+     1`] = `
+<div
+  class="field"
+>
+  <label
+    class="label"
+    for="entry"
+  >
+    entry
+  </label>
+  <div
+    class="control"
+  >
+    <input
+      class="input"
+      required=""
+      value=""
+    />
+  </div>
+</div>
+`;

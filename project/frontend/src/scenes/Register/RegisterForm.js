@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Field from '../../components/Field';
-import Button from '../../components/Button';
+import Button from '../../components/button/Button';
 import { register } from '../../service/TimetableAPI';
-import CenteredButtonBox from '../../components/CenteredButtonBox';
+import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 
 function RegisterForm() {
   const [inputData, setInputData] = useState({

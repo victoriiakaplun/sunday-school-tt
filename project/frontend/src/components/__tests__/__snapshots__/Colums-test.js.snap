@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Columns renders correctly: 
+      <div 
+      class="columns is-centered">
+      Column entry
+      </div>
+     1`] = `
+<div
+  class="columns is-centered"
+>
+  Columns entry
+</div>
+`;

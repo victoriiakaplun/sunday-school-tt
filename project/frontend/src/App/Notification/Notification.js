@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
-import Button from '../../components/Button';
+import Button from '../../components/button/Button';
+import CloseButton from './CloseButton';
 
 function Notification({ onClose, delay, children }) {
   useEffect(() => {
@@ -9,9 +10,7 @@ function Notification({ onClose, delay, children }) {
   return (
     <Container>
       <div className="notification is-warning">
-        <button type="button" className="delete" onClick={onClose}>
-          x
-        </button>
+        <CloseButton onClose={onClose} />
         {children}
       </div>
     </Container>

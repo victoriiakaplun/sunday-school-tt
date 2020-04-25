@@ -1,6 +1,6 @@
 import { render, fireEvent } from 'test-utils';
 
-import Button from '../Button';
+import Button from '../button/Button';
 
 const props = {
   onClick: jest.fn(),
@@ -10,9 +10,10 @@ describe('Button', () => {
   it('renders correctly', () => {
     const { container } = render(<Button {...props}>Click Me!</Button>);
 
-    expect(container.firstChild).toMatchInlineSnapshot(`
+    expect(container.firstChild).toMatchSnapshot(`
       <button
-        class="button"
+        class="button is-success id-medium"
+        type="button" 
       >
         Click Me!
       </button>

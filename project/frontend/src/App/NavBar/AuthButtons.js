@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBarItem from './NavBarItem';
-import Button from '../../components/Button';
+import Button from '../../components/button/Button';
 
 function AuthButtons() {
   return (

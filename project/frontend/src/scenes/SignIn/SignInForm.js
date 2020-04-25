@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Field from '../../components/Field';
-import Button from '../../components/Button';
-import CenteredButtonBox from '../../components/CenteredButtonBox';
+import Button from '../../components/button/Button';
+import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import { login } from '../../service/TimetableAPI';
 import { UserContext } from '../../App/context/userContext';
 

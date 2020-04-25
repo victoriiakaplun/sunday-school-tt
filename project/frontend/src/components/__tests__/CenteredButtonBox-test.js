@@ -1,0 +1,16 @@
+import { render } from 'test-utils';
+
+import CenteredButtonBox from '../button/CenteredButtonBox';
+
+describe('CenteredButtonBox', () => {
+  it('renders correctly', () => {
+    const { container } = render(<CenteredButtonBox>Button</CenteredButtonBox>);
+    expect(container.firstChild).toMatchSnapshot(`
+      <div
+       class="field is-grouped is-grouped-centered"
+       >
+      Column entry
+      </div>
+    `);
+  });
+});

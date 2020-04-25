@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CenteredButtonBox renders correctly: 
+      <div
+       class="field is-grouped is-grouped-centered"
+       >
+      Column entry
+      </div>
+     1`] = `
+<div
+  class="field is-grouped is-grouped-centered"
+>
+  Button
+</div>
+`;

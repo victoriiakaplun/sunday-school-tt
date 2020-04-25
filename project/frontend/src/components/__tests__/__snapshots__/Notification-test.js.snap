@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notification renders correctly: 
+      <div
+       class="notification is-warning">
+      Notification
+      </div>
+     1`] = `
+<div
+  class="css-1n4a782-Container ealz4yh0"
+>
+  <div
+    class="notification is-warning"
+  >
+    <button
+      class="delete"
+      type="button"
+    >
+      x
+    </button>
+    Notification
+  </div>
+</div>
+`;
