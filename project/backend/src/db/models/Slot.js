@@ -35,7 +35,7 @@ const Slot = db.define(
 );
 
 Slot.associate = models => {
-  Slot.hasMany(models.Order, { foreignKey: 'slot_id' });
+  Slot.hasMany(models.Order, { foreignKey: 'slot_id', as: 'Order' });
 };
 
 module.exports = Slot;

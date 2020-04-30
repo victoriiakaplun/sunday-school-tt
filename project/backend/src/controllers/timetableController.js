@@ -1,5 +1,5 @@
 const HttpStatus = require('http-status-codes');
-const { getIdFromUrl, slotsFunctionMap } = require('../utils/utils');
+const { slotsFunctionMap } = require('../utils/utils');
 const db = require('@db');
 const moment = require('moment');
 const { Timetable, Attribute, Slot } = db.models;
@@ -22,7 +22,6 @@ async function addTimetable(ctx) {
       throw new Error();
     }
     const slots = await slotsFunctionMap[slotSize](startDate, endDate);
-    console.log(slots);
     const createdTimetable = await Timetable.create(
       {
         title: title,
@@ -67,7 +66,6 @@ async function addTimetable(ctx) {
     transaction.commit();
     return ctx.response;
   } catch (e) {
-    console.log(e);
     transaction.rollback();
     ctx.response.status = HttpStatus.BAD_REQUEST;
     ctx.response.body = 'bad request';
@@ -78,73 +76,43 @@ async function addTimetable(ctx) {
 async function getAll(ctx) {
   const timetables = await Timetable.findAll({
     attributes: ['id', 'title', 'start_date', 'end_date', 'slot_size'],
-    /* include: [{ model: Attribute, as: 'Attribute' }], */
+    include: [
+      { model: Attribute, as: 'Attribute', attributes: ['id', 'title', 'type', 'required'] },
+      { model: Slot, as: 'Slot', attributes: ['id', 'start', 'end'] },
+    ],
   });
   if (!timetables) {
     ctx.response.body = 'bad request';
     ctx.response.status = HttpStatus.BAD_REQUEST;
     return ctx.response;
   }
-  const result = [];
-  for (const t of timetables) {
-    const attributesInfo = await t.getAttribute();
-    const attributes = [];
-    for (const a of attributesInfo) {
-      attributes.push({
-        id: a.dataValues.id,
-        title: a.dataValues.title,
-        type: a.dataValues.type,
-        required: a.dataValues.required,
-      });
-    }
-    result.push({
-      id: t.dataValues.id,
-      title: t.dataValues.title,
-      start: moment(t.dataValues.start_date).format('LL'),
-      end: moment(t.dataValues.end_date).format('LL'),
-      slotSize: t.dataValues.slot_size,
-      attributes,
-    });
-  }
-  ctx.response.body = result;
+  ctx.response.body = timetables;
   ctx.response.status = HttpStatus.OK;
   return ctx.response;
 }
 
 async function getTimetable(ctx) {
-  const id = getIdFromUrl(ctx.request.url);
+  const id = ctx.params.id;
   const timetable = await Timetable.findOne({
     where: { id },
+    attributes: ['id', 'title', 'start_date', 'end_date', 'slot_size'],
+    include: [
+      { model: Attribute, as: 'Attribute', attributes: ['id', 'title', 'type', 'required'] },
+      { model: Slot, as: 'Slot', attributes: ['id', 'start', 'end'] },
+    ],
   });
   if (!timetable) {
     ctx.response.body = 'bad request';
     ctx.response.status = HttpStatus.BAD_REQUEST;
   }
-  const attributesInfo = await timetable.getAttribute();
-  const attributes = [];
-  for (const a of attributesInfo) {
-    attributes.push({
-      id: a.dataValues.id,
-      title: a.dataValues.title,
-      type: a.dataValues.type,
-      required: a.dataValues.required,
-    });
-  }
-  ctx.response.body = {
-    id: timetable.dataValues.id,
-    title: timetable.dataValues.title,
-    start: moment(timetable.dataValues.start_date).format('LL'),
-    end: moment(timetable.dataValues.end_date).format('LL'),
-    slotSize: timetable.dataValues.slot_size,
-    attributes,
-  };
+  ctx.response.body = timetable;
   ctx.response.status = HttpStatus.OK;
   return ctx.response;
 }
 
 async function updateTimetable(ctx) {
   try {
-    const timetableId = getIdFromUrl(ctx.request.url);
+    const timetableId = ctx.params.id;
     if (timetableId <= 0) {
       throw new Error();
     }
@@ -176,7 +144,7 @@ async function updateTimetable(ctx) {
 }
 
 async function deleteTimetable(ctx) {
-  const timetableId = getIdFromUrl(ctx.request.url);
+  const timetableId = ctx.params.id;
   if (timetableId <= 0) {
     ctx.response.body = 'Wrong timetable id';
     ctx.response.status = HttpStatus.BAD_REQUEST;
@@ -195,10 +163,7 @@ async function deleteTimetable(ctx) {
 }
 
 function isValidSlotSize(size) {
-  if (size === 'HOUR' || size === 'DAY' || size === 'WEEK') {
-    return true;
-  }
-  return false;
+  return size === 'HOUR' || size === 'DAY' || size === 'WEEK';
 }
 
 module.exports = {

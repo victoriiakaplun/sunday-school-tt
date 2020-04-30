@@ -1,9 +1,5 @@
 const moment = require('moment');
 
-function getIdFromUrl(url) {
-  return url.substring(url.lastIndexOf('/') + 1);
-}
-
 const slotsFunctionMap = {
   HOUR: initializeTimetableSlotsByHours,
   DAY: initializeTimetableSlotsByDays,
@@ -56,7 +52,6 @@ function initializeTimetableSlotsByWeeks(start_date, end_date) {
 }
 
 module.exports = {
-  getIdFromUrl,
   initializeTimetableSlotsByDays,
   initializeTimetableSlotsByHours,
   initializeTimetableSlotsByWeeks,

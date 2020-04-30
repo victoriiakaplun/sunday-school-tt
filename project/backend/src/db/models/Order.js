@@ -21,9 +21,10 @@ const Order = db.define(
 );
 
 Order.associate = models => {
-  Order.belongsTo(models.Slot, { foreignKey: 'order_id' });
-  Order.hasMany(models.AttributeValue, { foreignKey: 'order_id' });
-  Order.hasMany(models.Notification, { foreignKey: 'order_id' });
+  Order.hasMany(models.AttributeValue, { foreignKey: 'order_id', as: 'AttributeValue' });
+  Order.hasMany(models.Notification, { foreignKey: 'order_id', as: 'Notification' });
+  Order.belongsTo(models.Slot, { foreignKey: 'slot_id', as: 'Slot' });
+  Order.belongsTo(models.User, { foreignKey: 'user_id', as: 'User' });
 };
 
 module.exports = Order;

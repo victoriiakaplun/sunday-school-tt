@@ -1,6 +1,5 @@
 const HttpStatus = require('http-status-codes');
-const { User } = require('@models');
-const { getIdFromUrl } = require('../utils/utils');
+const { User, Notification } = require('@models');
 
 async function getAll(ctx) {
   const users = await User.findAll({ attributes: ['id', 'role', 'name', 'email'] });
@@ -27,7 +26,7 @@ async function getProfile(ctx) {
 }
 
 async function getUser(ctx) {
-  const id = getIdFromUrl(ctx.request.url);
+  const id = ctx.params.id;
   if (id <= 0) {
     ctx.response.body = 'Wrong user id';
     ctx.response.status = HttpStatus.BAD_REQUEST;
@@ -46,7 +45,7 @@ async function getUser(ctx) {
 
 async function updateUser(ctx) {
   try {
-    const id = getIdFromUrl(ctx.request.url);
+    const id = ctx.params.id;
     if (id <= 0) {
       throw new Error();
     }
@@ -80,7 +79,7 @@ async function updateUser(ctx) {
 }
 
 async function deleteUser(ctx) {
-  const userId = getIdFromUrl(ctx.request.url);
+  const userId = ctx.params.id;
   if (userId <= 0) {
     ctx.response.body = 'Wrong user id';
     ctx.response.status = HttpStatus.BAD_REQUEST;
@@ -105,8 +104,21 @@ async function getUserOrders(ctx) {
 }
 
 async function getUserNotifications(ctx) {
-  ctx.response.body = 'userController.getUserNotifications called';
+  const userId = ctx.params.id;
+  if (userId <= 0) {
+    ctx.response.body = 'Wrong user id';
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    return ctx.response;
+  }
+  const notifications = await Notification.findAll({ where: { user_id: userId } });
+  console.log(notifications);
+  if (!notifications) {
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    ctx.response.body = 'bad request';
+    return ctx.response;
+  }
   ctx.response.status = HttpStatus.OK;
+  ctx.response.body = notifications;
   return ctx.response;
 }
 

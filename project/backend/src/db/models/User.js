@@ -53,7 +53,8 @@ const User = db.define(
 );
 
 User.associate = models => {
-  User.hasMany(models.Order, { foreignKey: 'user_id' });
+  User.hasMany(models.Order, { foreignKey: 'user_id', as: 'Order' });
+  User.hasMany(models.Notification, { foreignKey: 'user_id', as: 'Notification' });
 };
 
 module.exports = User;
