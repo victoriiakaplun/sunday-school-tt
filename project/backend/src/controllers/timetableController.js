@@ -68,7 +68,7 @@ async function addTimetable(ctx) {
   } catch (e) {
     transaction.rollback();
     ctx.response.status = HttpStatus.BAD_REQUEST;
-    ctx.response.body = 'bad request';
+    ctx.response.body = 'Bad request';
     return ctx.response;
   }
 }
@@ -82,7 +82,7 @@ async function getAll(ctx) {
     ],
   });
   if (!timetables) {
-    ctx.response.body = 'bad request';
+    ctx.response.body = 'Bad request';
     ctx.response.status = HttpStatus.BAD_REQUEST;
     return ctx.response;
   }
@@ -92,22 +92,30 @@ async function getAll(ctx) {
 }
 
 async function getTimetable(ctx) {
-  const id = ctx.params.id;
-  const timetable = await Timetable.findOne({
-    where: { id },
-    attributes: ['id', 'title', 'start_date', 'end_date', 'slot_size'],
-    include: [
-      { model: Attribute, as: 'Attribute', attributes: ['id', 'title', 'type', 'required'] },
-      { model: Slot, as: 'Slot', attributes: ['id', 'start', 'end'] },
-    ],
-  });
-  if (!timetable) {
-    ctx.response.body = 'bad request';
+  try {
+    const timetableId = ctx.params.id;
+    if (timetableId <= 0) {
+      throw new Error();
+    }
+    const timetable = await Timetable.findOne({
+      where: { id: timetableId },
+      attributes: ['id', 'title', 'start_date', 'end_date', 'slot_size'],
+      include: [
+        { model: Attribute, as: 'Attribute', attributes: ['id', 'title', 'type', 'required'] },
+        { model: Slot, as: 'Slot', attributes: ['id', 'start', 'end'] },
+      ],
+    });
+    if (!timetable) {
+      throw new Error();
+    }
+    ctx.response.body = timetable;
+    ctx.response.status = HttpStatus.OK;
+    return ctx.response;
+  } catch (e) {
     ctx.response.status = HttpStatus.BAD_REQUEST;
+    ctx.response.body = 'Bad request';
+    return ctx.response;
   }
-  ctx.response.body = timetable;
-  ctx.response.status = HttpStatus.OK;
-  return ctx.response;
 }
 
 async function updateTimetable(ctx) {
@@ -130,13 +138,12 @@ async function updateTimetable(ctx) {
     ctx.response.status = HttpStatus.BAD_REQUEST;
     ctx.response.status = {
       id: timetable.id,
-      title: timetable.title,
+      title: title || timetable.title,
       start: moment(timetable.start_date).format('LL'),
       end: moment(timetable.end_date).format('LL'),
       slotSize: timetable.slot_size,
     };
   } catch (e) {
-    console.log(e.message);
     ctx.response.body = 'Bad request';
     ctx.response.status = HttpStatus.BAD_REQUEST;
     return ctx.response;
@@ -144,22 +151,24 @@ async function updateTimetable(ctx) {
 }
 
 async function deleteTimetable(ctx) {
-  const timetableId = ctx.params.id;
-  if (timetableId <= 0) {
-    ctx.response.body = 'Wrong timetable id';
-    ctx.response.status = HttpStatus.BAD_REQUEST;
-    return ctx.response;
-  }
-  const timetable = await Timetable.findOne({ where: { id: timetableId } });
-  if (timetable) {
+  try {
+    const timetableId = ctx.params.id;
+    if (timetableId <= 0) {
+      throw new Error();
+    }
+    const timetable = await Timetable.findOne({ where: { id: timetableId } });
+    if (!timetable) {
+      throw new Error();
+    }
     await Timetable.destroy({ where: { id: timetableId } });
     ctx.response.body = 'Successfully deleted';
     ctx.response.status = HttpStatus.OK;
     return ctx.response;
+  } catch (e) {
+    ctx.response.body = 'Bad request';
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    return ctx.response;
   }
-  ctx.response.body = 'Timetable Not Found';
-  ctx.response.status = HttpStatus.BAD_REQUEST;
-  return ctx.response;
 }
 
 function isValidSlotSize(size) {

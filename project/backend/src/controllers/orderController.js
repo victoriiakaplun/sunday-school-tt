@@ -35,7 +35,6 @@ async function createOrder(ctx) {
       }
     }
     const user = await User.findOne({ where: ctx.state.user.id });
-    console.log('USER ', user);
     const createdOrder = await Order.create(
       {
         status: 'CREATED',
@@ -66,7 +65,6 @@ async function createOrder(ctx) {
     ctx.response.body = createdOrder;
     return ctx.response;
   } catch (e) {
-    console.log(e);
     transaction.rollback();
     ctx.response.status = HttpStatus.BAD_REQUEST;
     ctx.response.body = 'bad request';
@@ -75,55 +73,129 @@ async function createOrder(ctx) {
 }
 
 async function getAll(ctx) {
-  ctx.response.body = 'orderController.getAll called';
+  const orders = await Order.findAll({
+    attributes: ['id', 'status'],
+    include: [
+      { model: AttributeValue, as: 'AttributeValue', attributes: ['id', 'value', 'attribute_id'] },
+      { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
+    ],
+  });
+  if (!orders) {
+    ctx.response.status = HttpStatus.OK;
+    ctx.response.body = 'bad request';
+    return ctx.response;
+  }
+  ctx.response.body = orders;
   ctx.response.status = HttpStatus.OK;
   return ctx.response;
 }
 
 async function getOrder(ctx) {
-  const orderId = ctx.params.id;
-  const order = await Order.findOne({
-    where: { id: orderId },
-    attributes: ['id', 'status'],
-    include: [
-      // { model: AttributeValue, as: 'AttributeValue', attributes: ['id', 'value'] },
-      // { model: User, as: 'User', attributes: ['id','role', 'name', 'email'] },
-    ],
-  });
-  console.log(order);
-  if (!order) {
+  try {
+    const orderId = ctx.params.id;
+    if (orderId <= 0) {
+      throw new Error();
+    }
+    const order = await Order.findOne({
+      where: { id: orderId },
+      attributes: ['id', 'status'],
+      include: [
+        {
+          model: AttributeValue,
+          as: 'AttributeValue',
+          attributes: ['id', 'value', 'attribute_id'],
+        },
+        { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
+      ],
+    });
+    if (!order) {
+      throw new Error();
+    }
+    ctx.response.body = order;
+    ctx.response.status = HttpStatus.OK;
+    return ctx.response;
+  } catch (e) {
+    ctx.response.body = 'Bad request';
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    return ctx.response;
+  }
+}
+
+async function updateOrder(ctx) {
+  let transaction;
+  try {
+    transaction = await db.transaction({ autocommit: false });
+    const orderId = ctx.params.id;
+    if (orderId <= 0) {
+      throw new Error();
+    }
+    const { status } = ctx.request.body;
+    const order = await Order.findOne({
+      where: { id: orderId },
+      attributes: ['id', 'status', 'user_id'],
+    });
+    if (!order) {
+      throw new Error();
+    }
+    if (status === 'CREATED' || order.dataValues.status !== 'CREATED') {
+      throw new Error();
+    }
+    await Order.update(
+      {
+        status: status,
+      },
+      { where: { id: orderId }, transaction },
+    );
+    await order.createNotification(
+      {
+        type: status,
+        isRead: false,
+        user_id: order.dataValues.user_id,
+      },
+      { transaction },
+    );
+    transaction.commit();
+    ctx.response.status = HttpStatus.OK;
+    ctx.response.body = {
+      status: status,
+    };
+  } catch (e) {
+    transaction.rollback();
     ctx.response.status = HttpStatus.OK;
     ctx.response.body = 'bad request';
     return ctx.response;
   }
-  ctx.response.body = order;
-  ctx.response.status = HttpStatus.OK;
-  return ctx.response;
-}
-
-async function updateOrder(ctx) {
-  ctx.response.body = 'orderController.update called';
-  ctx.response.status = HttpStatus.OK;
-  return ctx.response;
 }
 
 async function deleteOrder(ctx) {
-  const orderId = ctx.params.id;
-  if (orderId <= 0) {
-    ctx.response.body = 'Wrong order id';
-    ctx.response.status = HttpStatus.BAD_REQUEST;
-    return ctx.response;
-  }
-  const order = await Order.findOne({ where: { id: orderId } });
-  if (order) {
-    await Order.destroy({ where: { id: orderId } });
+  let transaction;
+  try {
+    transaction = await db.transaction({ autocommit: false });
+    const orderId = ctx.params.id;
+    if (orderId <= 0) {
+      throw new Error();
+    }
+    const order = await Order.findOne({ where: { id: orderId } });
+    await order.createNotification(
+      {
+        type: 'DELETED',
+        isRead: false,
+        user_id: order.dataValues.user_id,
+      },
+      { transaction },
+    );
+    await Order.destroy({ where: { id: orderId }, transaction });
+    transaction.commit();
     ctx.response.body = 'Successfully deleted';
     ctx.response.status = HttpStatus.OK;
     return ctx.response;
+  } catch (e) {
+    transaction.rollback();
+    console.log(e);
+    ctx.response.body = 'bad request';
+    ctx.response.status = HttpStatus.BAD_REQUEST;
+    return ctx.response;
   }
-  ctx.response.body = 'Order Not Found';
-  ctx.response.status = HttpStatus.BAD_REQUEST;
-  return ctx.response;
 }
 
 module.exports = {
