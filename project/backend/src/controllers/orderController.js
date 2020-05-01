@@ -35,15 +35,17 @@ async function createOrder(ctx) {
       }
     }
     const user = await User.findOne({ where: ctx.state.user.id });
+    console.log('USER ', user);
     const createdOrder = await Order.create(
       {
         status: 'CREATED',
-        slot_id: slot.id,
-        user_id: user.id,
+        slot_id: slot.dataValues.id,
+        user_id: user.dataValues.id,
         AttributeValue: attributeValues,
         Notification: {
           type: 'CREATED',
           isRead: false,
+          user_id: user.dataValues.id,
         },
       },
       {
@@ -64,7 +66,7 @@ async function createOrder(ctx) {
     ctx.response.body = createdOrder;
     return ctx.response;
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     transaction.rollback();
     ctx.response.status = HttpStatus.BAD_REQUEST;
     ctx.response.body = 'bad request';
@@ -79,7 +81,22 @@ async function getAll(ctx) {
 }
 
 async function getOrder(ctx) {
-  ctx.response.body = 'orderController.get called';
+  const orderId = ctx.params.id;
+  const order = await Order.findOne({
+    where: { id: orderId },
+    attributes: ['id', 'status'],
+    include: [
+      // { model: AttributeValue, as: 'AttributeValue', attributes: ['id', 'value'] },
+      // { model: User, as: 'User', attributes: ['id','role', 'name', 'email'] },
+    ],
+  });
+  console.log(order);
+  if (!order) {
+    ctx.response.status = HttpStatus.OK;
+    ctx.response.body = 'bad request';
+    return ctx.response;
+  }
+  ctx.response.body = order;
   ctx.response.status = HttpStatus.OK;
   return ctx.response;
 }
