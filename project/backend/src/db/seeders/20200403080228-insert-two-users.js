@@ -9,6 +9,7 @@ module.exports = {
       'User',
       [
         {
+          id: 2,
           name: 'John Doe',
           email: 'john@gmail.com',
           password: bcrypt.hashSync('123456789', salt),
@@ -17,6 +18,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
+          id: 3,
           name: 'Ann Doe',
           email: 'ann@gmail.com',
           password: bcrypt.hashSync('987654321', salt),
