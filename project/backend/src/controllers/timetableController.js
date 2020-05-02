@@ -86,7 +86,19 @@ async function getAll(ctx) {
     ctx.response.status = HttpStatus.BAD_REQUEST;
     return ctx.response;
   }
-  ctx.response.body = timetables;
+  const result = [];
+  for (const t of timetables) {
+    result.push({
+      id: t.dataValues.id,
+      title: t.dataValues.title,
+      start: moment(t.dataValues.start_date).format('LL'),
+      end: moment(t.dataValues.end_date).format('LL'),
+      slotSize: t.dataValues.slot_size,
+      Slot: t.dataValues.Slot,
+      Attribute: t.dataValues.Attribute,
+    });
+  }
+  ctx.response.body = result;
   ctx.response.status = HttpStatus.OK;
   return ctx.response;
 }
@@ -108,7 +120,15 @@ async function getTimetable(ctx) {
     if (!timetable) {
       throw new Error();
     }
-    ctx.response.body = timetable;
+    ctx.response.body = {
+      id: timetable.dataValues.id,
+      title: timetable.dataValues.title,
+      start: moment(timetable.dataValues.start_date).format('LL'),
+      end: moment(timetable.dataValues.end_date).format('LL'),
+      slotSize: timetable.dataValues.slot_size,
+      Slot: timetable.dataValues.Slot,
+      Attribute: timetable.dataValues.Attribute,
+    };
     ctx.response.status = HttpStatus.OK;
     return ctx.response;
   } catch (e) {
