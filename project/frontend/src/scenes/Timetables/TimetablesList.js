@@ -13,8 +13,9 @@ function TimetablesList() {
     fetchData();
   }, []);
 
-  return timetables.map(({ id, title, slotSize, start, end }) => {
-    return <Card key={id} title={title} body={{ slotSize, start, end }} />;
+  // eslint-disable-next-line camelcase
+  return timetables.map(({ id, title, slot_size, start_date, end_date }) => {
+    return <Card key={id} title={title} body={{ slot_size, start_date, end_date }} />;
   });
 }
 
