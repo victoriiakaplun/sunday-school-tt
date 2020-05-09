@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Field from '../../components/Field';
 import Button from '../../components/button/Button';
-import { register } from '../../service/TimetableAPI';
+import { register } from '../../store/actions/registerActions';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 
-function RegisterForm() {
+function RegisterForm({ registerUser, isAuth, error, isRegistered }) {
   const [inputData, setInputData] = useState({
     name: '',
     email: '',
@@ -21,13 +22,21 @@ function RegisterForm() {
     });
   };
 
-  const onHandleSubmit = async event => {
-    const data = await register(inputData);
-    if (data) {
-      history.push('/signin');
-    }
-    event.preventDefault();
+  const onHandleSubmit = () => {
+    registerUser(inputData);
   };
+
+  if (isAuth) {
+    history.push('/');
+  }
+
+  if (isRegistered) {
+    history.push('/signin');
+  }
+
+  if (error) {
+    return <div />;
+  }
 
   return (
     <form>
@@ -65,4 +74,14 @@ function RegisterForm() {
   );
 }
 
-export default RegisterForm;
+const mapStateToProps = state => ({
+  isAuth: state.authenticaion.isAuth,
+  error: state.reg.error,
+  isRegistered: state.reg.isRegistered,
+});
+
+const mapDispatchToProps = {
+  registerUser: register,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

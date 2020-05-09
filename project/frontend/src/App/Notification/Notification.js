@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
-import Button from '../../components/button/Button';
+import classNames from 'classnames';
 import CloseButton from './CloseButton';
 
-function Notification({ onClose, delay, children }) {
+function Notification({ onClose, delay, type, children }) {
   useEffect(() => {
     setTimeout(() => onClose(), 5000);
   }, [onClose, delay]);
+
+  const containerClasses = classNames('notification', `is-${type}`);
+
   return (
     <Container>
-      <div className="notification is-warning">
+      <div className={containerClasses}>
         <CloseButton onClose={onClose} />
         {children}
       </div>

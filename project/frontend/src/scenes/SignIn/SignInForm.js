@@ -1,36 +1,32 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Field from '../../components/Field';
 import Button from '../../components/button/Button';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
-import { login } from '../../service/TimetableAPI';
-import { UserContext } from '../../App/context/userContext';
+import { login } from '../../store/actions/authActions';
 
-function SignInForm() {
+function SignInForm({ loginUser, error, isAuth }) {
   const [inputData, setInputData] = useState({
     email: '',
     password: '',
   });
-
   const history = useHistory();
-  const { setUser } = useContext(UserContext);
-
   const onHandleInput = event => {
     setInputData({
       ...inputData,
       [event.target.name]: event.target.value,
     });
   };
-
-  const onHandleSubmit = async event => {
-    const data = await login(inputData);
-    if (data) {
-      setUser({ id: data.id, name: data.name, email: data.email, isAdmin: data.role === 'admin' });
-      history.push('/');
-    }
-    event.preventDefault();
+  const onHandleSubmit = () => {
+    loginUser(inputData);
   };
-
+  if (isAuth) {
+    history.push('/');
+  }
+  if (error) {
+    return <div />;
+  }
   return (
     <form>
       <Field
@@ -57,5 +53,11 @@ function SignInForm() {
     </form>
   );
 }
-
-export default SignInForm;
+const mapStateToProps = state => ({
+  isAuth: state.authenticaion.isAuth,
+  error: state.authenticaion.error,
+});
+const mapDispatchToProps = {
+  loginUser: login,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

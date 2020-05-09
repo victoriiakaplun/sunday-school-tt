@@ -1,14 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import Header from '../../components/header/Header';
 import Button from '../../components/button/Button';
 import TimetablesList from './TimetablesList';
-import { UserContext } from '../../App/context/userContext';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import Columns from '../../components/Columns';
 import Column from '../../components/Column';
+import { getUserProfile } from '../../store/actions/profileActions';
 
-function Timetables() {
-  const { user } = useContext(UserContext);
+function Timetables({ profileData, getProfile }) {
+  const { role } = profileData;
+  const isAdmin = role === 'admin';
+
+  useEffect(() => {
+    getProfile();
+  }, [getProfile]);
 
   const button = (
     <CenteredButtonBox>
@@ -19,7 +25,7 @@ function Timetables() {
   return (
     <Columns>
       <Column>
-        {user && user.isAdmin && button}
+        {isAdmin && button}
         <Header>Available timetables</Header>
         <TimetablesList />
       </Column>
@@ -27,4 +33,12 @@ function Timetables() {
   );
 }
 
-export default Timetables;
+const mapStateToProps = state => ({
+  profileData: state.profile.profileData,
+});
+
+const mapDispatchToProps = {
+  getProfile: getUserProfile,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timetables);

@@ -1,21 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { getAllTimetables } from '../../service/TimetableAPI';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { fetchTimetables } from '../../store/actions/timetableActions';
 import Card from '../../components/card/Card';
+import Spinner from '../../components/Spinner';
 
-function TimetablesList() {
-  const [timetables, setTimetables] = useState([]);
-
+function TimetablesList({ getTimetables, loading, error, timetables }) {
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getAllTimetables();
-      setTimetables(result);
-    };
-    fetchData();
-  }, []);
+    getTimetables();
+  }, [getTimetables]);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <div />;
+  }
 
   return timetables.map(({ id, title, slotSize, start, end }) => {
     return <Card key={id} title={title} body={{ slotSize, start, end }} />;
   });
 }
 
-export default TimetablesList;
+const mapStateToProps = state => ({
+  timetables: state.timetables.timetables,
+  loading: state.timetables.loading,
+  error: state.timetables.error,
+});
+
+const mapDispatchToProps = {
+  getTimetables: fetchTimetables,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimetablesList);

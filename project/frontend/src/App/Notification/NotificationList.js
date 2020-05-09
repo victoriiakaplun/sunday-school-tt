@@ -11,8 +11,8 @@ function NotificationList({ notifications, onClose }) {
   }
   return reactDOM.createPortal(
     <>
-      {notifications.map(({ id, delay, message }) => (
-        <Notification key={id} delay={delay} onClose={() => onClose(id)}>
+      {notifications.map(({ id, delay, type, message }) => (
+        <Notification key={id} delay={delay} type={type} onClose={() => onClose(id)}>
           {message}
         </Notification>
       ))}

@@ -1,42 +1,32 @@
 import axios from 'axios';
 
-export async function login(req) {
-  const { data } = await axios.post('/api/v1/users/login', {
+export async function loginUser(req) {
+  return axios.post('/api/v1/users/login', {
     email: req.email,
     password: req.password,
   });
-  return data;
 }
 
-export async function getAllTimetables() {
-  const { data } = await axios.get('/api/v1/timetables/');
-  return data;
+export function getAllTimetables() {
+  return axios.get('/api/v1/timetables/');
 }
 
-export async function logout() {
-  await axios.post('/api/v1/users/logout');
-  console.log('User is logged out');
+export async function logoutUser() {
+  return axios.post('/api/v1/users/logout');
 }
 
-export async function register(req) {
-  const { data } = await axios.post('/api/v1/users/register', {
+export async function registerUser(req) {
+  return axios.post('/api/v1/users/register', {
     name: req.name,
     email: req.email,
     password: req.password,
   });
-  return data;
 }
 
 export async function update(req, id) {
-  const { data } = await axios.put(`api/v1/users/${id}`, { name: req.name, email: req.email });
-  return data;
+  return axios.put(`api/v1/users/${id}`, { name: req.name, email: req.email });
 }
 
 export async function getProfile() {
-  try {
-    const { data } = await axios.get('api/v1/users/profile');
-    return data;
-  } catch (e) {
-    return null;
-  }
+  return axios.get('api/v1/users/profile');
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
   Timetables,
   Register,
@@ -12,68 +13,65 @@ import {
 } from '../scenes';
 import NavBar from './NavBar';
 
-import { UserContext } from './context/userContext';
-import { getProfile } from '../service/TimetableAPI';
 import NotificationContainer from './Notification/NotificationContainer';
+import { getUserProfile } from '../store/actions/profileActions';
 
-function App() {
-  const [user, setUser] = useState(null);
+function App({ getProfile, profileData, error }) {
   const history = useHistory();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getProfile();
-      console.log(data);
-      if (data) {
-        setUser({
-          id: data.id,
-          name: data.name,
-          email: data.email,
-          isAdmin: data.role === 'admin',
-        });
-      } else {
-        history.push('/signin');
-      }
-    };
-    fetchData();
-  }, []);
+    getProfile();
+  }, [getProfile]);
+
+  if (!profileData) {
+    history.push('/signin');
+  }
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <div>
-        <NavBar />
-        <NotificationContainer />
-        <Switch>
-          <Route exact path="/">
-            <Main />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/signin">
-            <SignIn />
-          </Route>
-          <Route exact path="/timetables">
-            <Timetables />
-          </Route>
-          <Route path="/timetables/:id">
-            <TimetableInfo />
-          </Route>
-          <Route path="/timeline">
-            <Timeline />
-          </Route>
-          <Route exact path="/orders">
-            <Orders />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/logout" />
-          <Route render={() => <h2>Page not found</h2>} />
-        </Switch>
-      </div>
-    </UserContext.Provider>
+    <div>
+      <NavBar />
+      <NotificationContainer />
+      <Switch>
+        <Route exact path="/">
+          <Main />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <Route path="/signin">
+          <SignIn />
+        </Route>
+        <Route exact path="/timetables">
+          <Timetables />
+        </Route>
+        <Route path="/timetables/:id">
+          <TimetableInfo />
+        </Route>
+        <Route path="/timeline">
+          <Timeline />
+        </Route>
+        <Route exact path="/orders">
+          <Orders />
+        </Route>
+        <Route exact path="/notifications">
+          <Orders />
+        </Route>
+        <Route path="/profile">
+          <Profile />
+        </Route>
+        <Route render={() => <h2>Page not found</h2>} />
+      </Switch>
+    </div>
   );
 }
+const mapStateToProps = state => ({
+  profileData: state.profile.profileData,
+  loading: state.profile.loading,
+  error: state.profile.error,
+});
 
-export default App;
+const mapDispatchToProps = {
+  getProfile: getUserProfile,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

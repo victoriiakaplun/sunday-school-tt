@@ -1,18 +1,27 @@
-import React, { useContext } from 'react';
 import { faAddressCard, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import NavBarItem from './NavBarItem';
 import AuthButtons from './AuthButtons';
-import { logout } from '../../service/TimetableAPI';
-import { UserContext } from '../context/userContext';
+import { getUserProfile } from '../../store/actions/profileActions';
+import { logout } from '../../store/actions/authActions';
+import Spinner from '../../components/Spinner';
 
-function NavBarMenu() {
-  const { user, setUser } = useContext(UserContext);
+function NavBarMenu({ isAuth, error, loading, profileData, getProfile, logoutUser }) {
+  useEffect(() => {
+    getProfile();
+  }, [getProfile]);
 
   const history = useHistory();
 
-  if (!user) {
+  async function onHandleLogout() {
+    logoutUser();
+    history.push('/signin');
+  }
+
+  if (!isAuth) {
     return (
       <div className="navbar-menu">
         <AuthButtons />
@@ -20,11 +29,15 @@ function NavBarMenu() {
     );
   }
 
-  async function onHandleLogout() {
-    await logout();
-    setUser(null);
-    history.push('/signin');
+  if (error) {
+    return <div />;
   }
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  console.log('IN NAVBAR: ', profileData, isAuth, loading, error);
 
   return (
     <div className="navbar-menu">
@@ -39,9 +52,9 @@ function NavBarMenu() {
         </NavBarItem>
         <NavBarItem to="/profile">
           <FontAwesomeIcon icon={faAddressCard} size="lg" css={{ color: 'green', margin: '7px' }} />
-          {user && user.name}
+          {profileData && profileData.name}
         </NavBarItem>
-        <NavBarItem to="/logout">
+        <NavBarItem>
           <FontAwesomeIcon
             icon={faSignOutAlt}
             size="lg"
@@ -54,4 +67,16 @@ function NavBarMenu() {
   );
 }
 
-export default NavBarMenu;
+const mapStateToProps = state => ({
+  isAuth: state.authenticaion.isAuth,
+  profileData: state.profile.profileData,
+  loading: state.profile.loading,
+  error: state.profile.error,
+});
+
+const mapDispatchToProps = {
+  getProfile: getUserProfile,
+  logoutUser: logout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBarMenu);

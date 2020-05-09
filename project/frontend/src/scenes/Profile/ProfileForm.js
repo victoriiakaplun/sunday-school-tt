@@ -1,41 +1,39 @@
-import React, { useContext, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Field from '../../components/Field';
 import Button from '../../components/button/Button';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
-import { UserContext } from '../../App/context/userContext';
-import { update } from '../../service/TimetableAPI';
-import { addNotification } from '../../store/actions/notificationActions';
+import Spinner from '../../components/Spinner';
+import { getUserProfile, updateUserProfile } from '../../store/actions/profileActions';
 
-function ProfileForm() {
-  const { user, setUser } = useContext(UserContext);
-
+function ProfileForm({ getProfile, updateProfile, profileData, error, loading, isAuth }) {
   const [inputData, setInputData] = useState({
-    name: user.name,
-    email: user.email,
+    name: '',
+    email: '',
   });
-
-  const dispatch = useDispatch();
-
+  useEffect(() => {
+    getProfile();
+    setInputData({ name: profileData.name, email: profileData.email });
+  }, [getProfile]);
+  const history = useHistory();
   const onHandleInput = event => {
     setInputData({
       [event.target.name]: event.target.value,
     });
   };
-
-  function notify() {
-    dispatch(addNotification({ message: 'Profile data successfully updated!' }));
-  }
-
-  const onSave = async event => {
-    const data = await update(inputData, user.id);
-    if (data) {
-      setUser({ id: data.id, name: data.name, email: data.email, isAdmin: data.role === 'admin' });
-      setInputData({ name: data.name, email: data.email });
-      notify();
-    }
+  const onSave = () => {
+    updateProfile(inputData, profileData.id);
   };
-
+  if (!isAuth) {
+    history.push('/signin');
+  }
+  if (loading) {
+    return <Spinner />;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
   return (
     <form>
       <Field
@@ -63,4 +61,16 @@ function ProfileForm() {
   );
 }
 
-export default ProfileForm;
+const mapStateToProps = state => ({
+  isAuth: state.authenticaion.isAuth,
+  profileData: state.profile.profileData,
+  loading: state.profile.loading,
+  error: state.profile.error,
+});
+
+const mapDispatchToProps = {
+  getProfile: getUserProfile,
+  updateProfile: updateUserProfile,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
