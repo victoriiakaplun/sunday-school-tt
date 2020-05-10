@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   Timetables,
@@ -12,20 +12,16 @@ import {
   Main,
 } from '../scenes';
 import NavBar from './NavBar';
-
 import NotificationContainer from './Notification/NotificationContainer';
 import { getUserProfile } from '../store/actions/profileActions';
+import PrivateRoute from './router/PrivateRoute';
 
-function App({ getProfile, profileData, error }) {
-  const history = useHistory();
-
+function App({ getProfile, profileData }) {
   useEffect(() => {
     getProfile();
-  }, [getProfile]);
+  }, []);
 
-  if (!profileData) {
-    history.push('/signin');
-  }
+  const isAuthenticated = Boolean(profileData);
 
   return (
     <div>
@@ -41,24 +37,24 @@ function App({ getProfile, profileData, error }) {
         <Route path="/signin">
           <SignIn />
         </Route>
-        <Route exact path="/timetables">
+        <PrivateRoute exact path="/timetables" isAuthenticated={isAuthenticated}>
           <Timetables />
-        </Route>
-        <Route path="/timetables/:id">
+        </PrivateRoute>
+        <PrivateRoute path="/timetables/:id" isAuthenticated={isAuthenticated}>
           <TimetableInfo />
-        </Route>
-        <Route path="/timeline">
+        </PrivateRoute>
+        <PrivateRoute path="/timeline" isAuthenticated={isAuthenticated}>
           <Timeline />
-        </Route>
-        <Route exact path="/orders">
+        </PrivateRoute>
+        <PrivateRoute exact path="/orders" isAuthenticated={isAuthenticated}>
           <Orders />
-        </Route>
-        <Route exact path="/notifications">
+        </PrivateRoute>
+        <PrivateRoute exact path="/notifications" isAuthenticated={isAuthenticated}>
           <Orders />
-        </Route>
-        <Route path="/profile">
+        </PrivateRoute>
+        <PrivateRoute path="/profile" isAuthenticated={isAuthenticated}>
           <Profile />
-        </Route>
+        </PrivateRoute>
         <Route render={() => <h2>Page not found</h2>} />
       </Switch>
     </div>

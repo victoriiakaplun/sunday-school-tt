@@ -7,7 +7,7 @@ export function getInitialNotificationState() {
   };
 }
 
-function notificationReducer(prevState, recAction) {
+function notificationReducer(prevState = getInitialNotificationState(), recAction) {
   const handlerMap = {
     [ADD_NOTIFICATION]: (state, action) => ({
       ...state,
@@ -23,7 +23,7 @@ function notificationReducer(prevState, recAction) {
   };
 
   const handler = handlerMap[recAction.type];
-  return handler ? handler(prevState, recAction) : getInitialNotificationState();
+  return handler ? handler(prevState, recAction) : prevState;
 }
 
 export default notificationReducer;

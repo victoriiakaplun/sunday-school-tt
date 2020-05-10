@@ -7,17 +7,16 @@ import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import Spinner from '../../components/Spinner';
 import { getUserProfile, updateUserProfile } from '../../store/actions/profileActions';
 
-function ProfileForm({ getProfile, updateProfile, profileData, error, loading, isAuth }) {
+function ProfileForm({ updateProfile, profileData, error, loading }) {
   const [inputData, setInputData] = useState({
     name: '',
     email: '',
   });
   useEffect(() => {
-    getProfile();
     setInputData({ name: profileData.name, email: profileData.email });
-  }, [getProfile]);
-  const history = useHistory();
-  const onHandleInput = event => {
+  }, [profileData]);
+
+  const onInput = event => {
     setInputData({
       [event.target.name]: event.target.value,
     });
@@ -25,9 +24,7 @@ function ProfileForm({ getProfile, updateProfile, profileData, error, loading, i
   const onSave = () => {
     updateProfile(inputData, profileData.id);
   };
-  if (!isAuth) {
-    history.push('/signin');
-  }
+
   if (loading) {
     return <Spinner />;
   }
@@ -36,13 +33,7 @@ function ProfileForm({ getProfile, updateProfile, profileData, error, loading, i
   }
   return (
     <form>
-      <Field
-        type="text"
-        name="name"
-        placeholder="Name"
-        value={inputData.name}
-        onChange={onHandleInput}
-      >
+      <Field type="text" name="name" placeholder="Name" value={inputData.name} onChange={onInput}>
         Name
       </Field>
       <Field
@@ -50,7 +41,7 @@ function ProfileForm({ getProfile, updateProfile, profileData, error, loading, i
         name="email"
         placeholder="Email"
         value={inputData.email}
-        onChange={onHandleInput}
+        onChange={onInput}
       >
         Email
       </Field>
@@ -62,14 +53,12 @@ function ProfileForm({ getProfile, updateProfile, profileData, error, loading, i
 }
 
 const mapStateToProps = state => ({
-  isAuth: state.authenticaion.isAuth,
   profileData: state.profile.profileData,
   loading: state.profile.loading,
   error: state.profile.error,
 });
 
 const mapDispatchToProps = {
-  getProfile: getUserProfile,
   updateProfile: updateUserProfile,
 };
 

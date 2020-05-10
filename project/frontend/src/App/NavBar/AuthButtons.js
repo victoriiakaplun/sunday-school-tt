@@ -5,12 +5,14 @@ import Button from '../../components/button/Button';
 function AuthButtons() {
   return (
     <div className="navbar-end">
-      <NavBarItem to="/signin">
-        <Button>Sign In</Button>
-      </NavBarItem>
-      <NavBarItem to="/register">
-        <Button>Register</Button>
-      </NavBarItem>
+      <div className="buttons">
+        <NavBarItem to="/signin">
+          <Button>Sign In</Button>
+        </NavBarItem>
+        <NavBarItem to="/register">
+          <Button>Register</Button>
+        </NavBarItem>
+      </div>
     </div>
   );
 }

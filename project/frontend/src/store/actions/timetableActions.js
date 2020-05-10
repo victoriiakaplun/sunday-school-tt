@@ -24,7 +24,7 @@ export function timetablesError(error) {
 }
 
 export function fetchTimetables() {
-  return async dispatch => {
+  return dispatch => {
     dispatch(timetableRequested());
     getAllTimetables()
       .then(res => {

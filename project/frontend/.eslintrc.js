@@ -26,5 +26,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-unused-vars': 'off',
+    "react/jsx-curly-newline": "off",
   },
 };

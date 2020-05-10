@@ -23,19 +23,15 @@ export function profileError(error) {
 }
 
 export function getUserProfile() {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(profileRequested());
     getProfile()
       .then(res => {
-        console.log(res);
         dispatch(profileSucceed(res.data));
-        return res.data;
       })
       .catch(error => {
         dispatch(profileError(error));
-        dispatch(addNotification({ type: 'danger', message: 'Data loading error!' }));
       });
-    console.log('state: ', getState());
   };
 }
 

@@ -3,7 +3,6 @@ import {
   TIMETABLE_LOADED,
   TIMETABLE_ERROR,
 } from '../actions/timetableActions';
-import { getInitialNotificationState } from './notificationReducer';
 
 export function getInitialState() {
   return {
@@ -13,7 +12,7 @@ export function getInitialState() {
   };
 }
 
-function timetableReducer(prevState, recAction) {
+function timetableReducer(prevState = getInitialState(), recAction) {
   const handlerMap = {
     [TIMETABLE_REQUESTED]: (state, action) => ({
       timetables: [],
@@ -32,7 +31,7 @@ function timetableReducer(prevState, recAction) {
     }),
   };
   const handler = handlerMap[recAction.type];
-  return handler ? handler(prevState, recAction) : getInitialState();
+  return handler ? handler(prevState, recAction) : prevState;
 }
 
 export default timetableReducer;

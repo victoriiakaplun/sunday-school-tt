@@ -6,27 +6,29 @@ import Button from '../../components/button/Button';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import { login } from '../../store/actions/authActions';
 
-function SignInForm({ loginUser, error, isAuth }) {
+function SignInForm({ loginUser, isAuth }) {
   const [inputData, setInputData] = useState({
     email: '',
     password: '',
   });
+
   const history = useHistory();
+
   const onHandleInput = event => {
     setInputData({
       ...inputData,
       [event.target.name]: event.target.value,
     });
   };
+
   const onHandleSubmit = () => {
     loginUser(inputData);
   };
+
   if (isAuth) {
     history.push('/');
   }
-  if (error) {
-    return <div />;
-  }
+
   return (
     <form>
       <Field
@@ -53,11 +55,13 @@ function SignInForm({ loginUser, error, isAuth }) {
     </form>
   );
 }
+
 const mapStateToProps = state => ({
-  isAuth: state.authenticaion.isAuth,
-  error: state.authenticaion.error,
+  isAuth: Boolean(state.profile.profileData),
 });
+
 const mapDispatchToProps = {
   loginUser: login,
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

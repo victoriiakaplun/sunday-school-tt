@@ -1,5 +1,6 @@
 import { loginUser, logoutUser } from '../../service/TimetableAPI';
 import { addNotification } from './notificationActions';
+import { profileSucceed } from './profileActions';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export function loginRequested() {
@@ -30,23 +31,25 @@ export function logoutSucceed() {
 }
 
 export function login(body) {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(loginRequested());
     loginUser(body)
       .then(res => {
         dispatch(loginSucceed());
+        dispatch(profileSucceed(res.data));
         return res.data;
       })
       .catch(error => {
         dispatch(loginError(error));
         dispatch(addNotification({ type: 'danger', message: 'Login failed!' }));
       });
-    console.log('LOGIN: ', getState());
   };
 }
 
 export function logout() {
   return dispatch => {
     logoutUser().then(() => dispatch(logoutSucceed()));
+    // FIXME
+    dispatch(profileSucceed(null));
   };
 }

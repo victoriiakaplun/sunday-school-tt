@@ -2,13 +2,13 @@ import { PROFILE_REQUESTED, PROFILE_SUCCEED, PROFILE_ERROR } from '../actions/pr
 
 export function getInitialState() {
   return {
-    profileData: {},
+    profileData: null,
     loading: false,
     error: false,
   };
 }
 
-function profileReducer(prevState, recAction) {
+function profileReducer(prevState = getInitialState(), recAction) {
   const handlerMap = {
     [PROFILE_REQUESTED]: (state, action) => ({
       ...state,
@@ -21,13 +21,13 @@ function profileReducer(prevState, recAction) {
       loading: false,
     }),
     [PROFILE_ERROR]: (state, action) => ({
-      profileData: {},
+      profileData: null,
       error: action.payload,
       loading: false,
     }),
   };
   const handler = handlerMap[recAction.type];
-  return handler ? handler(prevState, recAction) : getInitialState();
+  return handler ? handler(prevState, recAction) : prevState;
 }
 
 export default profileReducer;

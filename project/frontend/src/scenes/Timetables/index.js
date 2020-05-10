@@ -10,11 +10,8 @@ import { getUserProfile } from '../../store/actions/profileActions';
 
 function Timetables({ profileData, getProfile }) {
   const { role } = profileData;
-  const isAdmin = role === 'admin';
 
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
+  const isAdmin = role === 'admin';
 
   const button = (
     <CenteredButtonBox>
@@ -37,8 +34,4 @@ const mapStateToProps = state => ({
   profileData: state.profile.profileData,
 });
 
-const mapDispatchToProps = {
-  getProfile: getUserProfile,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Timetables);
+export default connect(mapStateToProps)(Timetables);

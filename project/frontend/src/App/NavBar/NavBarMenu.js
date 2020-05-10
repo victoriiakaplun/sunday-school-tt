@@ -2,21 +2,15 @@ import { faAddressCard, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import React, { useEffect } from 'react';
+import React from 'react';
 import NavBarItem from './NavBarItem';
 import AuthButtons from './AuthButtons';
-import { getUserProfile } from '../../store/actions/profileActions';
 import { logout } from '../../store/actions/authActions';
-import Spinner from '../../components/Spinner';
 
-function NavBarMenu({ isAuth, error, loading, profileData, getProfile, logoutUser }) {
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
-
+function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
   const history = useHistory();
 
-  async function onHandleLogout() {
+  async function onLogout() {
     logoutUser();
     history.push('/signin');
   }
@@ -32,12 +26,6 @@ function NavBarMenu({ isAuth, error, loading, profileData, getProfile, logoutUse
   if (error) {
     return <div />;
   }
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  console.log('IN NAVBAR: ', profileData, isAuth, loading, error);
 
   return (
     <div className="navbar-menu">
@@ -59,7 +47,7 @@ function NavBarMenu({ isAuth, error, loading, profileData, getProfile, logoutUse
             icon={faSignOutAlt}
             size="lg"
             css={{ color: 'green' }}
-            onClick={onHandleLogout}
+            onClick={onLogout}
           />
         </NavBarItem>
       </div>
@@ -68,14 +56,13 @@ function NavBarMenu({ isAuth, error, loading, profileData, getProfile, logoutUse
 }
 
 const mapStateToProps = state => ({
-  isAuth: state.authenticaion.isAuth,
+  isAuth: Boolean(state.profile.profileData),
   profileData: state.profile.profileData,
   loading: state.profile.loading,
   error: state.profile.error,
 });
 
 const mapDispatchToProps = {
-  getProfile: getUserProfile,
   logoutUser: logout,
 };
 
