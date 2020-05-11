@@ -8,7 +8,7 @@ import Columns from '../../components/Columns';
 import Column from '../../components/Column';
 import { getUserProfile } from '../../store/actions/profileActions';
 
-function Timetables({ profileData, getProfile }) {
+function Timetables({ profileData }) {
   const { role } = profileData;
 
   const isAdmin = role === 'admin';

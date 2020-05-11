@@ -6,6 +6,7 @@ import React from 'react';
 import NavBarItem from './NavBarItem';
 import AuthButtons from './AuthButtons';
 import { logout } from '../../store/actions/authActions';
+import LinkedNavBarItem from './LinkedNavBarItem';
 
 function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
   const history = useHistory();
@@ -30,18 +31,18 @@ function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
   return (
     <div className="navbar-menu">
       <div className="navbar-start">
-        <NavBarItem to="/timetables">Timetables</NavBarItem>
-        <NavBarItem to="/timeline">Timeline</NavBarItem>
-        <NavBarItem to="/orders">Orders</NavBarItem>
+        <LinkedNavBarItem to="/timetables">Timetables</LinkedNavBarItem>
+        <LinkedNavBarItem to="/timeline">Timeline</LinkedNavBarItem>
+        <LinkedNavBarItem to="/orders">Orders</LinkedNavBarItem>
       </div>
       <div className="navbar-end">
-        <NavBarItem to="/notifications">
+        <LinkedNavBarItem to="/notifications">
           <FontAwesomeIcon icon={faBell} size="lg" css={{ color: 'green' }} />
-        </NavBarItem>
-        <NavBarItem to="/profile">
+        </LinkedNavBarItem>
+        <LinkedNavBarItem to="/profile">
           <FontAwesomeIcon icon={faAddressCard} size="lg" css={{ color: 'green', margin: '7px' }} />
           {profileData && profileData.name}
-        </NavBarItem>
+        </LinkedNavBarItem>
         <NavBarItem>
           <FontAwesomeIcon
             icon={faSignOutAlt}

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchTimetables } from '../../store/actions/timetableActions';
-import Card from '../../components/card/Card';
 import Spinner from '../../components/Spinner';
+import TimetableCard from './TimetableCard';
 
 function TimetablesList({ getTimetables, loading, error, timetables }) {
   useEffect(() => {
@@ -18,7 +18,7 @@ function TimetablesList({ getTimetables, loading, error, timetables }) {
   }
 
   return timetables.map(({ id, title, slotSize, start, end }) => {
-    return <Card key={id} title={title} body={{ slotSize, start, end }} />;
+    return <TimetableCard key={id} id={id} title={title} body={{ slotSize, start, end }} />;
   });
 }
 

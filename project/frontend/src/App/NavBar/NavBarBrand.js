@@ -1,14 +1,14 @@
 import React from 'react';
 import { faStopwatch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import NavBarItem from './NavBarItem';
+import LinkedNavBarItem from './LinkedNavBarItem';
 
 function NavBarBrand() {
   return (
     <div className="navbar-brand">
-      <NavBarItem to="/">
+      <LinkedNavBarItem to="/">
         <FontAwesomeIcon icon={faStopwatch} size="lg" css={{ margin: '10px', color: 'green' }} />
-      </NavBarItem>
+      </LinkedNavBarItem>
     </div>
   );
 }

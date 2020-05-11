@@ -11,6 +11,10 @@ export function getAllTimetables() {
   return axios.get('/api/v1/timetables/');
 }
 
+export function getTimetable(id) {
+  return axios.post(`/api/v1/timetables/${id}`);
+}
+
 export async function logoutUser() {
   return axios.post('/api/v1/users/logout');
 }
