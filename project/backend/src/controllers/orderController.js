@@ -40,6 +40,7 @@ async function createOrder(ctx) {
         status: 'CREATED',
         slot_id: slot.dataValues.id,
         user_id: user.dataValues.id,
+        timetable_id: timetable.id,
         AttributeValue: attributeValues,
         Notification: {
           type: 'CREATED',
@@ -60,12 +61,14 @@ async function createOrder(ctx) {
     }
     await createdOrder.setSlot(slot, { transaction });
     await createdOrder.setUser(user, { transaction });
-    transaction.commit();
     ctx.response.status = HttpStatus.CREATED;
     ctx.response.body = createdOrder;
+    console.log('CREATED ORDER: ', createdOrder);
+    transaction.commit();
     return ctx.response;
   } catch (e) {
     transaction.rollback();
+    console.log(e);
     ctx.response.status = HttpStatus.BAD_REQUEST;
     ctx.response.body = 'bad request';
     return ctx.response;
@@ -73,13 +76,34 @@ async function createOrder(ctx) {
 }
 
 async function getAll(ctx) {
-  const orders = await Order.findAll({
-    attributes: ['id', 'status'],
-    include: [
-      { model: AttributeValue, as: 'AttributeValue', attributes: ['id', 'value', 'attribute_id'] },
-      { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
-    ],
-  });
+  const params = ctx.request.query;
+  let orders;
+  if (params.timetable_id) {
+    orders = await Order.findAll({
+      where: { timetable_id: params.timetable_id },
+      attributes: ['id', 'status'],
+      include: [
+        {
+          model: AttributeValue,
+          as: 'AttributeValue',
+          attributes: ['id', 'value', 'attribute_id'],
+        },
+        { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
+      ],
+    });
+  } else {
+    orders = await Order.findAll({
+      attributes: ['id', 'status'],
+      include: [
+        {
+          model: AttributeValue,
+          as: 'AttributeValue',
+          attributes: ['id', 'value', 'attribute_id'],
+        },
+        { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
+      ],
+    });
+  }
   if (!orders) {
     ctx.response.status = HttpStatus.OK;
     ctx.response.body = 'bad request';

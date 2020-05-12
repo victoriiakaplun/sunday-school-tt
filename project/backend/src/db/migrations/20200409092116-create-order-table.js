@@ -39,6 +39,16 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade',
       },
+      timetable_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Timetable',
+          key: 'id',
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      },
     });
   },
 
