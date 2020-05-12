@@ -15,11 +15,16 @@ import NavBar from './NavBar';
 import NotificationContainer from './Notification/NotificationContainer';
 import { getUserProfile } from '../store/actions/profileActions';
 import PrivateRoute from './router/PrivateRoute';
+import Spinner from '../components/Spinner';
 
 function App({ getProfile, profileData }) {
   useEffect(() => {
     getProfile();
   }, []);
+
+  if (!profileData) {
+    return <Spinner />;
+  }
 
   const isAuthenticated = Boolean(profileData);
 
