@@ -63,12 +63,10 @@ async function createOrder(ctx) {
     await createdOrder.setUser(user, { transaction });
     ctx.response.status = HttpStatus.CREATED;
     ctx.response.body = createdOrder;
-    console.log('CREATED ORDER: ', createdOrder);
     transaction.commit();
     return ctx.response;
   } catch (e) {
     transaction.rollback();
-    console.log(e);
     ctx.response.status = HttpStatus.BAD_REQUEST;
     ctx.response.body = 'bad request';
     return ctx.response;
