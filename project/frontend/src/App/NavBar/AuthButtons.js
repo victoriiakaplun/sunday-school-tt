@@ -1,17 +1,17 @@
 import React from 'react';
-import NavBarItem from './NavBarItem';
 import Button from '../../components/button/Button';
+import LinkedNavBarItem from './LinkedNavBarItem';
 
 function AuthButtons() {
   return (
     <div className="navbar-end">
       <div className="buttons">
-        <NavBarItem to="/signin">
+        <LinkedNavBarItem to="/signin">
           <Button>Sign In</Button>
-        </NavBarItem>
-        <NavBarItem to="/register">
+        </LinkedNavBarItem>
+        <LinkedNavBarItem to="/register">
           <Button>Register</Button>
-        </NavBarItem>
+        </LinkedNavBarItem>
       </div>
     </div>
   );

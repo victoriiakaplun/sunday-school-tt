@@ -10,15 +10,29 @@ function TimetableInfo({ timetables }) {
   const timetable = timetables.find(t => t.id === parsedId);
   const { title, start, end, slotSize, Attribute } = timetable;
 
-  const timesColumn = ['', ...Array(24).keys()].map(timesItem => (
-    <div className="card-content">{`${timesItem}:00`}</div>
-  ));
+  const timesColumn = [-1, ...Array(24).keys()].map(timesItem => {
+    if (timesItem === -1) {
+      return (
+        <div
+          className="card-content"
+          style={{ textAlign: 'left', verticalAlign: 'top', border: '1px solid gainsboro' }}
+        />
+      );
+    }
+
+    return (
+      <div className="card-content" style={{ textAlign: 'right', border: '1px solid gainsboro' }}>
+        {`${timesItem}:00`}
+      </div>
+    );
+  });
+
   return (
     <div>
       <Header>Timetable details</Header>
       <TimetableDetailsBox info={{ title, start, end, slotSize, Attribute }} />
       <div className="columns">
-        <div className="column">{timesColumn}</div>
+        <div className="column is-1">{timesColumn}</div>
       </div>
     </div>
   );
