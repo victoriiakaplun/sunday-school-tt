@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchTimetables } from '../../store/actions/timetableActions';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/spinner/Spinner';
 import TimetableCard from './TimetableCard';
 
 function TimetablesList({ getTimetables, loading, error, timetables }) {

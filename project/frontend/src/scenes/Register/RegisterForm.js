@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Field from '../../components/Field';
+import Field from '../../components/form/Field';
 import Button from '../../components/button/Button';
 import { register } from '../../store/actions/registerActions';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
+import Form from '../../components/form/Form';
 
 function RegisterForm({ registerUser, isAuth, error, isRegistered }) {
   const [inputData, setInputData] = useState({
@@ -15,14 +16,14 @@ function RegisterForm({ registerUser, isAuth, error, isRegistered }) {
 
   const history = useHistory();
 
-  const onHandleInput = event => {
+  const onInput = event => {
     setInputData({
       ...inputData,
       [event.target.name]: event.target.value,
     });
   };
 
-  const onHandleSubmit = () => {
+  const onSubmit = () => {
     registerUser(inputData);
   };
 
@@ -39,14 +40,8 @@ function RegisterForm({ registerUser, isAuth, error, isRegistered }) {
   }
 
   return (
-    <form>
-      <Field
-        type="text"
-        name="name"
-        placeholder="Name"
-        value={inputData.name}
-        onChange={onHandleInput}
-      >
+    <Form>
+      <Field type="text" name="name" placeholder="Name" value={inputData.name} onChange={onInput}>
         Name
       </Field>
       <Field
@@ -54,7 +49,7 @@ function RegisterForm({ registerUser, isAuth, error, isRegistered }) {
         name="email"
         placeholder="Email"
         value={inputData.email}
-        onChange={onHandleInput}
+        onChange={onInput}
       >
         Email
       </Field>
@@ -63,14 +58,14 @@ function RegisterForm({ registerUser, isAuth, error, isRegistered }) {
         name="password"
         placeholder="Must be more than 8 symbols"
         value={inputData.password}
-        onChange={onHandleInput}
+        onChange={onInput}
       >
         Password
       </Field>
       <CenteredButtonBox>
-        <Button onClick={onHandleSubmit}>Confirm</Button>
+        <Button onClick={onSubmit}>Confirm</Button>
       </CenteredButtonBox>
-    </form>
+    </Form>
   );
 }
 

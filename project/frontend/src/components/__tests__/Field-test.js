@@ -1,5 +1,5 @@
 import { render } from 'test-utils';
-import Field from '../Field';
+import Field from '../form/Field';
 
 describe('Field', () => {
   it('renders correctly', () => {

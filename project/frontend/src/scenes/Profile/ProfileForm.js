@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import Field from '../../components/Field';
+import Field from '../../components/form/Field';
 import Button from '../../components/button/Button';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../components/spinner/Spinner';
 import { getUserProfile, updateUserProfile } from '../../store/actions/profileActions';
+import Form from '../../components/form/Form';
 
 function ProfileForm({ updateProfile, profileData, error, loading }) {
   const [inputData, setInputData] = useState({
@@ -32,7 +32,7 @@ function ProfileForm({ updateProfile, profileData, error, loading }) {
     return <div>Error</div>;
   }
   return (
-    <form>
+    <Form>
       <Field type="text" name="name" placeholder="Name" value={inputData.name} onChange={onInput}>
         Name
       </Field>
@@ -48,7 +48,7 @@ function ProfileForm({ updateProfile, profileData, error, loading }) {
       <CenteredButtonBox>
         <Button onClick={onSave}>Save</Button>
       </CenteredButtonBox>
-    </form>
+    </Form>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import Button from '../../components/button/Button';
 import TimetablesList from './TimetablesList';
@@ -15,7 +16,9 @@ function Timetables({ profileData }) {
 
   const button = (
     <CenteredButtonBox>
-      <Button>+ Create timetable</Button>
+      <Link to="/timetable-creation">
+        <Button>+ Create timetable</Button>
+      </Link>
     </CenteredButtonBox>
   );
 

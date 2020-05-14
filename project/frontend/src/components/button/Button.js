@@ -1,8 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 
-function Button({ children, onClick }) {
+function Button({ children, onClick, type = 'is-success' }) {
   return (
-    <button className="button is-success id-medium" type="button" onClick={onClick}>
+    <button className={classNames('button', type, 'is-medium')} type="button" onClick={onClick}>
       {children}
     </button>
   );

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Field from '../../components/Field';
+import Field from '../../components/form/Field';
 import Button from '../../components/button/Button';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import { login } from '../../store/actions/authActions';
+import Form from '../../components/form/Form';
 
 function SignInForm({ loginUser, isAuth }) {
   const [inputData, setInputData] = useState({
@@ -21,7 +22,7 @@ function SignInForm({ loginUser, isAuth }) {
     });
   };
 
-  const onHandleSubmit = () => {
+  const onSubmit = () => {
     loginUser(inputData);
   };
 
@@ -30,7 +31,7 @@ function SignInForm({ loginUser, isAuth }) {
   }
 
   return (
-    <form>
+    <Form>
       <Field
         type="email"
         name="email"
@@ -50,9 +51,9 @@ function SignInForm({ loginUser, isAuth }) {
         Password
       </Field>
       <CenteredButtonBox>
-        <Button onClick={onHandleSubmit}>Sign in</Button>
+        <Button onClick={onSubmit}>Sign in</Button>
       </CenteredButtonBox>
-    </form>
+    </Form>
   );
 }
 

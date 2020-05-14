@@ -1,7 +1,7 @@
 import React from 'react';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CenteredContainer from './centeredContainer/CenteredContainer';
+import CenteredContainer from '../centeredContainer/CenteredContainer';
 
 function Spinner() {
   return (

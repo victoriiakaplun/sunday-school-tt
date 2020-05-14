@@ -28,6 +28,7 @@ export function getUserProfile() {
     getProfile()
       .then(res => {
         dispatch(profileSucceed(res.data));
+        return res.data;
       })
       .catch(error => {
         dispatch(profileError(error));

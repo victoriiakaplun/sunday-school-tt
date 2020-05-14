@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   Timetables,
@@ -15,14 +15,15 @@ import NavBar from './NavBar';
 import NotificationContainer from './Notification/NotificationContainer';
 import { getUserProfile } from '../store/actions/profileActions';
 import PrivateRoute from './router/PrivateRoute';
-import Spinner from '../components/Spinner';
+import Spinner from '../components/spinner/Spinner';
+import TimetableCreation from '../scenes/timetableCreation';
 
-function App({ getProfile, profileData }) {
+function App({ getProfile, profileData, loading }) {
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [getProfile]);
 
-  if (!profileData) {
+  if (loading) {
     return <Spinner />;
   }
 
@@ -59,6 +60,9 @@ function App({ getProfile, profileData }) {
         </PrivateRoute>
         <PrivateRoute path="/profile" isAuthenticated={isAuthenticated}>
           <Profile />
+        </PrivateRoute>
+        <PrivateRoute path="/timetable-creation" isAuthenticated={isAuthenticated}>
+          <TimetableCreation />
         </PrivateRoute>
         <Route render={() => <h2>Page not found</h2>} />
       </Switch>
