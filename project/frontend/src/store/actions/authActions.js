@@ -50,6 +50,5 @@ export function logout() {
   return dispatch => {
     logoutUser().then(() => dispatch(logoutSucceed()));
     // FIXME
-    dispatch(profileSucceed(null));
   };
 }

@@ -12,7 +12,6 @@ function Field({ children, type, name, placeholder, value, onChange }) {
           type={type}
           placeholder={placeholder}
           name={name}
-          value={value}
           onChange={onChange}
           required
         />

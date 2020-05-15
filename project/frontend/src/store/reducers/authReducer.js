@@ -4,6 +4,7 @@ export function getInitialAuthState() {
   return {
     loading: true,
     error: null,
+    isAuth: false,
   };
 }
 function authReducer(prevState = getInitialAuthState(), recAction) {
@@ -11,6 +12,7 @@ function authReducer(prevState = getInitialAuthState(), recAction) {
     [LOGIN_REQUEST]: (state, action) => ({
       loading: true,
       error: null,
+      isAuth: false,
     }),
     [LOGIN_SUCCEED]: (state, action) => ({
       isAuth: true,
@@ -23,6 +25,7 @@ function authReducer(prevState = getInitialAuthState(), recAction) {
     [LOGOUT]: (state, action) => ({
       loading: false,
       error: false,
+      isAuth: false,
     }),
   };
 

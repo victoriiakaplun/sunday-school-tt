@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -19,15 +19,12 @@ import Spinner from '../components/spinner/Spinner';
 import TimetableCreation from '../scenes/timetableCreation';
 
 function App({ getProfile, profileData, loading }) {
+  const history = useHistory();
   useEffect(() => {
     getProfile();
   }, [getProfile]);
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  const isAuthenticated = Boolean(profileData);
+  const isAuth = Boolean(profileData);
 
   return (
     <div>
@@ -43,25 +40,25 @@ function App({ getProfile, profileData, loading }) {
         <Route path="/signin">
           <SignIn />
         </Route>
-        <PrivateRoute exact path="/timetables" isAuthenticated={isAuthenticated}>
+        <PrivateRoute exact path="/timetables" isAuthenticated={isAuth}>
           <Timetables />
         </PrivateRoute>
-        <PrivateRoute path="/timetables/:id" isAuthenticated={isAuthenticated}>
+        <PrivateRoute path="/timetables/:id" isAuthenticated={isAuth}>
           <TimetableInfo />
         </PrivateRoute>
-        <PrivateRoute path="/timeline" isAuthenticated={isAuthenticated}>
+        <PrivateRoute path="/timeline" isAuthenticated={isAuth}>
           <Timeline />
         </PrivateRoute>
-        <PrivateRoute exact path="/orders" isAuthenticated={isAuthenticated}>
+        <PrivateRoute exact path="/orders" isAuthenticated={isAuth}>
           <Orders />
         </PrivateRoute>
-        <PrivateRoute exact path="/notifications" isAuthenticated={isAuthenticated}>
+        <PrivateRoute exact path="/notifications" isAuthenticated={isAuth}>
           <Orders />
         </PrivateRoute>
-        <PrivateRoute path="/profile" isAuthenticated={isAuthenticated}>
+        <PrivateRoute path="/profile" isAuthenticated={isAuth}>
           <Profile />
         </PrivateRoute>
-        <PrivateRoute path="/timetable-creation" isAuthenticated={isAuthenticated}>
+        <PrivateRoute path="/timetable-creation" isAuthenticated={isAuth}>
           <TimetableCreation />
         </PrivateRoute>
         <Route render={() => <h2>Page not found</h2>} />

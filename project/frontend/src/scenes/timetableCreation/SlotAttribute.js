@@ -3,8 +3,7 @@ import Field from '../../components/form/Field';
 import Select from '../../components/form/Select';
 import Checkbox from '../../components/form/Checkbox';
 
-function SlotAttribute({ attribute, onInput }) {
-  const { id, title, type, required } = attribute;
+function SlotAttribute({ attribute, onInput, onChecked }) {
   const selectOptions = [
     {
       label: 'STRING',
@@ -25,19 +24,23 @@ function SlotAttribute({ attribute, onInput }) {
         type="text"
         name="title"
         placeholder="Attribute title"
-        value={title}
-        onChange={() => onInput(id)}
+        value={attribute.title}
+        onChange={event => onInput(event, attribute.id)}
       >
         Attribute title
       </Field>
       <div>
         Attribute type
-        <Select options={selectOptions} onChange={() => onInput(id)} value={type} name="type" />
+        <Select
+          options={selectOptions}
+          onChange={event => onInput(event, attribute.id)}
+          name="type"
+        />
       </div>
       <Checkbox
-        onChange={() => onInput(id)}
+        onChange={event => onChecked(event, attribute.id)}
         name="required"
-        value={required}
+        value={attribute.required}
         placeholder="Required"
       >
         Required

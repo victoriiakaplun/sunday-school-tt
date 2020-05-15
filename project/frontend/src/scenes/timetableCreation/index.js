@@ -35,16 +35,13 @@ function TimetableCreation() {
   };
 
   const onAttributeChange = (event, id) => {
-    const newAttributeValues = {
-      ...creationAttributesData[id],
-      [event.target.name]: event.target.value,
-    };
-    const newAttributesData = [
-      creationAttributesData.slice(0, id - 1),
-      newAttributeValues,
-      creationAttributesData.slice(id + 1, creationAttributesData.length - 1),
-    ];
-    setCreationAttributesData([newAttributesData]);
+    creationAttributesData.find(item => item.id === id)[event.target.name] = event.target.value;
+    setCreationAttributesData([...creationAttributesData]);
+  };
+
+  const onAttributeRequiredChange = (event, id) => {
+    creationAttributesData.find(item => item.id === id).required = event.target.checked;
+    setCreationAttributesData([...creationAttributesData]);
   };
 
   const onSave = () => {
@@ -76,7 +73,14 @@ function TimetableCreation() {
             <SlotSettings slotSize={creationTimetableData.slot_size} onInput={onTimetableChange} />
             <Subheader>Slot attributes</Subheader>
             {creationAttributesData.map(a => {
-              return <SlotAttribute key={uuid()} attribute={a} onInput={onAttributeChange} />;
+              return (
+                <SlotAttribute
+                  key={a.id}
+                  attribute={a}
+                  onInput={onAttributeChange}
+                  onChecked={onAttributeRequiredChange}
+                />
+              );
             })}
             <Button type="is-light" onClick={onAddAttribute}>
               + Add attribute

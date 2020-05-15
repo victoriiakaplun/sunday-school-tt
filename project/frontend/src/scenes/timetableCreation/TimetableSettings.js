@@ -4,7 +4,7 @@ import Field from '../../components/form/Field';
 function TimetableSettings({ title, startRange, endRange, onInput }) {
   return (
     <div>
-      <Field type="text" name="name" placeholder="Timetable name" value={title} onChange={onInput}>
+      <Field type="text" name="title" placeholder="Timetable name" value={title} onChange={onInput}>
         Timetable name
       </Field>
       <Field
