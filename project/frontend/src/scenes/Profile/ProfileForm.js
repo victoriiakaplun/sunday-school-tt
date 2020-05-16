@@ -4,7 +4,7 @@ import Field from '../../components/form/Field';
 import Button from '../../components/button/Button';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import Spinner from '../../components/spinner/Spinner';
-import { getUserProfile, updateUserProfile } from '../../store/actions/profileActions';
+import { getUserProfile, updateUserProfile } from '../../store/actions/user/profileActions';
 import Form from '../../components/form/Form';
 
 function ProfileForm({ updateProfile, profileData, error, loading }) {

@@ -11,9 +11,9 @@ import {
   Orders,
   Main,
 } from '../scenes';
-import NavBar from './NavBar';
-import NotificationContainer from './Notification/NotificationContainer';
-import { getUserProfile } from '../store/actions/profileActions';
+import NavBar from './navBar';
+import NotificationContainer from './notification/NotificationContainer';
+import { getUserProfile } from '../store/actions/user/profileActions';
 import PrivateRoute from './router/PrivateRoute';
 import Spinner from '../components/spinner/Spinner';
 import TimetableCreation from '../scenes/timetableCreation';
@@ -50,9 +50,6 @@ function App({ getProfile, profileData, loading }) {
           <Timeline />
         </PrivateRoute>
         <PrivateRoute exact path="/orders" isAuthenticated={isAuth}>
-          <Orders />
-        </PrivateRoute>
-        <PrivateRoute exact path="/notifications" isAuthenticated={isAuth}>
           <Orders />
         </PrivateRoute>
         <PrivateRoute path="/profile" isAuthenticated={isAuth}>

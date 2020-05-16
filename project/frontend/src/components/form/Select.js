@@ -9,7 +9,7 @@ function Select({ options, onChange, value, name }) {
           Slot type
           {options.map(option => {
             return (
-              <option value={option.value} key={uuid()}>
+              <option value={option.value} key={option.id}>
                 {option.label}
               </option>
             );

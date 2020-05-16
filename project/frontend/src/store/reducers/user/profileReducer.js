@@ -1,4 +1,8 @@
-import { PROFILE_REQUESTED, PROFILE_SUCCEED, PROFILE_ERROR } from '../actions/profileActions';
+import {
+  PROFILE_REQUESTED,
+  PROFILE_SUCCEED,
+  PROFILE_ERROR,
+} from '../../actions/user/profileActions';
 
 export function getInitialState() {
   return {

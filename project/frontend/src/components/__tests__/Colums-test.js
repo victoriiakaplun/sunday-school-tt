@@ -1,5 +1,5 @@
 import { render } from 'test-utils';
-import Columns from '../Columns';
+import Columns from '../columns/Columns';
 
 describe('Columns', () => {
   it('renders correctly', () => {

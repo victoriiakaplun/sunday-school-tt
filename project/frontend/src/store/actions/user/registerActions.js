@@ -1,5 +1,5 @@
-import { registerUser } from '../../service/TimetableAPI';
-import { addNotification } from './notificationActions';
+import { registerUser } from '../../../service/TimetableAPI';
+import { addNotification } from '../notification/notificationActions';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export function registerRequest() {

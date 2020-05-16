@@ -9,7 +9,7 @@ exports[`Button renders correctly:
       </button>
      1`] = `
 <button
-  class="button is-success id-medium"
+  class="button is-success is-medium"
   type="button"
 >
   Click Me!

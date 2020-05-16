@@ -34,3 +34,7 @@ export async function update(req, id) {
 export async function getProfile() {
   return axios.get('api/v1/users/profile');
 }
+
+export async function addTimetable(req) {
+  return axios.post('/api/v1/timetables', req);
+}

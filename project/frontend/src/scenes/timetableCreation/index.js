@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../../components/header/Header';
-import Columns from '../../components/Columns';
-import Column from '../../components/Column';
+import Columns from '../../components/columns/Columns';
+import Column from '../../components/columns/Column';
 import TimetableSettings from './TimetableSettings';
 import SlotSettings from './SlotSettings';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
@@ -10,8 +12,9 @@ import Button from '../../components/button/Button';
 import Subheader from '../../components/header/Subheader';
 import Form from '../../components/form/Form';
 import SlotAttribute from './SlotAttribute';
+import { createTimetable } from '../../store/actions/timetable/createTimetableActions';
 
-function TimetableCreation() {
+function TimetableCreation({ create }) {
   const [creationTimetableData, setCreationTimetableData] = useState({
     title: '',
     start: '',
@@ -44,9 +47,25 @@ function TimetableCreation() {
     setCreationAttributesData([...creationAttributesData]);
   };
 
+  // FIXME: hardcoded, because select component doesnt work correctly
   const onSave = () => {
     console.log(creationTimetableData);
     console.log(creationAttributesData);
+    const attributes = [
+      { title: 'Band', type: 'STRING', required: true },
+      {
+        title: 'Price',
+        type: 'STRING',
+        required: false,
+      },
+    ];
+
+    const body = {
+      ...creationTimetableData,
+      attributes,
+      // attributes: creationAttributesData,
+    };
+    create(body);
   };
 
   const onAddAttribute = () => {
@@ -88,7 +107,9 @@ function TimetableCreation() {
             <CenteredButtonBox>
               <div className="buttons">
                 <Button onClick={onSave}>Save</Button>
-                <Button type="is-light">Cancel</Button>
+                <Link to="/timetables">
+                  <Button type="is-light">Cancel</Button>
+                </Link>
               </div>
             </CenteredButtonBox>
           </Form>
@@ -98,4 +119,14 @@ function TimetableCreation() {
   );
 }
 
-export default TimetableCreation;
+const mapStateToProps = state => ({
+  error: state.timetableCreation.error,
+  timetable: state.timetableCreation.timetable,
+  loading: state.timetableCreation.loading,
+});
+
+const mapDispatchToProps = {
+  create: createTimetable,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimetableCreation);

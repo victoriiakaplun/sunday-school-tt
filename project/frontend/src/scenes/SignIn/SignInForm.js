@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Field from '../../components/form/Field';
 import Button from '../../components/button/Button';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
-import { login } from '../../store/actions/authActions';
+import { login } from '../../store/actions/user/authActions';
 import Form from '../../components/form/Form';
 
 function SignInForm({ loginUser, isAuth }) {

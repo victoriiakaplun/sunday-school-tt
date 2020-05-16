@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuid } from 'uuid';
 import Field from '../../components/form/Field';
 import Select from '../../components/form/Select';
 import Checkbox from '../../components/form/Checkbox';
@@ -6,14 +7,17 @@ import Checkbox from '../../components/form/Checkbox';
 function SlotAttribute({ attribute, onInput, onChecked }) {
   const selectOptions = [
     {
+      id: uuid(),
       label: 'STRING',
       value: 'STRING',
     },
     {
+      id: uuid(),
       label: 'NUMBER',
       value: 'NUMBER',
     },
     {
+      id: uuid(),
       label: 'DATE',
       value: 'DATE',
     },

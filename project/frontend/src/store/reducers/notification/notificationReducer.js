@@ -1,5 +1,8 @@
 import uuid from 'uuid/v4';
-import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from '../actions/notificationActions';
+import {
+  ADD_NOTIFICATION,
+  REMOVE_NOTIFICATION,
+} from '../../actions/notification/notificationActions';
 
 export function getInitialNotificationState() {
   return {

@@ -1,5 +1,5 @@
-import { getProfile, update } from '../../service/TimetableAPI';
-import { addNotification } from './notificationActions';
+import { getProfile, update } from '../../../service/TimetableAPI';
+import { addNotification } from '../notification/notificationActions';
 
 export const PROFILE_REQUESTED = 'PROFILE_REQUESTED';
 export function profileRequested() {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import NotificationList from './NotificationList';
-import { removeNotification } from '../../store/actions/notificationActions';
+import { removeNotification } from '../../store/actions/notification/notificationActions';
 
 function NotificationContainer() {
   const dispatch = useDispatch();

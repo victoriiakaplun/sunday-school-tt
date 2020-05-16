@@ -1,5 +1,5 @@
-import { getAllTimetables } from '../../service/TimetableAPI';
-import { addNotification } from './notificationActions';
+import { getAllTimetables } from '../../../service/TimetableAPI';
+import { addNotification } from '../notification/notificationActions';
 
 export const TIMETABLE_REQUESTED = 'TIMETABLE_REQUEST';
 export function timetableRequested() {

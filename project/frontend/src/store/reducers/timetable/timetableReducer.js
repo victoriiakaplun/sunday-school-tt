@@ -2,7 +2,7 @@ import {
   TIMETABLE_REQUESTED,
   TIMETABLE_LOADED,
   TIMETABLE_ERROR,
-} from '../actions/timetableActions';
+} from '../../actions/timetable/timetableActions';
 
 export function getInitialState() {
   return {

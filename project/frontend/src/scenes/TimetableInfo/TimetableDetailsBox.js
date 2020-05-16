@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Columns from '../../components/Columns';
+import Columns from '../../components/columns/Columns';
 
 function TimetableDetailsBox({ info }) {
   const { title, start, end, slotSize, Attribute } = info;

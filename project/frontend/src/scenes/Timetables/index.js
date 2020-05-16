@@ -5,9 +5,9 @@ import Header from '../../components/header/Header';
 import Button from '../../components/button/Button';
 import TimetablesList from './TimetablesList';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
-import Columns from '../../components/Columns';
-import Column from '../../components/Column';
-import { getUserProfile } from '../../store/actions/profileActions';
+import Columns from '../../components/columns/Columns';
+import Column from '../../components/columns/Column';
+import { getUserProfile } from '../../store/actions/user/profileActions';
 
 function Timetables({ profileData }) {
   const { role } = profileData;

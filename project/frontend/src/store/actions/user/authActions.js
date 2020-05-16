@@ -1,5 +1,5 @@
-import { loginUser, logoutUser } from '../../service/TimetableAPI';
-import { addNotification } from './notificationActions';
+import { loginUser, logoutUser } from '../../../service/TimetableAPI';
+import { addNotification } from '../notification/notificationActions';
 import { profileSucceed } from './profileActions';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';

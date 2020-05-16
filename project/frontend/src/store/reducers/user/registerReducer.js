@@ -1,4 +1,8 @@
-import { REGISTER_REQUEST, REGISTER_SUCCEED, REGISTER_ERROR } from '../actions/registerActions';
+import {
+  REGISTER_REQUEST,
+  REGISTER_SUCCEED,
+  REGISTER_ERROR,
+} from '../../actions/user/registerActions';
 
 export function getInitialState() {
   return {

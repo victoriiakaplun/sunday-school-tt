@@ -1,6 +1,6 @@
 import { render } from 'test-utils';
 
-import Notification from '../../App/Notification/Notification';
+import Notification from '../../App/notification/Notification';
 
 describe('Notification', () => {
   it('renders correctly', () => {

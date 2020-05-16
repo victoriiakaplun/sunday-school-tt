@@ -7,10 +7,10 @@ exports[`Notification renders correctly:
       </div>
      1`] = `
 <div
-  class="css-1n4a782-Container ealz4yh0"
+  class="css-1n4a782-Container e19f66hx0"
 >
   <div
-    class="notification is-warning"
+    class="notification is-undefined"
   >
     <button
       class="delete"

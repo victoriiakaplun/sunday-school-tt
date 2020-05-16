@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import NavBarItem from './NavBarItem';
 import AuthButtons from './AuthButtons';
-import { logout } from '../../store/actions/authActions';
+import { logout } from '../../store/actions/user/authActions';
 import LinkedNavBarItem from './LinkedNavBarItem';
 
 function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
@@ -36,9 +36,9 @@ function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
         <LinkedNavBarItem to="/orders">Orders</LinkedNavBarItem>
       </div>
       <div className="navbar-end">
-        <LinkedNavBarItem to="/notifications">
+        <NavBarItem>
           <FontAwesomeIcon icon={faBell} size="lg" css={{ color: 'green' }} />
-        </LinkedNavBarItem>
+        </NavBarItem>
         <LinkedNavBarItem to="/profile">
           <FontAwesomeIcon icon={faAddressCard} size="lg" css={{ color: 'green', margin: '7px' }} />
           {profileData && profileData.name}

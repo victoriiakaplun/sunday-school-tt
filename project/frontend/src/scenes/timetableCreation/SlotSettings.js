@@ -1,10 +1,11 @@
 import React from 'react';
+import { v4 as uuid } from 'uuid';
 import Select from '../../components/form/Select';
 
 function SlotSettings({ onInput, slotSize }) {
   const options = [
-    { label: 'HOUR', value: 'HOUR' },
-    { label: 'DAY', value: 'DAY' },
+    { id: uuid(), label: 'HOUR', value: 'HOUR' },
+    { id: uuid(), label: 'DAY', value: 'DAY' },
   ];
   return (
     <div>

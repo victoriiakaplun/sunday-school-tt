@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, LOGIN_SUCCEED, LOGIN_ERROR, LOGOUT } from '../actions/authActions';
+import { LOGIN_REQUEST, LOGIN_SUCCEED, LOGIN_ERROR, LOGOUT } from '../../actions/user/authActions';
 
 export function getInitialAuthState() {
   return {

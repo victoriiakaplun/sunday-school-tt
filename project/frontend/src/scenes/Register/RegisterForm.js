@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Field from '../../components/form/Field';
 import Button from '../../components/button/Button';
-import { register } from '../../store/actions/registerActions';
+import { register } from '../../store/actions/user/registerActions';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import Form from '../../components/form/Form';
 
