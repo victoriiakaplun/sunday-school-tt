@@ -1,0 +1,15 @@
+.cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 50px;
+  border: 1px solid gainsboro;
+}
+.tableColumn {
+  padding: 0;
+}
+
+.container {
+  padding: 20px;
+}

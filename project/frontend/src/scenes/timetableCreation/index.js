@@ -19,13 +19,13 @@ function TimetableCreation({ create }) {
     title: '',
     start: '',
     end: '',
-    slot_size: '',
+    slot_size: 'HOUR',
   });
   const [creationAttributesData, setCreationAttributesData] = useState([
     {
       id: uuid(),
       title: '',
-      type: '',
+      type: 'STRING',
       required: false,
     },
   ]);
@@ -47,23 +47,10 @@ function TimetableCreation({ create }) {
     setCreationAttributesData([...creationAttributesData]);
   };
 
-  // FIXME: hardcoded, because select component doesnt work correctly
   const onSave = () => {
-    console.log(creationTimetableData);
-    console.log(creationAttributesData);
-    const attributes = [
-      { title: 'Band', type: 'STRING', required: true },
-      {
-        title: 'Price',
-        type: 'STRING',
-        required: false,
-      },
-    ];
-
     const body = {
       ...creationTimetableData,
-      attributes,
-      // attributes: creationAttributesData,
+      attributes: creationAttributesData.map(attr => ({ ...attr, id: undefined })),
     };
     create(body);
   };
@@ -71,7 +58,7 @@ function TimetableCreation({ create }) {
   const onAddAttribute = () => {
     setCreationAttributesData([
       ...creationAttributesData,
-      { id: uuid(), title: '', type: '', required: false },
+      { id: uuid(), title: '', type: 'STRING', required: false },
     ]);
   };
 

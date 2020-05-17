@@ -1,8 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import Header from '../../components/header/Header';
 import TimetableDetailsBox from './TimetableDetailsBox';
+
+import timeColumnStyles from './TimesColumn.scss';
+import TimetableCell from './TimetableCell';
 
 function TimetableInfo({ timetables }) {
   const { id } = useParams();
@@ -12,27 +16,29 @@ function TimetableInfo({ timetables }) {
 
   const timesColumn = [-1, ...Array(24).keys()].map(timesItem => {
     if (timesItem === -1) {
-      return (
-        <div
-          className="card-content"
-          style={{ textAlign: 'left', verticalAlign: 'top', border: '1px solid gainsboro' }}
-        />
-      );
+      return <div key={timesItem} className={timeColumnStyles.cell} />;
     }
 
-    return (
-      <div className="card-content" style={{ textAlign: 'right', border: '1px solid gainsboro' }}>
-        {`${timesItem}:00`}
-      </div>
-    );
+    return <div key={timesItem} className={timeColumnStyles.cell}>{`${timesItem}:00`}</div>;
+  });
+
+  const array = [...Array(24).keys()].map(item => {
+    return <TimetableCell key={item} attributes={timetable.Attribute} />;
   });
 
   return (
-    <div>
+    <div className={timeColumnStyles.container}>
       <Header>Timetable details</Header>
       <TimetableDetailsBox info={{ title, start, end, slotSize, Attribute }} />
       <div className="columns">
-        <div className="column is-1">{timesColumn}</div>
+        <div className={classNames('column', 'is-1', timeColumnStyles.tableColumn)}>
+          {timesColumn}
+        </div>
+        <div className={classNames('column', 'is-2', timeColumnStyles.tableColumn)}>{array}</div>
+        <div className={classNames('column', 'is-2', timeColumnStyles.tableColumn)}>{array}</div>
+        <div className={classNames('column', 'is-2', timeColumnStyles.tableColumn)}>{array}</div>
+        <div className={classNames('column', 'is-2', timeColumnStyles.tableColumn)}>{array}</div>
+        <div className={classNames('column', 'is-2', timeColumnStyles.tableColumn)}>{array}</div>
       </div>
     </div>
   );
