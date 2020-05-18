@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import CardHeader from '../../components/card/CardHeader';
-import CardBody from '../../components/card/CardBody';
-import timeColumnStyles from './TimesColumn.scss';
-import EventCreationModal from './EventCreationModal';
+import timeColumnStyles from './TimetableInfo.scss';
+import EventCreationModal from './modals/EventCreationModal';
 
 function TimetableCell({ attributes }) {
   const [isCreationModalActive, setCreationModalActive] = useState(false);

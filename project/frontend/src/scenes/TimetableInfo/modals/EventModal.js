@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import ModalTitle from '../../components/modal/ModalTitle';
-import ModalBody from '../../components/modal/ModalBody';
-import ModalFooter from '../../components/modal/ModalFooter';
-import CenteredButtonBox from '../../components/button/CenteredButtonBox';
-import Button from '../../components/button/Button';
-import BaseModal from '../../components/modal/BaseModal';
+import ModalTitle from '../../../components/modal/ModalTitle';
+import ModalBody from '../../../components/modal/ModalBody';
+import ModalFooter from '../../../components/modal/ModalFooter';
+import CenteredButtonBox from '../../../components/button/CenteredButtonBox';
+import Button from '../../../components/button/Button';
+import BaseModal from '../../../components/modal/BaseModal';
 
 function EventModal({ period, orderedBy, name, show, onClose }) {
   if (!show) {

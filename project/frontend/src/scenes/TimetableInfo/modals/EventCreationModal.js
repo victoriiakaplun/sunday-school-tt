@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { connect } from 'react-redux';
-import BaseModal from '../../components/modal/BaseModal';
-import ModalTitle from '../../components/modal/ModalTitle';
-import ModalBody from '../../components/modal/ModalBody';
-import ModalFooter from '../../components/modal/ModalFooter';
-import CenteredButtonBox from '../../components/button/CenteredButtonBox';
-import Button from '../../components/button/Button';
-import Field from '../../components/form/Field';
+import BaseModal from '../../../components/modal/BaseModal';
+import ModalTitle from '../../../components/modal/ModalTitle';
+import ModalBody from '../../../components/modal/ModalBody';
+import ModalFooter from '../../../components/modal/ModalFooter';
+import CenteredButtonBox from '../../../components/button/CenteredButtonBox';
+import Button from '../../../components/button/Button';
+import Field from '../../../components/form/Field';
 
 function EventCreationModal({ title, show, attributes, onClose }) {
   const [creationData, setCreationData] = useState([]);

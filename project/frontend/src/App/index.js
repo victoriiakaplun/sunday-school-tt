@@ -16,7 +16,7 @@ import NotificationContainer from './notification/NotificationContainer';
 import { getUserProfile } from '../store/actions/user/profileActions';
 import PrivateRoute from './router/PrivateRoute';
 import Spinner from '../components/spinner/Spinner';
-import TimetableCreation from '../scenes/timetableCreation';
+import TimetableCreation from '../scenes/TimetableCreation';
 
 function App({ getProfile, profileData, loading }) {
   const history = useHistory();
