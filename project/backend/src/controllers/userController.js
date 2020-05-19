@@ -1,5 +1,13 @@
 const HttpStatus = require('http-status-codes');
-const { User, Notification, Order, AttributeValue } = require('@models');
+const {
+  User,
+  Notification,
+  Order,
+  AttributeValue,
+  Slot,
+  Timetable,
+  Attribute,
+} = require('@models');
 
 async function getAll(ctx) {
   const users = await User.findAll({ attributes: ['id', 'role', 'name', 'email'] });
@@ -123,17 +131,46 @@ async function getUserOrders(ctx) {
       attributes: ['id', 'status'],
       include: [
         {
+          model: Slot,
+          as: 'Slot',
+          attributes: ['id', 'start', 'end'],
+        },
+        {
+          model: Timetable,
+          as: 'Timetable',
+          attributes: ['id', 'title'],
+        },
+        {
           model: AttributeValue,
           as: 'AttributeValue',
-          attributes: ['id', 'value', 'attribute_id'],
+          attributes: ['id', 'value'],
+          include: {
+            model: Attribute,
+            as: 'Attribute',
+            attributes: ['id', 'title'],
+          },
         },
       ],
     });
     if (!orders) {
       throw new Error();
     }
+    const responseBody = [];
+    for (const order of orders) {
+      responseBody.push({
+        id: order.dataValues.id,
+        status: order.dataValues.status,
+        Slot: {
+          id: order.dataValues.Slot.id,
+          start: order.dataValues.Slot.start.toString(),
+          end: order.dataValues.Slot.end.toString(),
+        },
+        Timetable: order.dataValues.Timetable,
+        AttributeValue: order.dataValues.AttributeValue,
+      });
+    }
     ctx.response.status = HttpStatus.OK;
-    ctx.response.body = orders;
+    ctx.response.body = responseBody;
     return ctx.response;
   } catch (e) {
     ctx.response.status = HttpStatus.BAD_REQUEST;

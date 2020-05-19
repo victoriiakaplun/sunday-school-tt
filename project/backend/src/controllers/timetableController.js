@@ -88,13 +88,20 @@ async function getAll(ctx) {
   }
   const result = [];
   for (const t of timetables) {
+    const slots = t.dataValues.Slot.map(slot => {
+      return {
+        id: slot.id,
+        start: slot.start.toString(),
+        end: slot.end.toString(),
+      };
+    });
     result.push({
       id: t.dataValues.id,
       title: t.dataValues.title,
       start: moment(t.dataValues.start_date).format('LL'),
       end: moment(t.dataValues.end_date).format('LL'),
       slotSize: t.dataValues.slot_size,
-      Slot: t.dataValues.Slot,
+      Slot: slots,
       Attribute: t.dataValues.Attribute,
     });
   }

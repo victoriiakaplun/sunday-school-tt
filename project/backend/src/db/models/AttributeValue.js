@@ -24,5 +24,8 @@ const AttributeValue = db.define(
     freezeTableName: true,
   },
 );
+AttributeValue.associate = models => {
+  AttributeValue.belongsTo(models.Attribute, { foreignKey: 'attribute_id' });
+};
 
 module.exports = AttributeValue;
