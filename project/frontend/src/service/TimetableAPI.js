@@ -38,3 +38,11 @@ export async function getProfile() {
 export async function addTimetable(req) {
   return axios.post('/api/v1/timetables', req);
 }
+
+export async function addOrder(req) {
+  return axios.post('/api/v1/orders', req);
+}
+
+export async function getUserOrders(id) {
+  return axios.get(`/api/v1/users/${id}/orders`);
+}

@@ -7,7 +7,6 @@ import TimetablesList from './TimetablesList';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import Columns from '../../components/columns/Columns';
 import Column from '../../components/columns/Column';
-import { getUserProfile } from '../../store/actions/user/profileActions';
 
 function Timetables({ profileData }) {
   const { role } = profileData;

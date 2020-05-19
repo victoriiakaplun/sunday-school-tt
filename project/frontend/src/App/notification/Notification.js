@@ -5,7 +5,7 @@ import CloseButton from './CloseButton';
 
 function Notification({ onClose, delay, type, children }) {
   useEffect(() => {
-    setTimeout(() => onClose(), 5000);
+    setTimeout(() => onClose(), delay);
   }, [onClose, delay]);
 
   const containerClasses = classNames('notification', `is-${type}`);
@@ -29,6 +29,6 @@ const Container = styled.div`
 `;
 
 Notification.defaultProps = {
-  delay: 5,
+  delay: 10000,
 };
 export default Notification;
