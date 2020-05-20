@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { v4 as uuid } from 'uuid';
@@ -9,12 +9,18 @@ import TimetableContainer from './TimetableContainer';
 import TimetableColumn from './column/TimetableColumn';
 import TimesColumn from './column/TimesColumn';
 import Cell from './cell/Cell';
+import { fetchTimetableOrders } from '../../store/actions/timetable/timetableOrdersActions';
 
 const moment = require('moment');
 
-function TimetableInfo({ timetables }) {
+function TimetableInfo({ timetables, getTimetableOrders, timetableOrders }) {
   const { id } = useParams();
   const parsedId = Number.parseInt(id, 10);
+
+  useEffect(() => {
+    getTimetableOrders(parsedId);
+  }, [parsedId]);
+
   const timetable = timetables.find(t => t.id === parsedId);
   const { title, start, end, slotSize, Slot, Attribute } = timetable;
 
@@ -28,7 +34,8 @@ function TimetableInfo({ timetables }) {
     Slot.forEach(slot => {
       if (moment(d.day).isSame(slot.start, 'days')) {
         const objIndex = daysSlots.findIndex(obj => moment(obj.day).isSame(slot.start, 'days'));
-        daysSlots[objIndex].slots.push(<SlotCell key={slot.id} slot={slot} />);
+        const slotOrders = timetableOrders.filter(order => order.Slot.id === slot.id);
+        daysSlots[objIndex].slots.push(<SlotCell key={slot.id} slot={slot} orders={slotOrders} />);
       }
     });
   });
@@ -51,5 +58,11 @@ const mapStateToProps = state => ({
   timetables: state.timetables.timetables,
   loading: state.timetables.loading,
   error: state.timetables.error,
+  timetableOrders: state.timetableOrders.timetableOrders,
 });
-export default connect(mapStateToProps)(TimetableInfo);
+
+const mapDispatchToProps = {
+  getTimetableOrders: fetchTimetableOrders,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimetableInfo);

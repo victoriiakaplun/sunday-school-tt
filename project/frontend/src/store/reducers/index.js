@@ -7,6 +7,7 @@ import registerReducer from './user/registerReducer';
 import createTimetableReducer from './timetable/createTimetableReducer';
 import createOrderCreationReducer from './order/createOrderReducer';
 import userOrdersReducer from './user/userOrdersReducer';
+import timetableOrdersReducer from './timetable/timetableOrdersReducer';
 
 const appReducer = combineReducers({
   notifications: notificationReducer,
@@ -17,6 +18,7 @@ const appReducer = combineReducers({
   profile: profileReducer,
   orderCreation: createOrderCreationReducer,
   userOrders: userOrdersReducer,
+  timetableOrders: timetableOrdersReducer,
 });
 
 export default appReducer;

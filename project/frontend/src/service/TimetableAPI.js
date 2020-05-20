@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const axiosInstance = axios({ baseURL: '/api/v1' });
+
 export async function loginUser(req) {
   return axios.post('/api/v1/users/login', {
     email: req.email,
@@ -45,4 +47,8 @@ export async function addOrder(req) {
 
 export async function getUserOrders(id) {
   return axios.get(`/api/v1/users/${id}/orders`);
+}
+
+export async function getTimetableOrders(id) {
+  return axios.get(`/api/v1/orders?timetable_id=${id}`);
 }

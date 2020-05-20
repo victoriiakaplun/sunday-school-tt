@@ -6,7 +6,7 @@ import {
 
 export function getInitialState() {
   return {
-    userOrders: null,
+    userOrders: [],
     loading: false,
     error: false,
   };
@@ -15,7 +15,7 @@ export function getInitialState() {
 function userOrdersReducer(prevState = getInitialState(), recAction) {
   const handlerMap = {
     [USER_ORDERS_REQUESTED]: (state, action) => ({
-      ...state,
+      userOrders: [],
       error: false,
       loading: true,
     }),
@@ -25,7 +25,7 @@ function userOrdersReducer(prevState = getInitialState(), recAction) {
       loading: false,
     }),
     [USER_ORDERS_ERROR]: (state, action) => ({
-      userOrders: null,
+      userOrders: [],
       error: action.payload,
       loading: false,
     }),

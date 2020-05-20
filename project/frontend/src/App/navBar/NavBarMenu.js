@@ -10,7 +10,7 @@ import LinkedNavBarItem from './LinkedNavBarItem';
 
 function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
   const history = useHistory();
-
+  const isAdmin = profileData && profileData.role === 'admin';
   async function onLogout() {
     logoutUser();
     history.push('/signin');
@@ -28,12 +28,14 @@ function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
     return <div />;
   }
 
+  const orderNavBarItem = <LinkedNavBarItem to="/orders">Orders</LinkedNavBarItem>;
+
   return (
     <div className="navbar-menu">
       <div className="navbar-start">
         <LinkedNavBarItem to="/timetables">Timetables</LinkedNavBarItem>
         <LinkedNavBarItem to="/timeline">Timeline</LinkedNavBarItem>
-        <LinkedNavBarItem to="/orders">Orders</LinkedNavBarItem>
+        {isAdmin && orderNavBarItem}
       </div>
       <div className="navbar-end">
         <NavBarItem>

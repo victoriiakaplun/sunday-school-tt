@@ -9,11 +9,10 @@ import Spinner from '../../components/spinner/Spinner';
 
 const moment = require('moment');
 
-// FIXME: always loading
 function EventTimeline({ profileData, userOrders, error, loading, getUserOrders }) {
   useEffect(() => {
     getUserOrders(profileData.id);
-  }, [getUserOrders]);
+  }, [profileData.id]);
 
   if (loading) {
     return <Spinner />;
@@ -28,7 +27,7 @@ function EventTimeline({ profileData, userOrders, error, loading, getUserOrders 
 
   const now = moment();
 
-  /* userOrders.forEach(order => {
+  userOrders.forEach(order => {
     if (now.isBefore(order.Slot.start, 'hours')) {
       upcomingEventsInfo.push(order);
     }
@@ -37,21 +36,34 @@ function EventTimeline({ profileData, userOrders, error, loading, getUserOrders 
     }
   });
 
-  console.log(upcomingEventsInfo);
-  console.log(previousEventsInfo); */
-
   return (
     <Columns>
       <Column>
         <Divider>Upcoming events</Divider>
         {upcomingEventsInfo.map(event => {
-          const { id, title, Slot, AttributeValue } = event;
-          return <EventCard key={id} title={title} body={{ Slot, AttributeValue }} />;
+          const { id, Timetable, Slot, AttributeValue } = event;
+          return (
+            <EventCard
+              key={id}
+              title={Timetable.title}
+              start={Slot.start}
+              end={Slot.end}
+              AttributeValue={AttributeValue}
+            />
+          );
         })}
         <Divider>Previous events</Divider>
         {previousEventsInfo.map(event => {
-          const { id, title, Slot, AttributeValue } = event;
-          return <EventCard key={id} title={title} body={{ Slot, AttributeValue }} />;
+          const { id, Timetable, Slot, AttributeValue } = event;
+          return (
+            <EventCard
+              key={id}
+              title={Timetable.title}
+              start={Slot.start}
+              end={Slot.end}
+              AttributeValue={AttributeValue}
+            />
+          );
         })}
       </Column>
     </Columns>
@@ -61,8 +73,8 @@ function EventTimeline({ profileData, userOrders, error, loading, getUserOrders 
 const mapStateToProps = state => ({
   profileData: state.profile.profileData,
   userOrders: state.userOrders.userOrders,
-  loading: state.userOrders.userOrders,
-  error: state.userOrders.userOrders,
+  loading: state.userOrders.loading,
+  error: state.userOrders.error,
 });
 const mapDispatchToProps = {
   getUserOrders: fetchUserOrders,
