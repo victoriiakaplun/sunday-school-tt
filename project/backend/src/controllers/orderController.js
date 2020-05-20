@@ -82,11 +82,21 @@ async function getAll(ctx) {
       attributes: ['id', 'status'],
       include: [
         {
+          model: Slot,
+          as: 'Slot',
+          attributes: ['id', 'start', 'end'],
+        },
+        {
           model: AttributeValue,
           as: 'AttributeValue',
-          attributes: ['id', 'value', 'attribute_id'],
+          attributes: ['id', 'value'],
+          include: {
+            model: Attribute,
+            as: 'Attribute',
+            attributes: ['id', 'title'],
+          },
         },
-        { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
+        { model: User, as: 'User', attributes: ['id', 'name'] },
       ],
     });
   } else {
@@ -94,11 +104,21 @@ async function getAll(ctx) {
       attributes: ['id', 'status'],
       include: [
         {
+          model: Slot,
+          as: 'Slot',
+          attributes: ['id', 'start', 'end'],
+        },
+        {
           model: AttributeValue,
           as: 'AttributeValue',
-          attributes: ['id', 'value', 'attribute_id'],
+          attributes: ['id', 'value'],
+          include: {
+            model: Attribute,
+            as: 'Attribute',
+            attributes: ['id', 'title'],
+          },
         },
-        { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
+        { model: User, as: 'User', attributes: ['id', 'name'] },
       ],
     });
   }
@@ -123,11 +143,21 @@ async function getOrder(ctx) {
       attributes: ['id', 'status'],
       include: [
         {
+          model: Slot,
+          as: 'Slot',
+          attributes: ['id', 'start', 'end'],
+        },
+        {
           model: AttributeValue,
           as: 'AttributeValue',
-          attributes: ['id', 'value', 'attribute_id'],
+          attributes: ['id', 'value'],
+          include: {
+            model: Attribute,
+            as: 'Attribute',
+            attributes: ['id', 'title'],
+          },
         },
-        { model: User, as: 'User', attributes: ['id', 'role', 'name', 'email'] },
+        { model: User, as: 'User', attributes: ['id', 'name'] },
       ],
     });
     if (!order) {
