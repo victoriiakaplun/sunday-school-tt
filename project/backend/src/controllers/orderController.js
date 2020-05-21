@@ -87,6 +87,11 @@ async function getAll(ctx) {
           attributes: ['id', 'start', 'end'],
         },
         {
+          model: Timetable,
+          as: 'Timetable',
+          attributes: ['id', 'title'],
+        },
+        {
           model: AttributeValue,
           as: 'AttributeValue',
           attributes: ['id', 'value'],
@@ -107,6 +112,11 @@ async function getAll(ctx) {
           model: Slot,
           as: 'Slot',
           attributes: ['id', 'start', 'end'],
+        },
+        {
+          model: Timetable,
+          as: 'Timetable',
+          attributes: ['id', 'title'],
         },
         {
           model: AttributeValue,
@@ -146,6 +156,11 @@ async function getOrder(ctx) {
           model: Slot,
           as: 'Slot',
           attributes: ['id', 'start', 'end'],
+        },
+        {
+          model: Timetable,
+          as: 'Timetable',
+          attributes: ['id', 'title'],
         },
         {
           model: AttributeValue,
