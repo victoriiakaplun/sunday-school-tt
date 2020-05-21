@@ -29,7 +29,6 @@ export function fetchTimetableOrders(timetableId) {
     getTimetableOrders(timetableId)
       .then(res => {
         dispatch(timetableOrdersLoaded(res.data));
-        console.log('ACTION ', res.data);
         return res.data;
       })
       .catch(error => {

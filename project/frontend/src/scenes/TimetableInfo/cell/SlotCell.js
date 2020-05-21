@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import timeColumnStyles from '../TimetableInfo.scss';
 import EventCreationModal from '../modal/EventCreationModal';
-import EventModal from '../modal/EventModal';
-import EventConfirmModal from '../modal/EventConfirnModal';
+import EventShowModal from '../modal/EventShowModal';
+import EventConfirmModal from '../modal/EventConfirmModal';
 
 function SlotCell({ slot, orders }) {
   const [isCreationModalActive, setCreationModalActive] = useState(false);
@@ -33,10 +33,17 @@ function SlotCell({ slot, orders }) {
     cellContent = (
       <>
         <b>{confirmedOrder.User.name}</b>
-        {attributeValues}
+        {confirmedOrder.AttributeValue[0].value}
       </>
     );
-    cellModal = <EventModal />;
+    cellModal = (
+      <EventShowModal
+        slot={slot}
+        order={confirmedOrder}
+        show={isCreationModalActive}
+        onClose={() => setCreationModalActive(false)}
+      />
+    );
   } else {
     orderClassName = timeColumnStyles.createdOrder;
     cellModal = <EventConfirmModal />;
