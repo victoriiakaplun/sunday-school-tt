@@ -9,6 +9,7 @@ import createOrderCreationReducer from './order/createOrderReducer';
 import userOrdersReducer from './user/userOrdersReducer';
 import timetableOrdersReducer from './timetable/timetableOrdersReducer';
 import allOrdersReducer from './order/allOrdersReducer';
+import userMessagesReducer from './user/userMessagesReducer';
 
 const appReducer = combineReducers({
   notifications: notificationReducer,
@@ -21,6 +22,7 @@ const appReducer = combineReducers({
   userOrders: userOrdersReducer,
   timetableOrders: timetableOrdersReducer,
   orders: allOrdersReducer,
+  messages: userMessagesReducer,
 });
 
 export default appReducer;

@@ -35,12 +35,12 @@ export async function getProfile() {
   return axios.get('api/v1/users/profile');
 }
 
-export async function addTimetable(req) {
-  return axios.post('/api/v1/timetables', req);
+export async function addTimetable(body) {
+  return axios.post('/api/v1/timetables', body);
 }
 
-export async function addOrder(req) {
-  return axios.post('/api/v1/orders', req);
+export async function addOrder(body) {
+  return axios.post('/api/v1/orders', body);
 }
 
 export async function getUserOrders(id) {
@@ -53,4 +53,12 @@ export async function getTimetableOrders(id) {
 
 export async function getAllOrders() {
   return axios.get('/api/v1/orders');
+}
+
+export async function getUserMessages(id) {
+  return axios.get(`/api/v1/users/${id}/notifications`);
+}
+
+export async function updateMessage(body, id) {
+  return axios.put(`/api/v1/notifications/${id}`, body);
 }

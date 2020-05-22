@@ -2,14 +2,20 @@ import { faAddressCard, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import React from 'react';
+import React, { useState } from 'react';
 import NavBarItem from './NavBarItem';
 import AuthButtons from './AuthButtons';
 import { logout } from '../../store/actions/user/authActions';
 import LinkedNavBarItem from './LinkedNavBarItem';
+import MessageContainer from '../../components/message/MessagesContainer';
 
 function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
   const history = useHistory();
+  const [isMessagesContainerActive, setMessagesContainerActive] = useState(false);
+  const onShowMessages = () => {
+    setMessagesContainerActive(prevState => !prevState);
+  };
+
   const isAdmin = profileData && profileData.role === 'admin';
   async function onLogout() {
     logoutUser();
@@ -39,7 +45,13 @@ function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
       </div>
       <div className="navbar-end">
         <NavBarItem>
-          <FontAwesomeIcon icon={faBell} size="lg" css={{ color: 'green' }} />
+          <FontAwesomeIcon
+            icon={faBell}
+            size="lg"
+            css={{ color: 'green' }}
+            onClick={onShowMessages}
+          />
+          <MessageContainer show={isMessagesContainerActive} />
         </NavBarItem>
         <LinkedNavBarItem to="/profile">
           <FontAwesomeIcon icon={faAddressCard} size="lg" css={{ color: 'green', margin: '7px' }} />
