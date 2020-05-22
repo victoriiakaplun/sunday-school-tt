@@ -199,7 +199,30 @@ async function updateOrder(ctx) {
     const { status } = ctx.request.body;
     const order = await Order.findOne({
       where: { id: orderId },
-      attributes: ['id', 'status', 'user_id'],
+      attributes: ['id', 'status'],
+      include: [
+        {
+          model: Slot,
+          as: 'Slot',
+          attributes: ['id', 'start', 'end'],
+        },
+        {
+          model: Timetable,
+          as: 'Timetable',
+          attributes: ['id', 'title'],
+        },
+        {
+          model: AttributeValue,
+          as: 'AttributeValue',
+          attributes: ['id', 'value'],
+          include: {
+            model: Attribute,
+            as: 'Attribute',
+            attributes: ['id', 'title'],
+          },
+        },
+        { model: User, as: 'User', attributes: ['id', 'name'] },
+      ],
     });
     if (!order) {
       throw new Error();
@@ -223,9 +246,7 @@ async function updateOrder(ctx) {
     );
     transaction.commit();
     ctx.response.status = HttpStatus.OK;
-    ctx.response.body = {
-      status: status,
-    };
+    ctx.response.body = { ...order, status: status };
   } catch (e) {
     transaction.rollback();
     ctx.response.status = HttpStatus.OK;
