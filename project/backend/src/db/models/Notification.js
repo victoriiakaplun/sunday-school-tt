@@ -23,5 +23,8 @@ const Notification = db.define(
     freezeTableName: true,
   },
 );
+Notification.associate = models => {
+  Notification.belongsTo(models.Order, { foreignKey: 'order_id', as: 'Order' });
+};
 
 module.exports = Notification;

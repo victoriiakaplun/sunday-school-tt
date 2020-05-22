@@ -194,6 +194,25 @@ async function getUserNotifications(ctx) {
     const notifications = await Notification.findAll({
       where: { user_id: userId },
       attributes: ['id', 'type', 'isRead'],
+      include: [
+        {
+          model: Order,
+          as: 'Order',
+          attributes: ['id'],
+          include: [
+            {
+              model: Slot,
+              as: 'Slot',
+              attributes: ['id', 'start', 'end'],
+            },
+            {
+              model: Timetable,
+              as: 'Timetable',
+              attributes: ['id', 'title'],
+            },
+          ],
+        },
+      ],
     });
     if (!notifications) {
       throw new Error();
