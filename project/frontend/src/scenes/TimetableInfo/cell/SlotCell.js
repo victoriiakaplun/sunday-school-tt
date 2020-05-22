@@ -1,35 +1,58 @@
 import React, { useState } from 'react';
+import isEmpty from 'lodash/fp/isEmpty';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 import timeColumnStyles from '../TimetableInfo.scss';
 import EventCreationModal from '../modal/EventCreationModal';
 import EventShowModal from '../modal/EventShowModal';
-import EventConfirmModal from '../modal/EventConfirmModal';
+import EventSingleConfirmModal from '../modal/EventSingleConfirmModal';
+import EventMultiConfirmModal from '../modal/EventMultiConfirmModal';
 
-function SlotCell({ slot, orders }) {
+function SlotCell({ slot, orders, profileData }) {
   const [isCreationModalActive, setCreationModalActive] = useState(false);
+  const [isShowModalActive, setShowModalActive] = useState(false);
+  const [isSingleConfirmModalActive, setSingleConfirmModalActive] = useState(false);
+  const [isMultiConfirmModalActive, setMultiConfirmModalActive] = useState(false);
 
-  const onClick = () => {
+  const onCreationModalClick = () => {
     setCreationModalActive(true);
+  };
+
+  const onShowModalClick = () => {
+    setShowModalActive(true);
+  };
+
+  const onSingleConfirmModalClick = () => {
+    setSingleConfirmModalActive(true);
+  };
+
+  const onMultiConfirmModalClick = () => {
+    setMultiConfirmModalActive(true);
   };
 
   const confirmedOrder = orders.find(order => order.status === 'CONFIRMED');
   const createdOrders = orders.filter(order => order.status === 'CREATED');
-  let orderClassName;
-  let cellContent;
-  let cellModal;
-  if (orders.length === 0) {
-    orderClassName = timeColumnStyles.noOrders;
-    cellContent = null;
-    cellModal = (
-      <EventCreationModal
-        slot={slot}
-        show={isCreationModalActive}
-        onClose={() => setCreationModalActive(false)}
-      />
-    );
-  } else if (confirmedOrder) {
+  const rejectedOrders = orders.filter(order => order.status === 'REJECTED');
+  const isAdmin = profileData && profileData.role === 'admin';
+  let onClick = onCreationModalClick;
+  let orderClassName = timeColumnStyles.noOrders;
+  let cellContent = null;
+  let cellModal = (
+    <EventCreationModal
+      slot={slot}
+      show={isCreationModalActive}
+      onClose={() => setCreationModalActive(false)}
+    />
+  );
+
+  if ((isEmpty(orders) || rejectedOrders) && isAdmin) {
+    onClick = null;
+    cellModal = null;
+  }
+
+  if (confirmedOrder) {
+    onClick = onShowModalClick;
     orderClassName = timeColumnStyles.confirmedOrder;
-    const attributeValues = confirmedOrder.AttributeValue.map(attr => <span>{attr.value}</span>);
     cellContent = (
       <>
         <b>{confirmedOrder.User.name}</b>
@@ -40,26 +63,47 @@ function SlotCell({ slot, orders }) {
       <EventShowModal
         slot={slot}
         order={confirmedOrder}
-        show={isCreationModalActive}
-        onClose={() => setCreationModalActive(false)}
+        show={isShowModalActive}
+        onClose={() => setShowModalActive(false)}
       />
     );
-  } else {
+  } else if (createdOrders.length === 1) {
+    onClick = onCreationModalClick;
     orderClassName = timeColumnStyles.createdOrder;
-    cellModal = <EventConfirmModal />;
-    if (createdOrders.length === 1) {
-      cellContent = (
-        <>
-          <b>{createdOrders[0].User.name}</b>
-          <span>{createdOrders[0].AttributeValue[0].value}</span>
-        </>
+    cellContent = (
+      <>
+        <b>{createdOrders[0].User.name}</b>
+        <span>{createdOrders[0].AttributeValue[0].value}</span>
+      </>
+    );
+    if (isAdmin) {
+      onClick = onSingleConfirmModalClick;
+      cellModal = (
+        <EventSingleConfirmModal
+          slot={slot}
+          order={createdOrders[0]}
+          show={isSingleConfirmModalActive}
+          onClose={() => setSingleConfirmModalActive(false)}
+        />
       );
-    } else {
-      cellContent = (
-        <>
-          <b>Awaiting approval</b>
-          <span>{`${createdOrders.length} orders requests`}</span>
-        </>
+    }
+  } else if (createdOrders.length > 1) {
+    onClick = onCreationModalClick;
+    orderClassName = timeColumnStyles.createdOrder;
+    cellContent = (
+      <>
+        <b>{`${createdOrders.length} orders requests`}</b>
+      </>
+    );
+    if (isAdmin) {
+      onClick = onMultiConfirmModalClick;
+      cellModal = (
+        <EventMultiConfirmModal
+          slot={slot}
+          orders={createdOrders}
+          show={isMultiConfirmModalActive}
+          onClose={() => setMultiConfirmModalActive(false)}
+        />
       );
     }
   }
@@ -80,4 +124,8 @@ function SlotCell({ slot, orders }) {
   );
 }
 
-export default SlotCell;
+const mapStateToProps = state => ({
+  profileData: state.profile.profileData,
+});
+
+export default connect(mapStateToProps, null)(SlotCell);

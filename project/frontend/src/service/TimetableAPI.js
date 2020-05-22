@@ -62,3 +62,7 @@ export async function getUserMessages(id) {
 export async function updateMessage(body, id) {
   return axios.put(`/api/v1/notifications/${id}`, body);
 }
+
+export async function updateOrder(body, id) {
+  return axios.put(`/api/v1/orders/${id}`, body);
+}
