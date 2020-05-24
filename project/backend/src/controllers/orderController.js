@@ -197,6 +197,9 @@ async function updateOrder(ctx) {
       throw new Error();
     }
     const { status } = ctx.request.body;
+    if (status === 'CREATED') {
+      throw new Error();
+    }
     const order = await Order.findOne({
       where: { id: orderId },
       attributes: ['id', 'status'],
@@ -225,10 +228,10 @@ async function updateOrder(ctx) {
       ],
     });
     if (!order) {
-      throw new Error();
+      throw new Error('ORDER ERROR');
     }
-    if (status === 'CREATED' || order.dataValues.status !== 'CREATED') {
-      throw new Error();
+    if (order.dataValues.status !== 'CREATED') {
+      throw new Error('WRONG STATUS');
     }
     await Order.update(
       {
@@ -240,13 +243,20 @@ async function updateOrder(ctx) {
       {
         type: status,
         isRead: false,
-        user_id: order.dataValues.user_id,
+        user_id: order.dataValues.User.dataValues.id,
       },
       { transaction },
     );
     transaction.commit();
     ctx.response.status = HttpStatus.OK;
-    ctx.response.body = { ...order, status: status };
+    ctx.response.body = {
+      id: order.dataValues.id,
+      status: status,
+      Slot: order.dataValues.Slot,
+      Timetable: order.dataValues.Timetable,
+      AttributeValue: order.dataValues.AttributeValue,
+      User: order.dataValues.User,
+    };
   } catch (e) {
     transaction.rollback();
     ctx.response.status = HttpStatus.OK;
