@@ -6,5 +6,16 @@ import TimetableInfo from './TimetableInfo';
 import SignIn from './SignIn';
 import Orders from './Orders';
 import Main from './Main';
+import TimetableCreation from './TimetableCreation';
 
-export { Timetables, Register, Timeline, Profile, TimetableInfo, SignIn, Orders, Main };
+export {
+  Timetables,
+  Register,
+  Timeline,
+  Profile,
+  TimetableInfo,
+  SignIn,
+  Orders,
+  Main,
+  TimetableCreation,
+};
