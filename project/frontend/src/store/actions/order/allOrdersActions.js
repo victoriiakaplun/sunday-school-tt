@@ -1,4 +1,4 @@
-import { getAllOrders, updateOrder } from '../../../service/TimetableAPI';
+import { getAllOrders } from '../../../service/TimetableAPI';
 import { addNotification } from '../notification/notificationActions';
 
 export const ORDERS_REQUESTED = 'ORDERS_REQUESTED';

@@ -10,14 +10,7 @@ describe('Button', () => {
   it('renders correctly', () => {
     const { container } = render(<Button {...props}>Click Me!</Button>);
 
-    expect(container.firstChild).toMatchSnapshot(`
-      <button
-        class="button is-success id-medium"
-        type="button" 
-      >
-        Click Me!
-      </button>
-    `);
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('handles onClick event', () => {

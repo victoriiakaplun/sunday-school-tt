@@ -1,5 +1,5 @@
 import React from 'react';
-import CardHeader from '../../components/card/CardHeader';
+import CardHeader from '../../components/card/cardHeader/CardHeader';
 import Card from '../../components/card/Card';
 import CardBody from '../../components/card/CardBody';
 

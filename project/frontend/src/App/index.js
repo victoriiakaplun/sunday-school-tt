@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   Timetables,
@@ -12,7 +12,7 @@ import {
   Main,
 } from '../scenes';
 import NavBar from './navBar';
-import NotificationContainer from './notification/NotificationContainer';
+import NotificationContainer from './notification/NotificationContainer/NotificationContainer';
 import { getUserProfile } from '../store/actions/user/profileActions';
 import PrivateRoute from './router/PrivateRoute';
 import Spinner from '../components/spinner/Spinner';

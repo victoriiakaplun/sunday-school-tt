@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchMessages, updateUserMessage } from '../../store/actions/user/userMessagesActions';
 import Spinner from '../spinner/Spinner';
-import MessageCard from './MessageCard';
+import MessageCard from './messageCard/MessageCard';
 
 const moment = require('moment');
 

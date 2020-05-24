@@ -52,6 +52,5 @@ export function logout() {
       dispatch(logoutSucceed());
       dispatch(profileSucceed(null));
     });
-    // FIXME
   };
 }

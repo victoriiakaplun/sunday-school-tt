@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import BaseModal from '../../../components/modal/BaseModal';
 import ModalTitle from '../../../components/modal/ModalTitle';
 import ModalBody from '../../../components/modal/ModalBody';

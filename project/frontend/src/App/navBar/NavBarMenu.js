@@ -1,13 +1,12 @@
 import { faAddressCard, faBell, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import React, { useState } from 'react';
 import NavBarItem from './NavBarItem';
 import AuthButtons from './AuthButtons';
 import { logout } from '../../store/actions/user/authActions';
 import LinkedNavBarItem from './LinkedNavBarItem';
-import MessageContainer from '../../components/message/MessagesContainer';
+import MessageContainer from '../../components/message/messageContainer/MessagesContainer';
 
 function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
   const [isMessagesContainerActive, setMessagesContainerActive] = useState(false);

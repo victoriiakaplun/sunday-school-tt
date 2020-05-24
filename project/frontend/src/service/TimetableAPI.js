@@ -28,11 +28,11 @@ export async function registerUser(req) {
 }
 
 export async function update(req, id) {
-  return axios.put(`api/v1/users/${id}`, { name: req.name, email: req.email });
+  return axios.put(`/api/v1/users/${id}`, { name: req.name, email: req.email });
 }
 
 export async function getProfile() {
-  return axios.get('api/v1/users/profile');
+  return axios.get('/api/v1/users/profile');
 }
 
 export async function addTimetable(body) {

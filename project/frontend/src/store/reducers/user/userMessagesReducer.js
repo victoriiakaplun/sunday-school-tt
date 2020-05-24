@@ -2,6 +2,7 @@ import {
   MESSAGES_REQUESTED,
   MESSAGES_LOADED,
   MESSAGES_ERROR,
+  UPDATED_MESSAGE,
 } from '../../actions/user/userMessagesActions';
 
 export function getInitialState() {
@@ -29,6 +30,15 @@ function userMessagesReducer(prevState = getInitialState(), recAction) {
       loading: false,
       error: action.payload,
     }),
+    [UPDATED_MESSAGE]: (state, action) => {
+      const messagesCopy = state.messages.slice();
+      const updatedIndex = state.messages.findIndex(order => order.id === action.payload.id);
+      messagesCopy[updatedIndex] = action.payload;
+      return {
+        ...state,
+        messages: messagesCopy,
+      };
+    },
   };
   const handler = handlerMap[recAction.type];
   return handler ? handler(prevState, recAction) : prevState;

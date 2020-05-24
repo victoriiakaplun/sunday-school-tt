@@ -23,6 +23,14 @@ export function messagesError(error) {
   };
 }
 
+export const UPDATED_MESSAGE = 'UPDATED MESSAGE';
+export function updatedMessage(message) {
+  return {
+    type: UPDATED_MESSAGE,
+    payload: message,
+  };
+}
+
 export function fetchMessages(userId) {
   return dispatch => {
     dispatch(messagesRequested());
@@ -42,6 +50,7 @@ export function updateUserMessage(body, messageId) {
     updateMessage(body, messageId)
       .then(res => {
         dispatch(addNotification({ type: 'success', message: 'Message status updated succeed!' }));
+        dispatch(updatedMessage(res.data));
         return res;
       })
       .catch(error => {

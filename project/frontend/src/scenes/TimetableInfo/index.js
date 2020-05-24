@@ -72,6 +72,7 @@ function TimetableInfo({
 
 const mapStateToProps = state => ({
   timetable: state.timetable.timetable,
+  profile: state.profile.profileData,
   loading: state.timetable.loading || state.timetableOrders.loading || state.profile.loading,
   error: state.timetable.error || state.timetableOrders.error || state.profile.error,
   timetableOrders: state.timetableOrders.timetableOrders,

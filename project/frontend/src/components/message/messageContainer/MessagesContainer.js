@@ -1,7 +1,7 @@
 import React from 'react';
 import reactDOM from 'react-dom';
 import classNames from 'classnames';
-import MessagesList from './MessagesList';
+import MessagesList from '../MessagesList';
 import styles from './MessageContainer.scss';
 
 function MessageContainer({ show }) {

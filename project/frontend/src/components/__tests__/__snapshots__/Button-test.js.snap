@@ -1,5 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Button renders correctly 1`] = `
+<button
+  class="button is-success is-medium"
+  type="button"
+>
+  Click Me!
+</button>
+`;
+
 exports[`Button renders correctly: 
       <button
         class="button is-success id-medium"

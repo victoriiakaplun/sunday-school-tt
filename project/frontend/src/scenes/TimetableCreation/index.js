@@ -9,7 +9,7 @@ import TimetableSettings from './TimetableSettings';
 import SlotSettings from './SlotSettings';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import Button from '../../components/button/Button';
-import Subheader from '../../components/header/Subheader';
+import Subheader from '../../components/subheader/Subheader';
 import Form from '../../components/form/Form';
 import SlotAttribute from './SlotAttribute';
 import { createTimetable } from '../../store/actions/timetable/createTimetableActions';

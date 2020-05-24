@@ -15,6 +15,7 @@ function Field({ children, type, name, placeholder, value, onChange }) {
           value={value}
           onChange={onChange}
           required
+          data-testid="field_input"
         />
       </div>
     </div>

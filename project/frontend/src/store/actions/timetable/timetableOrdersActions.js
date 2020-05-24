@@ -1,10 +1,5 @@
 import { addOrder, getTimetableOrders, updateOrder } from '../../../service/TimetableAPI';
 import { addNotification } from '../notification/notificationActions';
-import {
-  orderCreateError,
-  orderCreateRequested,
-  orderCreateSucceed,
-} from '../order/createOrderAction';
 
 export const TIMETABLE_ORDERS_REQUESTED = 'TIMETABLE_ORDERS_REQUESTED';
 export function timetableOrdersRequested() {
@@ -61,12 +56,10 @@ export function fetchTimetableOrders(timetableId) {
 
 export function update(body, id) {
   return dispatch => {
-    console.log('BODY: ', body);
     updateOrder(body, id)
       .then(res => {
         dispatch(addNotification({ type: 'success', message: 'Order successfully updated' }));
-        console.log(res.data);
-        updatedOrder(res.data);
+        dispatch(updatedOrder(res.data));
       })
       .catch(error => {
         dispatch(addNotification({ type: 'danger', message: 'Order updated failed' }));
@@ -76,15 +69,13 @@ export function update(body, id) {
 
 export function createOrder(body) {
   return dispatch => {
-    dispatch(orderCreateRequested());
     addOrder(body)
       .then(res => {
         dispatch(addNotification({ type: 'success', message: 'Order successfully created' }));
-        dispatch(orderCreateSucceed(res.data));
+        dispatch(createdOrder(res.data));
       })
       .catch(error => {
         dispatch(addNotification({ type: 'danger', message: 'Order creation error' }));
-        dispatch(orderCreateError(error));
       });
   };
 }

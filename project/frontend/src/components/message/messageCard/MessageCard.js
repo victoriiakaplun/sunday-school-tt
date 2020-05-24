@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import CloseButton from '../../App/notification/CloseButton';
+import CloseButton from '../../button/CloseButton';
 
 import styles from './MessageCard.scss';
 
