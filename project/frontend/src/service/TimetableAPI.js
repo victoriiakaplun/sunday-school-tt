@@ -12,7 +12,7 @@ export function getAllTimetables() {
 }
 
 export function getTimetable(id) {
-  return axios.post(`/api/v1/timetables/${id}`);
+  return axios.get(`/api/v1/timetables/${id}`);
 }
 
 export async function logoutUser() {

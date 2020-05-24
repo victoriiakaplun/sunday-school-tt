@@ -2,7 +2,6 @@ import {
   ORDERS_REQUESTED,
   ORDERS_LOADED,
   ORDERS_ERROR,
-  UPDATED_ORDER,
 } from '../../actions/order/allOrdersActions';
 
 export function getInitialState() {
@@ -30,15 +29,6 @@ function allOrdersReducer(prevState = getInitialState(), recAction) {
       loading: false,
       error: action.payload,
     }),
-    [UPDATED_ORDER]: (state, action) => {
-      const orderIndex = state.orders.findIndex(order => order.id === action.payload.id);
-      const copy = state.orders.slice();
-      copy[orderIndex] = action.payload;
-      return {
-        ...state,
-        orders: copy,
-      };
-    },
   };
   const handler = handlerMap[recAction.type];
   return handler ? handler(prevState, recAction) : prevState;

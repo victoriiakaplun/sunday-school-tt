@@ -8,6 +8,7 @@ import TimetableOrdersList from './TimetableOrdersList';
 
 function Orders({ profileData }) {
   const history = useHistory();
+
   if (profileData && profileData.role !== 'admin') {
     history.push('/');
   }

@@ -1,4 +1,4 @@
-import { getAllTimetables } from '../../../service/TimetableAPI';
+import { getTimetable } from '../../../service/TimetableAPI';
 import { addNotification } from '../notification/notificationActions';
 
 export const TIMETABLE_REQUESTED = 'TIMETABLE_REQUEST';
@@ -8,31 +8,31 @@ export function timetableRequested() {
   };
 }
 export const TIMETABLE_LOADED = 'TIMETABLE_LOADED';
-export function timetablesLoaded(timetables) {
+export function timetableLoaded(timetable) {
   return {
     type: TIMETABLE_LOADED,
-    payload: timetables,
+    payload: timetable,
   };
 }
 
-export const TIMETABLE_ERROR = 'TIMETABLE_ERROR';
-export function timetablesError(error) {
+export const TIMETABLE_ERROR = 'TIMETABLES_ERROR';
+export function timetableError(error) {
   return {
     type: TIMETABLE_ERROR,
     payload: error,
   };
 }
 
-export function fetchTimetables() {
+export function fetchTimetable(timetableId) {
   return dispatch => {
     dispatch(timetableRequested());
-    getAllTimetables()
+    getTimetable(timetableId)
       .then(res => {
-        dispatch(timetablesLoaded(res.data));
+        dispatch(timetableLoaded(res.data));
         return res.data;
       })
       .catch(error => {
-        dispatch(timetablesError(error));
+        dispatch(timetableError(error));
         dispatch(addNotification({ type: 'danger', message: 'Error timetable loading' }));
       });
   };

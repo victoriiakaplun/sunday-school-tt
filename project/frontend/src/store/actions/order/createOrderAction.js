@@ -22,18 +22,3 @@ export function orderCreateError(error) {
     payload: error,
   };
 }
-
-export function createOrder(body) {
-  return dispatch => {
-    dispatch(orderCreateRequested());
-    addOrder(body)
-      .then(res => {
-        dispatch(addNotification({ type: 'success', message: 'Order successfully created' }));
-        dispatch(orderCreateSucceed(res.data));
-      })
-      .catch(error => {
-        dispatch(addNotification({ type: 'danger', message: 'Order creation error' }));
-        dispatch(orderCreateError(error));
-      });
-  };
-}

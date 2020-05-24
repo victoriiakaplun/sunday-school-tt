@@ -6,7 +6,7 @@ import {
 
 export function getInitialState() {
   return {
-    timetables: [],
+    timetable: null,
     loading: true,
     error: null,
   };
@@ -15,17 +15,17 @@ export function getInitialState() {
 function timetableReducer(prevState = getInitialState(), recAction) {
   const handlerMap = {
     [TIMETABLE_REQUESTED]: (state, action) => ({
-      timetables: [],
+      timetable: null,
       loading: true,
       error: null,
     }),
     [TIMETABLE_LOADED]: (state, action) => ({
-      timetables: action.payload,
+      timetable: action.payload,
       loading: false,
       error: null,
     }),
     [TIMETABLE_ERROR]: (state, action) => ({
-      timetables: [],
+      timetable: null,
       loading: false,
       error: action.payload,
     }),

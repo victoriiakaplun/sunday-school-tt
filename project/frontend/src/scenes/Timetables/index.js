@@ -7,11 +7,18 @@ import TimetablesList from './TimetablesList';
 import CenteredButtonBox from '../../components/button/CenteredButtonBox';
 import Columns from '../../components/columns/Columns';
 import Column from '../../components/columns/Column';
+import { getUserProfile } from '../../store/actions/user/profileActions';
+import Spinner from '../../components/spinner/Spinner';
 
-function Timetables({ profileData }) {
-  const { role } = profileData;
+function Timetables({ profileData, loading, error }) {
+  if (loading) {
+    return <Spinner />;
+  }
+  if (error) {
+    return <div />;
+  }
 
-  const isAdmin = role === 'admin';
+  const isAdmin = profileData && profileData.role === 'admin';
 
   const button = (
     <CenteredButtonBox>
@@ -34,6 +41,8 @@ function Timetables({ profileData }) {
 
 const mapStateToProps = state => ({
   profileData: state.profile.profileData,
+  loading: state.profile.loading,
+  error: state.profile.error,
 });
 
-export default connect(mapStateToProps)(Timetables);
+export default connect(mapStateToProps, null)(Timetables);

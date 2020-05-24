@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchTimetables } from '../../store/actions/timetable/timetableActions';
+import { fetchTimetables } from '../../store/actions/timetable/timetablesActions';
 import Spinner from '../../components/spinner/Spinner';
 import TimetableCard from './TimetableCard';
 

@@ -6,7 +6,7 @@ import ModalBody from '../../../components/modal/ModalBody';
 import ModalFooter from '../../../components/modal/ModalFooter';
 import CenteredButtonBox from '../../../components/button/CenteredButtonBox';
 import Button from '../../../components/button/Button';
-import { ordersError, update } from '../../../store/actions/order/allOrdersActions';
+import { update } from '../../../store/actions/timetable/timetableOrdersActions';
 import EventConfirmModalBody from './EventConfirmModalBody';
 
 const moment = require('moment');

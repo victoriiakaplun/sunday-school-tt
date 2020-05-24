@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { update } from '../../../store/actions/order/allOrdersActions';
+import { update } from '../../../store/actions/timetable/timetableOrdersActions';
 import BaseModal from '../../../components/modal/BaseModal';
 import ModalTitle from '../../../components/modal/ModalTitle';
 import ModalBody from '../../../components/modal/ModalBody';

@@ -1,5 +1,10 @@
-import { getTimetableOrders } from '../../../service/TimetableAPI';
+import { addOrder, getTimetableOrders, updateOrder } from '../../../service/TimetableAPI';
 import { addNotification } from '../notification/notificationActions';
+import {
+  orderCreateError,
+  orderCreateRequested,
+  orderCreateSucceed,
+} from '../order/createOrderAction';
 
 export const TIMETABLE_ORDERS_REQUESTED = 'TIMETABLE_ORDERS_REQUESTED';
 export function timetableOrdersRequested() {
@@ -23,6 +28,22 @@ export function timetableOrdersError(error) {
   };
 }
 
+export const UPDATED_ORDER = 'UPDATED_ORDER';
+export function updatedOrder(order) {
+  return {
+    type: UPDATED_ORDER,
+    payload: order,
+  };
+}
+
+export const CREATED_ORDER = 'CREATED_ORDER';
+export function createdOrder(order) {
+  return {
+    type: CREATED_ORDER,
+    payload: order,
+  };
+}
+
 export function fetchTimetableOrders(timetableId) {
   return dispatch => {
     dispatch(timetableOrdersRequested());
@@ -34,6 +55,36 @@ export function fetchTimetableOrders(timetableId) {
       .catch(error => {
         dispatch(timetableOrdersError(error));
         dispatch(addNotification({ type: 'danger', message: 'Error timetable orders loading' }));
+      });
+  };
+}
+
+export function update(body, id) {
+  return dispatch => {
+    console.log('BODY: ', body);
+    updateOrder(body, id)
+      .then(res => {
+        dispatch(addNotification({ type: 'success', message: 'Order successfully updated' }));
+        console.log(res.data);
+        updatedOrder(res.data);
+      })
+      .catch(error => {
+        dispatch(addNotification({ type: 'danger', message: 'Order updated failed' }));
+      });
+  };
+}
+
+export function createOrder(body) {
+  return dispatch => {
+    dispatch(orderCreateRequested());
+    addOrder(body)
+      .then(res => {
+        dispatch(addNotification({ type: 'success', message: 'Order successfully created' }));
+        dispatch(orderCreateSucceed(res.data));
+      })
+      .catch(error => {
+        dispatch(addNotification({ type: 'danger', message: 'Order creation error' }));
+        dispatch(orderCreateError(error));
       });
   };
 }

@@ -2,6 +2,8 @@ import {
   TIMETABLE_ORDERS_REQUESTED,
   TIMETABLE_ORDER_LOADED,
   TIMETABLE_ORDER_ERROR,
+  UPDATED_ORDER,
+  CREATED_ORDER,
 } from '../../actions/timetable/timetableOrdersActions';
 
 export function getInitialState() {
@@ -28,6 +30,19 @@ function timetableOrdersReducer(prevState = getInitialState(), recAction) {
       timetableOrders: [],
       loading: false,
       error: action.payload,
+    }),
+    [UPDATED_ORDER]: (state, action) => {
+      const ordersCopy = state.timetableOrders.slice();
+      const updatedIndex = state.timetableOrders.findIndex(order => order.id === action.payload.id);
+      ordersCopy[updatedIndex] = action.payload;
+      return {
+        ...state,
+        timetableOrders: ordersCopy,
+      };
+    },
+    [CREATED_ORDER]: (state, action) => ({
+      ...state,
+      timetableOrders: [...state.timetableOrders, action.payload],
     }),
   };
   const handler = handlerMap[recAction.type];

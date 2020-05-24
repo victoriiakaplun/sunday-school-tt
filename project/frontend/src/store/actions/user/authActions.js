@@ -48,7 +48,10 @@ export function login(body) {
 
 export function logout() {
   return dispatch => {
-    logoutUser().then(() => dispatch(logoutSucceed()));
+    logoutUser().then(() => {
+      dispatch(logoutSucceed());
+      dispatch(profileSucceed(null));
+    });
     // FIXME
   };
 }

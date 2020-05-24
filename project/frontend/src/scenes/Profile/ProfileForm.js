@@ -13,7 +13,10 @@ function ProfileForm({ updateProfile, profileData, error, loading }) {
     email: '',
   });
   useEffect(() => {
-    setInputData({ name: profileData.name, email: profileData.email });
+    setInputData({
+      name: profileData && profileData.name,
+      email: profileData && profileData.email,
+    });
   }, [profileData]);
 
   const onInput = event => {

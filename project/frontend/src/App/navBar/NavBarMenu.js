@@ -10,16 +10,14 @@ import LinkedNavBarItem from './LinkedNavBarItem';
 import MessageContainer from '../../components/message/MessagesContainer';
 
 function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
-  const history = useHistory();
   const [isMessagesContainerActive, setMessagesContainerActive] = useState(false);
   const onShowMessages = () => {
     setMessagesContainerActive(prevState => !prevState);
   };
 
   const isAdmin = profileData && profileData.role === 'admin';
-  async function onLogout() {
+  function onLogout() {
     logoutUser();
-    history.push('/signin');
   }
 
   if (!isAuth) {
@@ -57,14 +55,14 @@ function NavBarMenu({ isAuth, error, profileData, logoutUser }) {
           <FontAwesomeIcon icon={faAddressCard} size="lg" css={{ color: 'green', margin: '7px' }} />
           {profileData && profileData.name}
         </LinkedNavBarItem>
-        <NavBarItem>
+        <LinkedNavBarItem to="/signin">
           <FontAwesomeIcon
             icon={faSignOutAlt}
             size="lg"
             css={{ color: 'green' }}
             onClick={onLogout}
           />
-        </NavBarItem>
+        </LinkedNavBarItem>
       </div>
     </div>
   );

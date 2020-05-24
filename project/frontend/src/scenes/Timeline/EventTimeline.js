@@ -11,8 +11,10 @@ const moment = require('moment');
 
 function EventTimeline({ profileData, userOrders, error, loading, getUserOrders }) {
   useEffect(() => {
-    getUserOrders(profileData.id);
-  }, [profileData.id]);
+    if (profileData) {
+      getUserOrders(profileData.id);
+    }
+  }, [profileData]);
 
   if (loading) {
     return <Spinner />;

@@ -9,15 +9,11 @@ import CenteredButtonBox from '../../../components/button/CenteredButtonBox';
 import Button from '../../../components/button/Button';
 import Field from '../../../components/form/Field';
 import { addNotification } from '../../../store/actions/notification/notificationActions';
-import { createOrder } from '../../../store/actions/order/createOrderAction';
+import { createOrder } from '../../../store/actions/timetable/timetableOrdersActions';
 
 const moment = require('moment');
 
-function EventCreationModal({ timetables, slot, show, onClose, notify, create }) {
-  const { id } = useParams();
-  const parsedId = Number.parseInt(id, 10);
-  const timetable = timetables.find(t => t.id === parsedId);
-
+function EventCreationModal({ timetable, slot, show, onClose, notify, create }) {
   const { Attribute } = timetable;
   const [creationData, setCreationData] = useState([]);
 
@@ -55,7 +51,7 @@ function EventCreationModal({ timetables, slot, show, onClose, notify, create })
         return { attribute_id: attr.id, value: attr.value };
       });
       const body = {
-        timetable_id: id,
+        timetable_id: timetable.id,
         slot_id: slot.id,
         attributeValues,
       };
@@ -108,7 +104,7 @@ function EventCreationModal({ timetables, slot, show, onClose, notify, create })
 }
 
 const mapStateToProps = state => ({
-  timetables: state.timetables.timetables,
+  timetable: state.timetable.timetable,
 });
 const mapDispatchToProps = {
   notify: addNotification,

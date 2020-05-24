@@ -10,20 +10,36 @@ import TimetableColumn from './column/TimetableColumn';
 import TimesColumn from './column/TimesColumn';
 import Cell from './cell/Cell';
 import { fetchTimetableOrders } from '../../store/actions/timetable/timetableOrdersActions';
+import { fetchTimetable } from '../../store/actions/timetable/timetableActions';
+import Spinner from '../../components/spinner/Spinner';
 
 const moment = require('moment');
 
-function TimetableInfo({ timetables, getTimetableOrders, timetableOrders }) {
+function TimetableInfo({
+  timetable,
+  loading,
+  error,
+  getTimetableOrders,
+  getTimetable,
+  timetableOrders,
+}) {
   const { id } = useParams();
   const parsedId = Number.parseInt(id, 10);
 
   useEffect(() => {
+    getTimetable(parsedId);
     getTimetableOrders(parsedId);
   }, [parsedId]);
 
-  const timetable = timetables.find(t => t.id === parsedId);
-  const { title, start, end, slotSize, Slot, Attribute } = timetable;
+  if (loading) {
+    return <Spinner />;
+  }
 
+  if (error) {
+    return <div />;
+  }
+
+  const { title, start, end, slotSize, Slot, Attribute } = timetable;
   const daysSlots = [];
 
   for (let m = moment(start); m.diff(moment(end), 'days') <= 0; m.add(1, 'days')) {
@@ -55,14 +71,15 @@ function TimetableInfo({ timetables, getTimetableOrders, timetableOrders }) {
 }
 
 const mapStateToProps = state => ({
-  timetables: state.timetables.timetables,
-  loading: state.timetables.loading,
-  error: state.timetables.error,
+  timetable: state.timetable.timetable,
+  loading: state.timetable.loading || state.timetableOrders.loading,
+  error: state.timetable.error || state.timetableOrders.error,
   timetableOrders: state.timetableOrders.timetableOrders,
 });
 
 const mapDispatchToProps = {
   getTimetableOrders: fetchTimetableOrders,
+  getTimetable: fetchTimetable,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimetableInfo);

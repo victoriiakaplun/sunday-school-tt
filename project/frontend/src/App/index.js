@@ -19,10 +19,13 @@ import Spinner from '../components/spinner/Spinner';
 import TimetableCreation from '../scenes/TimetableCreation';
 
 function App({ getProfile, profileData, loading }) {
-  const history = useHistory();
   useEffect(() => {
     getProfile();
   }, [getProfile]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   const isAuth = Boolean(profileData);
 
@@ -40,24 +43,16 @@ function App({ getProfile, profileData, loading }) {
         <Route path="/signin">
           <SignIn />
         </Route>
-        <PrivateRoute exact path="/timetables" isAuthenticated={isAuth}>
-          <Timetables />
-        </PrivateRoute>
-        <PrivateRoute path="/timetables/:id" isAuthenticated={isAuth}>
-          <TimetableInfo />
-        </PrivateRoute>
-        <PrivateRoute path="/timeline" isAuthenticated={isAuth}>
-          <Timeline />
-        </PrivateRoute>
-        <PrivateRoute exact path="/orders" isAuthenticated={isAuth}>
-          <Orders />
-        </PrivateRoute>
-        <PrivateRoute path="/profile" isAuthenticated={isAuth}>
-          <Profile />
-        </PrivateRoute>
-        <PrivateRoute path="/timetable-creation" isAuthenticated={isAuth}>
-          <TimetableCreation />
-        </PrivateRoute>
+        <PrivateRoute exact path="/timetables" component={Timetables} isAuthenticated={isAuth} />
+        <PrivateRoute path="/timetables/:id" component={TimetableInfo} isAuthenticated={isAuth} />
+        <PrivateRoute path="/timeline" component={Timeline} isAuthenticated={isAuth} />
+        <PrivateRoute exact path="/orders" component={Orders} isAuthenticated={isAuth} />
+        <PrivateRoute path="/profile" component={Profile} isAuthenticated={isAuth} />
+        <PrivateRoute
+          path="/timetable-creation"
+          component={TimetableCreation}
+          isAuthenticated={isAuth}
+        />
         <Route render={() => <h2>Page not found</h2>} />
       </Switch>
     </div>
