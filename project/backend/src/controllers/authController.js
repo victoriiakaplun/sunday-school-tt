@@ -66,7 +66,6 @@ async function login(ctx, next) {
   await passport.authenticate('local', async (err, user) => {
     if (!err && user) {
       await ctx.login(user);
-      console.log(user);
       const userData = {
         id: user.id,
         role: user.role,

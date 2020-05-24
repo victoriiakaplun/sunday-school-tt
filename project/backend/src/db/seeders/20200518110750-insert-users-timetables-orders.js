@@ -30,8 +30,6 @@ module.exports = {
       ['id'],
     );
 
-    console.log('USER ID: ', newUserId);
-
     await queryInterface.bulkInsert('Timetable', [
       {
         title: 'Baikal Schedule',
@@ -53,7 +51,6 @@ module.exports = {
       ['id'],
     );
 
-    console.log('TIMETABLE ID: ', newTimetableId);
     await queryInterface.bulkInsert('Attribute', [
       {
         title: 'Name',
@@ -83,7 +80,6 @@ module.exports = {
       ['id'],
     );
 
-    console.log('NAME ATTR ID: ', nameAttributeId);
     const descriptionAttributeId = await queryInterface.rawSelect(
       'Attribute',
       {
@@ -94,7 +90,6 @@ module.exports = {
       ['id'],
     );
 
-    console.log('DESCRIPTION ATTR ID: ', descriptionAttributeId);
     const newTimetableScheduleSlots = [];
     for (let i = 0; i < 168; i++) {
       newTimetableScheduleSlots.push({

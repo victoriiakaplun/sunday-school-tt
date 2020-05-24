@@ -27,12 +27,15 @@ Run all commands project root folder
 `docker-compose logs -f web`
 
 ## How to run app:
-1. `docker-compose up -d`
-2.Run migrations for database
-`cd ./backend && npx sequelize-cli db:migrate`
-3. Run seed for database
-`cd ./backend && npx sequelize-cli db:seed:all`
+1. project structure
+timetable - backside - project
+timetable - frontside - project
+2. `docker-compose up -d`
+3. Run migrations for database from backend branch
+`cd ./backend && npx sequelize-cli db:migrate` 
 4. Go to http://localhost
+
+5. Admin: email - admin@gmail.com, password: admin
 
 ## How to watch static:
 `cd ./frontend && npm run watch`

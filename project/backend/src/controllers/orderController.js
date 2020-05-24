@@ -50,7 +50,16 @@ async function createOrder(ctx) {
       },
       {
         include: [
-          { model: AttributeValue, as: 'AttributeValue' },
+          {
+            model: AttributeValue,
+            as: 'AttributeValue',
+            include: [
+              {
+                model: Attribute,
+                as: 'Attribute',
+              },
+            ],
+          },
           { model: Notification, as: 'Notification' },
         ],
         transaction,
@@ -62,7 +71,14 @@ async function createOrder(ctx) {
     await createdOrder.setSlot(slot, { transaction });
     await createdOrder.setUser(user, { transaction });
     ctx.response.status = HttpStatus.CREATED;
-    ctx.response.body = createdOrder;
+    ctx.response.body = {
+      id: createdOrder.dataValues.id,
+      status: createdOrder.dataValues.status,
+      Slot: slot,
+      Timetable: timetable,
+      AttributeValue: createdOrder.dataValues.AttributeValue,
+      User: ctx.state.user,
+    };
     transaction.commit();
     return ctx.response;
   } catch (e) {
